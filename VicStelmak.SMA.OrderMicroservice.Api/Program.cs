@@ -16,6 +16,15 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.MapGet("/", async context =>
+{
+    await context.Response.WriteAsync("Test response from OrderMicroservice");
+});
+app.MapGet("/details", async context =>
+{
+    await context.Response.WriteAsync("Test response from OrderMicroservice - Details");
+});
+
 var summaries = new[]
 {
     "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
