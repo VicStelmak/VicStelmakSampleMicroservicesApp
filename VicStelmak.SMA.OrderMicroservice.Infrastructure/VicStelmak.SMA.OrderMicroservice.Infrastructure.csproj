@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\VicStelmak.SMA.OrderMicroservice.Application\VicStelmak.SMA.OrderMicroservice.Application.csproj" />
+    <ProjectReference Include="..\VicStelmak.SMA.OrderMicroservice.Domain\VicStelmak.SMA.OrderMicroservice.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
