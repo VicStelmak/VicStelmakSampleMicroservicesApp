@@ -13,7 +13,7 @@
   <ItemGroup>
     <ProjectReference Include="..\VicStelmak.SMA.Events\VicStelmak.SMA.Events.csproj" />
     <ProjectReference Include="..\VicStelmak.SMA.MessageBrokerSettings\VicStelmak.SMA.MessageBrokerSettings.csproj" />
-    <ProjectReference Include="..\VicStelmak.SMA.ProductMicroservice.Application\VicStelmak.SMA.ProductMicroservice.Application.csproj" />
+    <ProjectReference Include="..\VicStelmak.SMA.ProductMicroservice.Infrastructure\VicStelmak.SMA.ProductMicroservice.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
