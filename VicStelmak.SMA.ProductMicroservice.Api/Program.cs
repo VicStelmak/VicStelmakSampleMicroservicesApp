@@ -1,3 +1,4 @@
+using VicStelmak.SMA.ProductMicroservice.Api;
 using VicStelmak.SMA.ProductMicroservice.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,5 +19,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.ConfigureApi();
 
 app.Run();
