@@ -1,4 +1,4 @@
-﻿using VicStelmak.SMA.ProductMicroservice.Domain;
+﻿using VicStelmak.SMA.ProductMicroservice.Domain.Models;
 
 namespace VicStelmak.SMA.ProductMicroservice.Application.Interfaces
 {

@@ -1,5 +1,5 @@
-﻿using VicStelmak.SMA.ProductMicroservice.Application.Interfaces;
-using VicStelmak.SMA.ProductMicroservice.Domain;
+﻿using VicStelmak.SMA.ProductMicroservice.Application.DTOs;
+using VicStelmak.SMA.ProductMicroservice.Application.Interfaces;
 
 namespace VicStelmak.SMA.ProductMicroservice.Api
 {
@@ -8,18 +8,18 @@ namespace VicStelmak.SMA.ProductMicroservice.Api
         public static void ConfigureApi(this WebApplication app)
         {
             // API endpoint mapping
-            app.MapGet("/Products", GetProductsList);
-            app.MapGet("/Products/{id}", GetProduct);
-            app.MapPost("/Products", CreateProduct);
-            app.MapPut("/Products", UpdateProduct);
-            app.MapDelete("/Products", DeleteProduct);
+            app.MapGet("API/Products", GetProductsList);
+            app.MapGet("API/Products/{id}", GetProduct);
+            app.MapPost("API/Products", CreateProduct);
+            app.MapPut("API/Products", UpdateProduct);
+            app.MapDelete("API/Products", DeleteProduct);
         }
 
-        private static async Task<IResult> GetProductsList(IProductRepository productRepository)
+        private static async Task<IResult> GetProductsList(IProductService productService)
         {
             try
             {
-                return Results.Ok(await productRepository.GetProductsList());
+                return Results.Ok(await productService.GetProductsList());
             }
             catch (Exception ex)
             {
@@ -27,11 +27,11 @@ namespace VicStelmak.SMA.ProductMicroservice.Api
             }
         }
 
-        private static async Task<IResult> GetProduct(int id, IProductRepository productRepository)
+        private static async Task<IResult> GetProduct(int productId, IProductService productService)
         {
             try
             {
-                var results = await productRepository.GetProductByIdAsync(id);
+                var results = await productService.GetProductByIdAsync(productId);
                 if (results == null) return Results.NotFound();
                 return Results.Ok(results);
             }
@@ -41,11 +41,11 @@ namespace VicStelmak.SMA.ProductMicroservice.Api
             }
         }
 
-        private static async Task<IResult> CreateProduct(ProductModel product, IProductRepository productRepository)
+        private static async Task<IResult> CreateProduct(ProductCreatingDTO productDTO, IProductService productService)
         {
             try
             {
-                await productRepository.CreateProduct(product);
+                await productService.CreateProduct(productDTO);
                 return Results.Ok();
             }
             catch (Exception ex)
@@ -54,11 +54,11 @@ namespace VicStelmak.SMA.ProductMicroservice.Api
             }
         }
 
-        private static async Task<IResult> UpdateProduct(ProductModel product, IProductRepository productRepository)
+        private static async Task<IResult> UpdateProduct(int productId, ProductUpdatingDTO product, IProductService productService)
         {
             try
             {
-                await productRepository.UpdateProduct(product);
+                await productService.UpdateProduct(productId, product);
                 return Results.Ok();
             }
             catch (Exception ex)
@@ -67,11 +67,11 @@ namespace VicStelmak.SMA.ProductMicroservice.Api
             }
         }
 
-        private static async Task<IResult> DeleteProduct(int id, IProductRepository productRepository)
+        private static async Task<IResult> DeleteProduct(int productId, IProductService productService)
         {
             try
             {
-                await productRepository.DeleteProduct(id);
+                await productService.DeleteProduct(productId);
                 return Results.Ok();
             }
             catch (Exception ex)
