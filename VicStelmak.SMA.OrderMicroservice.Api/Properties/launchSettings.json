@@ -4,17 +4,17 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:2073",
-      "sslPort": 44327
+      "applicationUrl": "http://localhost:10541",
+      "sslPort": 44375
     }
   },
   "profiles": {
-    "VicStelmak.SMA.OrderMicroservice.Api": {
+    "VicStelmak.SMA.OrderMicroservice.API": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
       "launchUrl": "swagger",
-      "applicationUrl": "https://localhost:7022;http://localhost:5082",
+      "applicationUrl": "https://localhost:7245;http://localhost:5001",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
