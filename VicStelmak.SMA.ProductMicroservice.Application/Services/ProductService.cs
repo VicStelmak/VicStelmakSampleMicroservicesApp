@@ -32,7 +32,6 @@ namespace VicStelmak.SMA.ProductMicroservice.Application.Services
         {
             var product = await _productRepository.GetProductByIdAsync(productId);
 
-
             return await _mapper.From(product).AdaptToTypeAsync<ProductReadingDTO>();
         }
 

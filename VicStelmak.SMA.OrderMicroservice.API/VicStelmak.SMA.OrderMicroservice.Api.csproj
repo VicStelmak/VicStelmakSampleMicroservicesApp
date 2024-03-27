@@ -4,16 +4,18 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>54ff49de-094b-4376-860f-ba2ab70c246f</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.5.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.5.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\VicStelmak.SMA.Events\VicStelmak.SMA.Events.csproj" />
     <ProjectReference Include="..\VicStelmak.SMA.MessageBrokerSettings\VicStelmak.SMA.MessageBrokerSettings.csproj" />
-    <ProjectReference Include="..\VicStelmak.SMA.OrderMicroservice.DataLibrary\VicStelmak.SMA.OrderMicroservice.DataLibrary.csproj" />
+    <ProjectReference Include="..\VicStelmak.SMA.OrderMicroservice.APIDataLibrary\VicStelmak.SMA.OrderMicroservice.APIDataLibrary.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,9 +1,10 @@
+using VicStelmak.SMA.OrderMicroservice.APIDataLibrary.Features.DeliveryAddress;
+using VicStelmak.SMA.OrderMicroservice.APIDataLibrary.Features.Order;
+using VicStelmak.SMA.OrderMicroservice.APIDataLibrary.Infrastructure;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddDependencies(builder.Configuration);
 
 var app = builder.Build();
 
@@ -15,5 +16,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.ConfigureOrderEndpoints();
+app.ConfigureDeliveryAddressEndpoints();
 
 app.Run();
