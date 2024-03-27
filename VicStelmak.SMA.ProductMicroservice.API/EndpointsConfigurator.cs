@@ -8,11 +8,11 @@ namespace VicStelmak.SMA.ProductMicroservice.Api
         public static void ConfigureApi(this WebApplication app)
         {
             // API endpoint mapping
-            app.MapGet("API/Products", GetProductsList);
-            app.MapGet("API/Products/{id}", GetProduct);
-            app.MapPost("API/Products", CreateProduct);
-            app.MapPut("API/Products", UpdateProduct);
-            app.MapDelete("API/Products", DeleteProduct);
+            app.MapGet("api/products", GetProductsList);
+            app.MapGet("api/products/{id}", GetProduct);
+            app.MapPost("api/products", CreateProduct);
+            app.MapPut("api/products", UpdateProduct);
+            app.MapDelete("api/products", DeleteProduct);
         }
 
         private static async Task<IResult> GetProductsList(IProductService productService)
