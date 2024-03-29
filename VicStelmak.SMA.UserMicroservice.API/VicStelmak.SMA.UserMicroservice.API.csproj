@@ -13,6 +13,7 @@
   <ItemGroup>
     <ProjectReference Include="..\VicStelmak.SMA.Events\VicStelmak.SMA.Events.csproj" />
     <ProjectReference Include="..\VicStelmak.SMA.MessageBrokerSettings\VicStelmak.SMA.MessageBrokerSettings.csproj" />
+    <ProjectReference Include="..\VicStelmak.SMA.UserMicroservice.APIDataLibrary\VicStelmak.SMA.UserMicroservice.APIDataLibrary.csproj" />
   </ItemGroup>
 
 </Project>
