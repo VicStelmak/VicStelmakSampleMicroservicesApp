@@ -13,7 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Product", "Product", "{1FFC
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Order", "Order", "{42E08F65-5452-4840-9978-B7BAE760D700}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VicStelmak.SMA.ProductMicroservice.API", "VicStelmak.SMA.ProductMicroservice.Api\VicStelmak.SMA.ProductMicroservice.API.csproj", "{CDC1D4A3-8E65-4476-89AA-69859A5FD584}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VicStelmak.SMA.ProductMicroservice.Api", "VicStelmak.SMA.ProductMicroservice.Api\VicStelmak.SMA.ProductMicroservice.Api.csproj", "{CDC1D4A3-8E65-4476-89AA-69859A5FD584}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VicStelmak.SMA.ProductMicroservice.Infrastructure", "VicStelmak.SMA.ProductMicroservice.Infrastructure\VicStelmak.SMA.ProductMicroservice.Infrastructure.csproj", "{E4EBD1E5-B12A-4AB5-88C3-20094AA03BC9}"
 EndProject
@@ -33,13 +33,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VicStelmak.SMA.Orchestrator
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "User", "User", "{BECC03BD-360F-4521-9693-FD36C6C8F45F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VicStelmak.SMA.OrderMicroservice.API", "VicStelmak.SMA.OrderMicroservice.API\VicStelmak.SMA.OrderMicroservice.API.csproj", "{96807FA2-9A5D-4363-A594-EE26AC9F3AA1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VicStelmak.SMA.OrderMicroservice.Api", "VicStelmak.SMA.OrderMicroservice.API\VicStelmak.SMA.OrderMicroservice.Api.csproj", "{96807FA2-9A5D-4363-A594-EE26AC9F3AA1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VicStelmak.SMA.OrderMicroservice.APIDataLibrary", "VicStelmak.SMA.OrderMicroservice.APIDataLibrary\VicStelmak.SMA.OrderMicroservice.APIDataLibrary.csproj", "{A1E834CA-4BE7-462B-8F9A-6996F44C96C4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VicStelmak.SMA.OrderMicroservice.ApiDataLibrary", "VicStelmak.SMA.OrderMicroservice.APIDataLibrary\VicStelmak.SMA.OrderMicroservice.ApiDataLibrary.csproj", "{A1E834CA-4BE7-462B-8F9A-6996F44C96C4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VicStelmak.SMA.UserMicroservice.API", "VicStelmak.SMA.UserMicroservice.API\VicStelmak.SMA.UserMicroservice.API.csproj", "{F634BC49-2EC3-4191-8CD6-4007575653D2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VicStelmak.SMA.UserMicroservice.Api", "VicStelmak.SMA.UserMicroservice.API\VicStelmak.SMA.UserMicroservice.Api.csproj", "{F634BC49-2EC3-4191-8CD6-4007575653D2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VicStelmak.SMA.UserMicroservice.APIDataLibrary", "VicStelmak.SMA.UserMicroservice.APIDataLibrary\VicStelmak.SMA.UserMicroservice.APIDataLibrary.csproj", "{D9CF7653-C6FA-4568-A932-1CE79EC8A9CF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VicStelmak.SMA.UserMicroservice.ApiDataLibrary", "VicStelmak.SMA.UserMicroservice.APIDataLibrary\VicStelmak.SMA.UserMicroservice.ApiDataLibrary.csproj", "{D9CF7653-C6FA-4568-A932-1CE79EC8A9CF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

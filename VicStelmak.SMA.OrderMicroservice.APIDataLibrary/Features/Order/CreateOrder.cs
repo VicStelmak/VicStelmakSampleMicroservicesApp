@@ -35,6 +35,5 @@ namespace VicStelmak.SMA.OrderMicroservice.APIDataLibrary.Features.Order
         int QuantityOfProducts,
         string Status,
         string Street,
-        decimal Total
-        );
+        decimal Total);
 }

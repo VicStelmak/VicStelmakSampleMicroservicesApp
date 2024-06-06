@@ -1,0 +1,90 @@
+﻿@page "/signup"
+
+@using VicStelmak.SMA.WebUI.Identity.Requests
+@inject NavigationManager _navigationManager
+
+<h3>Signup</h3>
+
+@if (SignupErrorIsShown == true)
+{
+    <div class="alert alert-danger" role="alert">
+        @foreach (var error in Errors)
+        {
+            <p>@error</p>
+        }
+    </div>
+}
+
+<EditForm Model="ViewModel" OnValidSubmit="OnValidSubmitAsync" class="card card-body bg-light mt-5">
+    <DataAnnotationsValidator />
+    <div class="form-group row">
+        <label for="email" class="col-md-2 col-form-label">Email:</label>
+        <div class="col-md-10">
+            <InputText id="email" class="form-control" @bind-Value="ViewModel.Email" />
+            <ValidationMessage For="@(() => ViewModel.Email)" />
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label for="first-name" class="col-md-2 col-form-label">First Name:</label>
+        <div class="col-md-10">
+            <InputText id="first-name" class="form-control" @bind-Value="ViewModel.FirstName" />
+            <ValidationMessage For="@(() => ViewModel.FirstName)" />
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label for="last-name" class="col-md-2 col-form-label">Last Name:</label>
+        <div class="col-md-10">
+            <InputText id="last-name" class="form-control" @bind-Value="ViewModel.LastName" />
+            <ValidationMessage For="@(() => ViewModel.LastName)" />
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label for="password" class="col-md-2 col-form-label">Password:</label>
+        <div class="col-md-10">
+            <InputText type="password" id="password" class="form-control" @bind-Value="ViewModel.Password" />
+            <ValidationMessage For="@(() => ViewModel.Password)" />
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label for="password-confirmation" class="col-md-2 col-form-label">Confirm Password:</label>
+        <div class="col-md-10">
+            <InputText type="password" id="password-confirmation" class="form-control" @bind-Value="ViewModel.PasswordConfirmation" />
+            <ValidationMessage For="@(() => ViewModel.PasswordConfirmation)" />
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-12 text-right">
+            <button type="submit" class="btn btn-success">Submit</button>
+        </div>
+    </div>
+</EditForm>
+
+@code {
+    private IEnumerable<string> Errors { get; set; }
+    private bool SignupErrorIsShown { get; set; }
+    public SignupViewModel ViewModel { get; set; } = new();
+
+    public async Task OnValidSubmitAsync()
+    {
+        SignupErrorIsShown = false;
+
+        CreateUserRequest request = new(ViewModel.Email, ViewModel.FirstName, ViewModel.LastName, ViewModel.Password, ViewModel.PasswordConfirmation);
+
+        var signUpResult = await _identityService.CreateUserAsync(request);
+
+        if (signUpResult.ActionIsSuccessful == false)
+        {
+            Errors = signUpResult.Errors;
+            SignupErrorIsShown = true;
+        }
+        else
+        {
+            _navigationManager.NavigateTo("/");
+        }
+    }
+}

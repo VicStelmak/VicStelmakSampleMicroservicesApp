@@ -1,0 +1,81 @@
+﻿@page "/users-management"
+
+@using System.Security.Claims
+@using VicStelmak.SMA.WebUI.Components
+
+<h3>Users Management</h3>
+
+<div class="row">
+    <div class="col-lg-3 text-right">
+        <UserAdding @ref="UserAddingModalWindow" UserAdded="OnUserCrudActionCompletedAsync"></UserAdding>
+        <button type="button" class="btn btn-success btn-sm" @onclick="@(() => UserAddingModalWindow.ShowModalAsync())">Add New User</button>
+    </div>
+</div>
+<br />
+
+@if (ViewModel.Users != null && ViewModel.Users.Count > 0)
+{
+    ViewModel.SequenceNumber = 0;
+
+    <table class="table table-bordered table-striped table-sm">
+        <thead>
+            <tr>
+                <th>Seq. No.</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email Address</th>
+                <th>Role</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in ViewModel.Users)
+            {
+                IncrementSequenceNumber();
+
+                <UserDetailsInTable AuthenticatedUserId=@AuthenticatedUserId UserDeleted="OnUserCrudActionCompletedAsync" UserUpdated="OnUserCrudActionCompletedAsync"
+                    SequenceNumber=@ViewModel.SequenceNumber User="user">
+                </UserDetailsInTable>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    [CascadingParameter]
+    private Task<AuthenticationState>? AuthenticationState { get; set; }
+
+    private string? AuthenticatedUserId { get; set; }
+    private UserAdding? UserAddingModalWindow { get; set; }
+
+    private UsersManagementViewModel ViewModel { get; set; } = new();
+
+    private async Task OnUserCrudActionCompletedAsync()
+    {
+        ViewModel.Users = await _identityService.GetAllUsersAsync();
+        ViewModel.Users = ViewModel.Users.OrderBy(user => user.Email).ToList();
+    }
+
+    private void IncrementSequenceNumber()
+    {
+        ViewModel.SequenceNumber++;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        ViewModel.Users = await _identityService.GetAllUsersAsync();
+        ViewModel.Users = ViewModel.Users.OrderBy(user => user.Email).ToList();
+
+        var userAuthenticationState = await AuthenticationState;
+        bool userIsAuthenticated = userAuthenticationState.User.Identity.IsAuthenticated;
+
+        if (userIsAuthenticated == true)
+        {
+            AuthenticatedUserId = userAuthenticationState.User.FindFirst("sub")?.Value;
+        }
+        else
+        {
+            AuthenticatedUserId = null;
+        }
+    }
+}

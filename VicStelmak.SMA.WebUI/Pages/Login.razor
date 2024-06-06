@@ -1,0 +1,64 @@
+﻿@page "/login"
+
+@using VicStelmak.SMA.WebUI.Identity.Requests
+@inject NavigationManager _navigationManager
+
+<h3>Login</h3>
+
+@if (AuthenticationErrorIsVisible == true)
+{
+    <div class="alert alert-danger" role="alert">
+        <p>@Error</p>
+    </div>
+}
+
+<EditForm Model="ViewModel" OnValidSubmit="OnValidSubmitAsync" class="card card-body bg-light mt-5">
+    <DataAnnotationsValidator />
+    <div class="form-group row">
+        <label for="email" class="col-md-2 col-form-label">Email:</label>
+        <div class="col-md-10">
+            <InputText id="email" class="form-control" @bind-Value=ViewModel.Email/>
+            <ValidationMessage For="@(() => ViewModel.Email)" />
+        </div>
+    </div>
+    
+    <div class="form-group row">
+        <label for="password" class="col-md-2 col-form-label">Password:</label>
+        <div class="col-md-10">
+            <InputText type="password" id="password" class="form-control" @bind-Value=ViewModel.Password />
+            <ValidationMessage For="@(() => ViewModel.Password)" />
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-12 text-right">
+            <button type="submit" class="btn btn-success">Login</button>
+        </div>
+    </div>
+</EditForm>
+
+@code {
+    private bool AuthenticationErrorIsVisible { get; set; }
+    private string Error { get; set; }
+    private LoginViewModel ViewModel { get; set; } = new();
+
+    public async Task OnValidSubmitAsync()
+    {
+        AuthenticationErrorIsVisible = false;
+
+        LogInRequest request = new(ViewModel.Email, ViewModel.Password); 
+
+        var authenticationResult = await _identityService.LogInAsync(request);
+
+        if (authenticationResult.IsAuthenticationSuccessful == false)
+        {
+            Error = authenticationResult.ErrorMessage;
+            AuthenticationErrorIsVisible = true;
+        }
+        else
+        {
+            _navigationManager.NavigateTo("/");
+        }
+    }
+}
+

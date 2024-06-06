@@ -1,0 +1,20 @@
+﻿<AuthorizeView>
+    <Authorized>
+        Hello, @context.User.Identity.Name!
+        <NavLink class="nav-link" href="Logout">
+            <span class="oi oi-account-logout"></span>
+            Logout
+        </NavLink>
+    </Authorized>
+    <NotAuthorized>
+        <a href="Signup">Signup</a>
+        <NavLink class="nav-link" href="Login">
+            <span class="oi oi-account-login"></span>
+            Login
+        </NavLink>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+
+}

@@ -1,0 +1,67 @@
+﻿@using VicStelmak.SMA.WebUI.Identity.Requests
+@using VicStelmak.SMA.WebUI.Identity.Responses
+
+<tr>
+    <td>@SequenceNumber</td>
+    <td>@User.FirstName</td>
+    <td>@User.LastName</td>
+    <td>@User.Email</td>
+    <td>
+        @foreach (string role in UserRoles)
+        {
+            @role
+        }
+    </td>
+    <td class="text-right">
+        <UserEditing @ref="UserEditingModalWindow" UpdateButtonClicked="OnUpdateButtonClickedAsync" UserId="@User.Id"></UserEditing>
+        <button class="btn btn-secondary btn-sm" @onclick="@(() => UserEditingModalWindow.ShowModalAsync())">Update</button>
+        <UserDeletionConfirmation @ref="UserDeletionConfirmationModalWindow" DeleteButtonClicked="OnDeleteButtonClickedAsync" Email="@User.Email"></UserDeletionConfirmation>
+        <button class="btn btn-danger btn-sm" @onclick="@(() => UserDeletionConfirmationModalWindow.ShowModal())">Delete</button>
+    </td>
+</tr>
+
+@code {
+    [Parameter]
+    public string? AuthenticatedUserId { get; set; }
+    [Parameter]
+    public EventCallback UserDeleted { get; set; }
+    [Parameter]
+    public EventCallback UserUpdated { get; set; }
+    [Parameter]
+    public int SequenceNumber { get; set; }
+    [Parameter]
+    public GetUserResponse User { get; set; }
+
+    private List<string> UserRoles { get; set; } = new();
+    private UserDeletionConfirmation? UserDeletionConfirmationModalWindow { get; set; }
+    private UserEditing? UserEditingModalWindow { get; set; }
+
+    private async Task OnDeleteButtonClickedAsync(bool deleteIsConfirmed)
+    {
+        if (deleteIsConfirmed == true)
+        {
+            await _identityService.DeleteUserAsync(User.Id);
+
+            if (AuthenticatedUserId == User.Id)
+            {
+                await _identityService.LogoutAsync();
+            }
+
+            await UserDeleted.InvokeAsync();
+        }
+    }
+
+    private async Task OnUpdateButtonClickedAsync(UpdateUserRequest request)
+    {
+        if (request != null)
+        {
+            await _identityService.UpdateUserAsync(User.Id, request);
+            await UserUpdated.InvokeAsync();
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        UserRoles = await _identityService.GetUserRolesAsync(User.Id);
+    }
+}

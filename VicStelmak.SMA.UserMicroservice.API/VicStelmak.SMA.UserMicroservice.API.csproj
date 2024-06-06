@@ -4,16 +4,22 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>82771879-18fe-4d62-ab5f-f99dc5a3c97e</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.29">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.16" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\VicStelmak.SMA.Events\VicStelmak.SMA.Events.csproj" />
     <ProjectReference Include="..\VicStelmak.SMA.MessageBrokerSettings\VicStelmak.SMA.MessageBrokerSettings.csproj" />
-    <ProjectReference Include="..\VicStelmak.SMA.UserMicroservice.APIDataLibrary\VicStelmak.SMA.UserMicroservice.APIDataLibrary.csproj" />
+    <ProjectReference Include="..\VicStelmak.SMA.UserMicroservice.APIDataLibrary\VicStelmak.SMA.UserMicroservice.ApiDataLibrary.csproj" />
   </ItemGroup>
 
 </Project>
