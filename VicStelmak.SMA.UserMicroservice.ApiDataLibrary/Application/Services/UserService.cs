@@ -13,20 +13,64 @@ namespace VicStelmak.SMA.UserMicroservice.ApiDataLibrary.Application.Services
 {
     public class UserService : IUserService
     {
-        private readonly UserManager<UserModel> _userManager;
         private readonly IConfiguration _configuration;
         private readonly IConfigurationSection _jwtSettings;
+        private readonly RoleManager<IdentityRole> _roleManager;  
+        private readonly UserManager<UserModel> _userManager;
 
-        public UserService(UserManager<UserModel> userManager, IConfiguration configuration)
+        public UserService(IConfiguration configuration, RoleManager<IdentityRole> roleManager, UserManager<UserModel> userManager)
         {
-            _userManager = userManager;
             _configuration = configuration;
+            _roleManager = roleManager;
+            _userManager = userManager;
             _jwtSettings = _configuration.GetSection("JwtSettings");
         }
-
-        public async Task DeleteUserAsync(string id)
+         
+        public async Task<AddRoleToUserResponse> AddRoleToUserAsync(string roleName, string userId)
         {
-            var userToDelete = await _userManager.FindByIdAsync(id);
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null) return new AddRoleToUserResponse("User not found.", false, false);
+            
+            if (await _roleManager.RoleExistsAsync(roleName) == true) 
+            {
+                if (await _userManager.IsInRoleAsync(user, roleName) != true)
+                {
+                    await _userManager.AddToRoleAsync(user, roleName);
+
+                    return new AddRoleToUserResponse($"Added {roleName} role to user {user.UserName}.",
+                        true, false);
+                }
+                else 
+                {
+                    return new AddRoleToUserResponse($"User {user.UserName} already have {roleName} role.",
+                        false, true);
+                }
+            } 
+            else
+            {
+                return new AddRoleToUserResponse($"Role {roleName} does not exist.", 
+                    false, false); 
+            }
+        }
+
+        public async Task<DeleteRolesFromUserResponse> DeleteRolesFromUserAsync(string userId, IEnumerable<string> roles)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null) 
+            {
+                return new DeleteRolesFromUserResponse("User not found.", false); 
+            }
+
+            await _userManager.RemoveFromRolesAsync(user, roles);
+
+            return new DeleteRolesFromUserResponse($"Roles were removed successfully from user {user.Email}.", true);
+        }
+
+        public async Task DeleteUserAsync(string userId)
+        {
+            var userToDelete = await _userManager.FindByIdAsync(userId);
 
             if (userToDelete != null)
             {
@@ -52,30 +96,32 @@ namespace VicStelmak.SMA.UserMicroservice.ApiDataLibrary.Application.Services
             return new CreateUserResponse(true, null);
         }
 
-        public List<GetUserResponse> GetAllUsers()
+        public async Task<List<GetUserResponse>> GetAllUsersAsync()
         {
             var users = _userManager.Users.ToList();
 
-            return users.Select(user => user.MapToGetUserResponse()).ToList();
+            List<GetUserResponse> responses = new();
+
+            foreach (var user in users)
+            {
+                var userRoles = (List<string>)await _userManager.GetRolesAsync(user);
+
+                var userData = new GetUserResponse(user.Id, user.Email, user.FirstName, user.LastName, userRoles);
+
+                responses.Add(userData);
+            }
+
+            return responses;
         }
 
         public async Task<GetUserResponse> GetUserByIdAsync(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
+            var userRoles = (List<string>)await _userManager.GetRolesAsync(user);
 
             if (user == null) return null;
 
-            return user.MapToGetUserResponse();
-        }
-
-        public async Task<List<string>> GetUserRolesAsync(string id)
-        {
-            var user = await _userManager.FindByIdAsync(id);
-            var roles = await _userManager.GetRolesAsync(user);
-
-            if (roles == null) return null;
-
-            return roles.ToList();
+            return new GetUserResponse(user.Id, user.Email, user.FirstName, user.LastName, userRoles);
         }
 
         public async Task<LogInResponse> LogInAsync(LogInRequest request)
@@ -99,9 +145,9 @@ namespace VicStelmak.SMA.UserMicroservice.ApiDataLibrary.Application.Services
             return new LogInResponse(null, true, jwt);
         }
 
-        public async Task UpdateUserAsync(string id, UpdateUserRequest request)
+        public async Task UpdateUserAsync(string userId, UpdateUserRequest request)
         {
-            var user = await _userManager.FindByIdAsync(id);
+            var user = await _userManager.FindByIdAsync(userId);
 
             if (user != null)
             {

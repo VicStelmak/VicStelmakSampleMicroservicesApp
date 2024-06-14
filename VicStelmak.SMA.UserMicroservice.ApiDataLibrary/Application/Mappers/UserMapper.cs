@@ -6,11 +6,6 @@ namespace VicStelmak.SMA.UserMicroservice.ApiDataLibrary.Application.Mappers
 {
     internal static class UserMapper
     {
-        internal static GetUserResponse MapToGetUserResponse(this UserModel user)
-        {
-            return new GetUserResponse(user.Id, user.Email, user.FirstName, user.LastName);
-        }
-
         internal static UserModel MapToUserModel(this CreateUserRequest request)
         {
             return new UserModel

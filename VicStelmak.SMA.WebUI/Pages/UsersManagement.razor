@@ -1,14 +1,18 @@
-﻿@page "/users-management"
+﻿@attribute [Authorize(Roles = nameof(Role.Administrator))]
+
+@page "/users-management"
 
 @using System.Security.Claims
+@using Microsoft.AspNetCore.Authorization
 @using VicStelmak.SMA.WebUI.Components
+@using VicStelmak.SMA.WebUI.Identity.Enums
 
 <h3>Users Management</h3>
 
 <div class="row">
     <div class="col-lg-3 text-right">
         <UserAdding @ref="UserAddingModalWindow" UserAdded="OnUserCrudActionCompletedAsync"></UserAdding>
-        <button type="button" class="btn btn-success btn-sm" @onclick="@(() => UserAddingModalWindow.ShowModalAsync())">Add New User</button>
+        <button type="button" class="btn btn-success btn-sm" @onclick="@(() => UserAddingModalWindow.ShowModal())">Add New User</button>
     </div>
 </div>
 <br />

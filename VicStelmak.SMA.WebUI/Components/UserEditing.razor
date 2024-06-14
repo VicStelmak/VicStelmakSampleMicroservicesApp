@@ -32,6 +32,14 @@
                                 <InputText class="form-control" @bind-Value="ViewModel.Email" />
                                 <ValidationMessage For="@(() => ViewModel.Email)" />
                             </div>
+                            <label>Roles</label>
+                            @foreach (var roleName in ViewModel.Roles)
+                            {
+                                <div class="form-group">
+                                    <input type="checkbox" checked="@CheckIfUserHaveRole(roleName)" @onchange="arguments => ToggleRoleSelection(arguments, roleName)" />
+                                    @roleName <br />
+                                </div>
+                            }
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="() => CloseModal()">Cancel</button>
                                 <button type="submit" class="btn btn-primary">Update</button>
@@ -46,20 +54,27 @@
 
 @code {
     [Parameter]
-    public EventCallback<UpdateUserRequest> UpdateButtonClicked { get; set; }
+    public EventCallback<(UpdateUserRequest, List<string>, List<string>)> UpdateButtonClicked { get; set; }
     [Parameter]
     public string UserId { get; set; }
 
     private bool ModalWindowIsShown { get; set; }
-
-    private GetUserResponse UserData { get; set; }
     private UserEditingViewModel ViewModel { get; set; }
 
-    private async Task OnUpdateButtonClickedAsync(UpdateUserRequest request)
+    private async Task OnUpdateButtonClickedAsync(UpdateUserRequest request, List<string> rolesToDelete, List<string> selectedRoles)
     {
         ModalWindowIsShown = false;
 
-        await UpdateButtonClicked.InvokeAsync(request);
+        await UpdateButtonClicked.InvokeAsync((request, rolesToDelete, selectedRoles));
+    }
+
+    private bool CheckIfUserHaveRole(string roleName)
+    {
+        if (ViewModel.UserRoles.Contains(roleName))
+        {
+            return true;
+        }
+        else return false;
     }
 
     internal void CloseModal()
@@ -71,16 +86,32 @@
     {
         var request = new UpdateUserRequest(ViewModel.Email, ViewModel.FirstName, ViewModel.LastName);
 
-        await OnUpdateButtonClickedAsync(request);
+        await OnUpdateButtonClickedAsync(request, ViewModel.RolesToDelete, ViewModel.RolesSelected);
     }
 
     internal async void ShowModalAsync()
     {
-        UserData = await _identityService.GetUserByIdAsync(UserId);
-        ViewModel = new(UserData);
+        var user = await _identityService.GetUserByIdAsync(UserId);
+        ViewModel = new(user);
 
         ModalWindowIsShown = true;
 
         StateHasChanged();
+    }
+
+    public async Task ToggleRoleSelection(ChangeEventArgs arguments, string roleName)
+    {
+        bool isSelected = (bool)arguments.Value;
+
+        if (isSelected == true)
+        {
+            ViewModel.RolesSelected.Add(roleName);
+            ViewModel.RolesToDelete.Remove(roleName);
+        }
+        else
+        {
+            ViewModel.RolesSelected.Remove(roleName);
+            ViewModel.RolesToDelete.Add(roleName);
+        }
     }
 }

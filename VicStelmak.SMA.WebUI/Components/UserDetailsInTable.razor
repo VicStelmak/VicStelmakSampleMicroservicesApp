@@ -1,4 +1,5 @@
-﻿@using VicStelmak.SMA.WebUI.Identity.Requests
+﻿@using VicStelmak.SMA.WebUI.Identity.Enums
+@using VicStelmak.SMA.WebUI.Identity.Requests
 @using VicStelmak.SMA.WebUI.Identity.Responses
 
 <tr>
@@ -7,13 +8,15 @@
     <td>@User.LastName</td>
     <td>@User.Email</td>
     <td>
-        @foreach (string role in UserRoles)
+        @foreach (string role in User.Roles.OrderBy(role => role).ToList())
         {
-            @role
+            <text>@role</text>
+            <br />
         }
     </td>
     <td class="text-right">
-        <UserEditing @ref="UserEditingModalWindow" UpdateButtonClicked="OnUpdateButtonClickedAsync" UserId="@User.Id"></UserEditing>
+        <UserEditing @ref="UserEditingModalWindow" UpdateButtonClicked="@((arguments) => OnUpdateButtonClickedAsync(arguments.Item1,arguments.Item2,arguments.Item3))" 
+            UserId="@User.Id"></UserEditing>
         <button class="btn btn-secondary btn-sm" @onclick="@(() => UserEditingModalWindow.ShowModalAsync())">Update</button>
         <UserDeletionConfirmation @ref="UserDeletionConfirmationModalWindow" DeleteButtonClicked="OnDeleteButtonClickedAsync" Email="@User.Email"></UserDeletionConfirmation>
         <button class="btn btn-danger btn-sm" @onclick="@(() => UserDeletionConfirmationModalWindow.ShowModal())">Delete</button>
@@ -32,7 +35,6 @@
     [Parameter]
     public GetUserResponse User { get; set; }
 
-    private List<string> UserRoles { get; set; } = new();
     private UserDeletionConfirmation? UserDeletionConfirmationModalWindow { get; set; }
     private UserEditing? UserEditingModalWindow { get; set; }
 
@@ -51,17 +53,27 @@
         }
     }
 
-    private async Task OnUpdateButtonClickedAsync(UpdateUserRequest request)
+    private async Task OnUpdateButtonClickedAsync(UpdateUserRequest request, List<string> rolesToDelete, List<string> selectedRoles)
     {
-        if (request != null)
+        if (!request.Email.Equals(User.Email) | !request.FirstName.Equals(User.FirstName) | !request.LastName.Equals(User.LastName))
         {
             await _identityService.UpdateUserAsync(User.Id, request);
-            await UserUpdated.InvokeAsync();
         }
-    }
+        if (rolesToDelete.Count() > 0)
+        {
+            await _identityService.DeleteRolesFromUserAsync(User.Id, rolesToDelete);
+        }
+        if (selectedRoles.Count() > 0)
+        {
+            foreach (string roleName in selectedRoles)
+            {
+                if (User.Roles.Contains(roleName) != true)
+                {
+                    await _identityService.AddRoleToUserAsync(roleName, User.Id);
+                }
+            }
+        }
 
-    protected override async Task OnInitializedAsync()
-    {
-        UserRoles = await _identityService.GetUserRolesAsync(User.Id);
+        await UserUpdated.InvokeAsync();
     }
 }

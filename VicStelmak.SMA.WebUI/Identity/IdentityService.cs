@@ -4,7 +4,6 @@ using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using VicStelmak.SMA.WebUI.Identity.Requests;
 using VicStelmak.SMA.WebUI.Identity.Responses;
 
@@ -22,7 +21,20 @@ namespace VicStelmak.SMA.WebUI.Identity
             _authenticationStateProvider = authenticationStateProvider;
             _httpClient = httpClient;
             _localStorage = localStorage;
-            _options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true, ReferenceHandler = ReferenceHandler.IgnoreCycles, WriteIndented = true };
+            _options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+        }
+
+        public async Task AddRoleToUserAsync(string roleName, string UserId)
+        {
+            var jsonContent = new StringContent(JsonSerializer.Serialize(roleName), Encoding.UTF8, "application/json");
+
+            var apiResponse = await _httpClient.PostAsync($"api/users/roles/{UserId}", jsonContent);
+            var apiResponseAsString = await apiResponse.Content.ReadAsStringAsync();
+
+            if (apiResponse.IsSuccessStatusCode == false)
+            {
+                throw new ArgumentException(apiResponseAsString);
+            }
         }
 
         public async Task<CreateUserResponse> CreateUserAsync(CreateUserRequest request)
@@ -40,11 +52,27 @@ namespace VicStelmak.SMA.WebUI.Identity
             return new CreateUserResponse(true, null);
         }
 
-        public async Task DeleteUserAsync(string id)
+        public async Task DeleteRolesFromUserAsync(string UserId, IEnumerable<string> roles)
         {
-            var jsonContent = new StringContent(JsonSerializer.Serialize(id), Encoding.UTF8, "application/json");
-            
-            var apiResponse = await _httpClient.DeleteAsync($"api/users/{id}");
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Delete,
+                RequestUri = new Uri($"https://localhost:7093/api/users/roles/{UserId}"),
+                Content = new StringContent(JsonSerializer.Serialize(roles), Encoding.UTF8, "application/json")
+            };
+
+            var apiResponse = await _httpClient.SendAsync(request);
+            var apiResponseAsString = await apiResponse.Content.ReadAsStringAsync();
+
+            if (apiResponse.IsSuccessStatusCode == false)
+            {
+                throw new ArgumentException(apiResponseAsString);
+            }
+        }
+
+        public async Task DeleteUserAsync(string UserId)
+        {
+            var apiResponse = await _httpClient.DeleteAsync($"api/users/{UserId}");
             var apiResponseAsString = await apiResponse.Content.ReadAsStringAsync();
 
             if (apiResponse.IsSuccessStatusCode == false)
@@ -58,14 +86,9 @@ namespace VicStelmak.SMA.WebUI.Identity
             return await _httpClient.GetFromJsonAsync<List<GetUserResponse>>("api/users");
         }
 
-        public async Task<GetUserResponse> GetUserByIdAsync(string id)
+        public async Task<GetUserResponse> GetUserByIdAsync(string UserId)
         {
-            return await _httpClient.GetFromJsonAsync<GetUserResponse>($"api/users/{id}");
-        }
-
-        public async Task<List<string>> GetUserRolesAsync(string id)
-        {
-            return await _httpClient.GetFromJsonAsync<List<string>>($"api/users/roles?id={id}");
+            return await _httpClient.GetFromJsonAsync<GetUserResponse>($"api/users/{UserId}");
         }
 
         public async Task<LogInResponse> LogInAsync(LogInRequest request)
