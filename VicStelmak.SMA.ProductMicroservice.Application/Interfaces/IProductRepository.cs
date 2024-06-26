@@ -4,10 +4,10 @@ namespace VicStelmak.SMA.ProductMicroservice.Application.Interfaces
 {
     public interface IProductRepository
     {
-        Task CreateProduct(ProductModel product);
         Task DeleteProduct(int productId);
+        Task CreateProduct(ProductModel product);
         Task<ProductModel> GetProductByIdAsync(int id);
-        Task<List<ProductModel>> GetProductsList();
+        Task<List<ProductModel>> GetProductsListAsync();
         Task UpdateProduct(ProductModel product);
     }
 }

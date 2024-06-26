@@ -1,0 +1,87 @@
+﻿@page "/catalogue"
+
+@using VicStelmak.SMA.WebUI.Components
+@using VicStelmak.SMA.WebUI.Identity.Enums
+
+<h3>Catalogue</h3>
+
+<AuthorizeView Roles="@($"{Role.Administrator}, {Role.User}")">
+    <div class="row">
+        <div class="col-lg-3 text-right">
+            <ProductAdding @ref="ProductAddingModalWindow" AuthenticatedUserName=@AuthenticatedUserName ProductAdded="OnProductCrudActionCompletedAsync"></ProductAdding>
+            <button type="button" class="btn btn-success btn-sm" @onclick="@(() => ProductAddingModalWindow.ShowModal())">Add New Product</button>
+        </div>
+    </div>
+</AuthorizeView>
+<br />
+
+@if (ViewModel.Products != null && ViewModel.Products.Count > 0)
+{
+    ViewModel.SequenceNumber = 1;
+
+    <table class="table table-bordered table-striped table-sm">
+        <thead>
+            <tr>
+                <th>Seq. No.</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Amount in Stock</th>
+                <AuthorizeView Roles="@($"{Role.Administrator}, {Role.User}")">
+                    <th>Amount Sold</th>
+                    <th>Added</th>
+                    <th>Updated</th>
+                </AuthorizeView>
+                <th>Image</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in ViewModel.Products)
+            {
+                int sequenceNumber = ViewModel.SequenceNumber++;
+
+                <CascadingValue Value="@AuthenticatedUserName">
+                    <ProductDetailsInTable Product="product" ProductDeleted="OnProductCrudActionCompletedAsync" ProductUpdated="OnProductCrudActionCompletedAsync"
+                        SequenceNumber="@sequenceNumber"></ProductDetailsInTable>
+                </CascadingValue>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    [CascadingParameter]
+    private Task<AuthenticationState>? AuthenticationState { get; set; }
+
+    private string? AuthenticatedUserName { get; set; }
+    private ProductAdding? ProductAddingModalWindow { get; set; }
+
+    private CatalogueViewModel ViewModel { get; set; } = new();
+
+    private async Task OnProductCrudActionCompletedAsync()
+    {
+        await Task.Delay(1000);
+
+        ViewModel.Products = await _productService.GetProductsListAsync();
+        ViewModel.Products = ViewModel.Products.OrderBy(product => product.Name).ToList();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        ViewModel.Products = await _productService.GetProductsListAsync();
+        ViewModel.Products = ViewModel.Products.OrderBy(product => product.Name).ToList();
+
+        var userAuthenticationState = await AuthenticationState;
+        bool userIsAuthenticated = userAuthenticationState.User.Identity.IsAuthenticated;
+
+        if (userIsAuthenticated == true)
+        {
+            AuthenticatedUserName = userAuthenticationState.User.Identity.Name;
+        }
+        else
+        {
+            AuthenticatedUserName = null;
+        }
+    }
+}

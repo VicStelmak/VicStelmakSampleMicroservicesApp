@@ -46,6 +46,7 @@ namespace VicStelmak.SMA.UserMicroservice.ApiDataLibrary.Infrastructure
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["secretKey"]))
                 };
             });
+
             services.AddScoped<IUserService, UserService>();
 
             return services;

@@ -114,9 +114,9 @@ namespace VicStelmak.SMA.UserMicroservice.ApiDataLibrary.Application.Services
             return responses;
         }
 
-        public async Task<GetUserResponse> GetUserByIdAsync(string id)
+        public async Task<GetUserResponse> GetUserByIdAsync(string userId)
         {
-            var user = await _userManager.FindByIdAsync(id);
+            var user = await _userManager.FindByIdAsync(userId);
             var userRoles = (List<string>)await _userManager.GetRolesAsync(user);
 
             if (user == null) return null;

@@ -1,25 +1,37 @@
-﻿using VicStelmak.SMA.ProductMicroservice.Application.DTOs;
+﻿using Microsoft.AspNetCore.Authorization;
+using VicStelmak.SMA.ProductMicroservice.Application.Dtos;
 using VicStelmak.SMA.ProductMicroservice.Application.Interfaces;
+using VicStelmak.SMA.ProductMicroservice.Domain.Enums;
 
 namespace VicStelmak.SMA.ProductMicroservice.Api
 {
     public static class EndpointsConfigurator
-    {
+{
         public static void ConfigureApi(this WebApplication app)
         {
             // API endpoint mapping
-            app.MapGet("api/products", GetProductsList);
-            app.MapGet("api/products/{id}", GetProduct);
-            app.MapPost("api/products", CreateProduct);
-            app.MapPut("api/products", UpdateProduct);
-            app.MapDelete("api/products", DeleteProduct);
+            app.MapDelete("api/products/{productId}", DeleteProduct).RequireAuthorization(new AuthorizeAttribute() 
+            { 
+                Roles = nameof(Role.Administrator) + "," + nameof(Role.User) 
+            });
+            app.MapPost("api/products", CreateProduct).RequireAuthorization(new AuthorizeAttribute()
+            {
+                Roles = nameof(Role.Administrator) + "," + nameof(Role.User)
+            });
+            app.MapGet("api/products", GetProductsListAsync);
+            app.MapGet("api/products/{productId}", GetProductByIdAsync);
+            app.MapPut("api/products/{productId}", UpdateProduct).RequireAuthorization(new AuthorizeAttribute()
+            {
+                Roles = nameof(Role.Administrator) + "," + nameof(Role.User)
+            });
         }
 
-        private static async Task<IResult> GetProductsList(IProductService productService)
+        private static IResult DeleteProduct(int productId, IProductService productService)
         {
             try
             {
-                return Results.Ok(await productService.GetProductsList());
+                productService.DeleteProduct(productId);
+                return Results.Ok();
             }
             catch (Exception ex)
             {
@@ -27,7 +39,32 @@ namespace VicStelmak.SMA.ProductMicroservice.Api
             }
         }
 
-        private static async Task<IResult> GetProduct(int productId, IProductService productService)
+        private static IResult CreateProduct(CreateProductDto productDto, IProductService productService)
+        {
+            try
+            {
+                productService.CreateProduct(productDto);
+                return Results.Ok();
+            }
+            catch (Exception ex)
+            {
+                return Results.Problem(ex.Message);
+            }
+        }
+
+        private static async Task<IResult> GetProductsListAsync(IProductService productService)
+        {
+            try
+            {
+                return Results.Ok(await productService.GetProductsListAsync());
+            }
+            catch (Exception ex)
+            {
+                return Results.Problem(ex.Message);
+            }
+        }
+
+        private static async Task<IResult> GetProductByIdAsync(int productId, IProductService productService)
         {
             try
             {
@@ -41,37 +78,11 @@ namespace VicStelmak.SMA.ProductMicroservice.Api
             }
         }
 
-        private static async Task<IResult> CreateProduct(ProductCreatingDTO productDTO, IProductService productService)
+        private static IResult UpdateProduct(int productId, UpdateProductDto product, IProductService productService)
         {
             try
             {
-                await productService.CreateProduct(productDTO);
-                return Results.Ok();
-            }
-            catch (Exception ex)
-            {
-                return Results.Problem(ex.Message);
-            }
-        }
-
-        private static async Task<IResult> UpdateProduct(int productId, ProductUpdatingDTO product, IProductService productService)
-        {
-            try
-            {
-                await productService.UpdateProduct(productId, product);
-                return Results.Ok();
-            }
-            catch (Exception ex)
-            {
-                return Results.Problem(ex.Message);
-            }
-        }
-
-        private static async Task<IResult> DeleteProduct(int productId, IProductService productService)
-        {
-            try
-            {
-                await productService.DeleteProduct(productId);
+                productService.UpdateProduct(productId, product);
                 return Results.Ok();
             }
             catch (Exception ex)

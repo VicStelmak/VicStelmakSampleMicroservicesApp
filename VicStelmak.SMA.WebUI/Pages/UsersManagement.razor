@@ -54,15 +54,15 @@
 
     private UsersManagementViewModel ViewModel { get; set; } = new();
 
+    private void IncrementSequenceNumber()
+    {
+        ViewModel.SequenceNumber++;
+    }
+
     private async Task OnUserCrudActionCompletedAsync()
     {
         ViewModel.Users = await _identityService.GetAllUsersAsync();
         ViewModel.Users = ViewModel.Users.OrderBy(user => user.Email).ToList();
-    }
-
-    private void IncrementSequenceNumber()
-    {
-        ViewModel.SequenceNumber++;
     }
 
     protected override async Task OnInitializedAsync()

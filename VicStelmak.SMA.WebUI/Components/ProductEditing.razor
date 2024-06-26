@@ -1,0 +1,102 @@
+﻿@using VicStelmak.SMA.WebUI.Product.Dtos
+
+@if (ModalWindowIsShown == true)
+{
+    <div class="modal fade show d-block" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Update Product</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="() => CloseModal()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="align-content:center">
+                    @if (ViewModel != null)
+                    {
+                        <EditForm Model="@ViewModel" OnValidSubmit="@OnValidSubmitAsync">
+                            <DataAnnotationsValidator />
+                            <div class="form-group">
+                                <label class="form-control-label">Name</label>
+                                <InputText class="form-control" @bind-Value="ViewModel.Name" />
+                                <ValidationMessage For="@(() => ViewModel.Name)" />
+                            </div>
+                            <br />
+                            <div class="form-group">
+                                <label class="form-control-label">Description</label>
+                                <InputText class="form-control" @bind-Value="ViewModel.Description" />
+                                <ValidationMessage For="@(() => ViewModel.Description)" />
+                            </div>
+                            <br />
+                            <div class="form-group">
+                                <label class="form-control-label">Price</label>
+                                <InputNumber class="form-control" @bind-Value="ViewModel.Price" />
+                                <ValidationMessage For="@(() => ViewModel.Price)" />
+                            </div>
+                            <br />
+                            <div class="form-group">
+                                <label class="form-control-label">Amount in Stock</label>
+                                <InputNumber class="form-control" @bind-Value="ViewModel.AmountInStock" />
+                                <ValidationMessage For="@(() => ViewModel.AmountInStock)" />
+                            </div>
+                            <br />
+                            <div class="form-group">
+                                <label class="form-control-label">Image</label>
+                                <InputText class="form-control" @bind-Value="ViewModel.ImageUri" />
+                                <ValidationMessage For="@(() => ViewModel.ImageUri)" />
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-md-12 text-right">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="() => CloseModal()">Cancel</button>
+                                    <button type="submit" class="btn btn-primary">Update</button>
+                                </div>
+                            </div>
+                        </EditForm>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [CascadingParameter]
+    public string? AuthenticatedUserName { get; set; }
+    [Parameter]
+    public EventCallback<UpdateProductDto> UpdateButtonClicked { get; set; }
+    [Parameter]
+    public int ProductId { get; set; }
+
+    private bool ModalWindowIsShown { get; set; }
+    private ProductEditingViewModel ViewModel { get; set; }
+
+    private async Task OnUpdateButtonClickedAsync(UpdateProductDto productDto)
+    {
+        ModalWindowIsShown = false;
+
+        await UpdateButtonClicked.InvokeAsync((productDto));
+    }
+
+    private async Task OnValidSubmitAsync()
+    {
+        var product = new UpdateProductDto(ViewModel.AmountInStock, AuthenticatedUserName, ViewModel.Description, ViewModel.ImageUri, ViewModel.Name, ViewModel.Price);
+
+        await OnUpdateButtonClickedAsync(product);
+    }
+
+    internal void CloseModal()
+    {
+        ModalWindowIsShown = false;
+    }
+
+    internal async void ShowModalAsync()
+    {
+        var product = await _productService.GetProductByIdAsync(ProductId);
+        ViewModel = new(product);
+
+        ModalWindowIsShown = true;
+
+        StateHasChanged();
+    }
+}

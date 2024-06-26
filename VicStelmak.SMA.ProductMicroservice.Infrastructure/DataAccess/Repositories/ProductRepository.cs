@@ -12,6 +12,8 @@ namespace VicStelmak.SMA.ProductMicroservice.Infrastructure.DataAccess.Repositor
             _dbAccess = dbAccess;
         }
 
+        public Task DeleteProduct(int productId) => _dbAccess.SaveDataAsync("spproducts_deleteproduct", new { arg_id = productId });
+
         public Task CreateProduct(ProductModel product) => _dbAccess.SaveDataAsync("spproducts_addproduct", new
         {
             arg_amount_in_stock = product.AmountInStock,
@@ -23,8 +25,6 @@ namespace VicStelmak.SMA.ProductMicroservice.Infrastructure.DataAccess.Repositor
             arg_price = product.Price
         });
 
-        public Task DeleteProduct(int productId) => _dbAccess.SaveDataAsync("spproducts_deleteproduct", new { arg_id = productId });
-
         public async Task<ProductModel> GetProductByIdAsync(int productId)
         {
             var getProductResult = await _dbAccess.LoadDataAsync<ProductModel, dynamic>("SELECT * FROM funcproducts_getproductbyid(:arg_id)",
@@ -33,7 +33,7 @@ namespace VicStelmak.SMA.ProductMicroservice.Infrastructure.DataAccess.Repositor
             return getProductResult.FirstOrDefault();
         }
         
-        public async Task<List<ProductModel>> GetProductsList() => 
+        public async Task<List<ProductModel>> GetProductsListAsync() => 
             await _dbAccess.LoadDataAsync<ProductModel, dynamic> ("SELECT * FROM funcproducts_getproducts()", new { });
 
         public Task UpdateProduct(ProductModel product) => _dbAccess.SaveDataAsync("spproducts_updateproduct", new

@@ -1,0 +1,108 @@
+﻿@inject NavigationManager _navigationManager
+@using VicStelmak.SMA.WebUI.Product.Dtos
+
+@if (ModalWindowIsShown == true)
+{
+    <div class="modal fade show d-block" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">New Product Adding</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="() => CloseModal()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    @if (ViewModel != null)
+                    {
+                        <EditForm Model="ViewModel" OnValidSubmit="OnValidSubmitAsync" class="card card-body bg-light mt-5">
+                            <DataAnnotationsValidator />
+                            <div class="form-group row">
+                                <label for="name" class="col-md-2 col-form-label">Name:</label>
+                                <div class="col-md-10">
+                                    <InputText id="name" class="form-control" @bind-Value="ViewModel.Name" />
+                                    <ValidationMessage For="@(() => ViewModel.Name)" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="description" class="col-md-2 col-form-label">Description:</label>
+                                <div class="col-md-10">
+                                    <InputText id="description" class="form-control" @bind-Value="ViewModel.Description" />
+                                    <ValidationMessage For="@(() => ViewModel.Description)" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="price" class="col-md-2 col-form-label">Price:</label>
+                                <div class="col-md-10">
+                                    <InputNumber id="price" class="form-control" @bind-Value="ViewModel.Price" />
+                                    <ValidationMessage For="@(() => ViewModel.Price)" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="amountInStock" class="col-md-2 col-form-label">Amount in Stock:</label>
+                                <div class="col-md-10">
+                                    <InputNumber id="amountInStock" class="form-control" @bind-Value="ViewModel.AmountInStock" />
+                                    <ValidationMessage For="@(() => ViewModel.AmountInStock)" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="imageUri" class="col-md-2 col-form-label">Image:</label>
+                                <div class="col-md-10">
+                                    <InputText id="imageUri" class="form-control" @bind-Value="ViewModel.ImageUri" />
+                                    <ValidationMessage For="@(() => ViewModel.ImageUri)" />
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-md-12 text-right">
+                                    <button type="submit" class="btn btn-success">Submit</button>
+                                </div>
+                            </div>
+                        </EditForm>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public EventCallback ProductAdded { get; set; }
+    [Parameter]
+    public string? AuthenticatedUserName { get; set; }
+
+    private bool ModalWindowIsShown { get; set; }
+
+    private ProductAddingViewModel ViewModel { get; set; }
+
+    internal void CloseModal()
+    {
+        ModalWindowIsShown = false;
+    }
+
+    private async Task OnProductAddedAsync()
+    {
+        ModalWindowIsShown = false;
+
+        await ProductAdded.InvokeAsync();
+    }
+
+    public async Task OnValidSubmitAsync()
+    {
+        CreateProductDto productDto = new(ViewModel.AmountInStock, 0, AuthenticatedUserName, ViewModel.Description, ViewModel.ImageUri, ViewModel.Name, ViewModel.Price);
+
+        var productCreatingResult = _productService.CreateProductAsync(productDto);
+
+        await OnProductAddedAsync();
+    }
+
+    internal async void ShowModal()
+    {
+        ViewModel = new();
+
+        ModalWindowIsShown = true;
+
+        StateHasChanged();
+    }
+}

@@ -24,11 +24,11 @@ namespace VicStelmak.SMA.WebUI.Identity
             _options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
         }
 
-        public async Task AddRoleToUserAsync(string roleName, string UserId)
+        public async Task AddRoleToUserAsync(string roleName, string userId)
         {
             var jsonContent = new StringContent(JsonSerializer.Serialize(roleName), Encoding.UTF8, "application/json");
 
-            var apiResponse = await _httpClient.PostAsync($"api/users/roles/{UserId}", jsonContent);
+            var apiResponse = await _httpClient.PostAsync($"api/users/roles/{userId}", jsonContent);
             var apiResponseAsString = await apiResponse.Content.ReadAsStringAsync();
 
             if (apiResponse.IsSuccessStatusCode == false)
@@ -52,12 +52,12 @@ namespace VicStelmak.SMA.WebUI.Identity
             return new CreateUserResponse(true, null);
         }
 
-        public async Task DeleteRolesFromUserAsync(string UserId, IEnumerable<string> roles)
+        public async Task DeleteRolesFromUserAsync(string userId, IEnumerable<string> roles)
         {
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Delete,
-                RequestUri = new Uri($"https://localhost:7093/api/users/roles/{UserId}"),
+                RequestUri = new Uri($"https://localhost:7093/api/users/roles/{userId}"),
                 Content = new StringContent(JsonSerializer.Serialize(roles), Encoding.UTF8, "application/json")
             };
 
@@ -70,9 +70,9 @@ namespace VicStelmak.SMA.WebUI.Identity
             }
         }
 
-        public async Task DeleteUserAsync(string UserId)
+        public async Task DeleteUserAsync(string userId)
         {
-            var apiResponse = await _httpClient.DeleteAsync($"api/users/{UserId}");
+            var apiResponse = await _httpClient.DeleteAsync($"api/users/{userId}");
             var apiResponseAsString = await apiResponse.Content.ReadAsStringAsync();
 
             if (apiResponse.IsSuccessStatusCode == false)
@@ -86,9 +86,9 @@ namespace VicStelmak.SMA.WebUI.Identity
             return await _httpClient.GetFromJsonAsync<List<GetUserResponse>>("api/users");
         }
 
-        public async Task<GetUserResponse> GetUserByIdAsync(string UserId)
+        public async Task<GetUserResponse> GetUserByIdAsync(string userId)
         {
-            return await _httpClient.GetFromJsonAsync<GetUserResponse>($"api/users/{UserId}");
+            return await _httpClient.GetFromJsonAsync<GetUserResponse>($"api/users/{userId}");
         }
 
         public async Task<LogInResponse> LogInAsync(LogInRequest request)
@@ -118,11 +118,11 @@ namespace VicStelmak.SMA.WebUI.Identity
             _httpClient.DefaultRequestHeaders.Authorization = null;
         }
 
-        public async Task UpdateUserAsync(string id, UpdateUserRequest request)
+        public async Task UpdateUserAsync(string userId, UpdateUserRequest request)
         {
             var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
 
-            var apiResponse = await _httpClient.PutAsync($"api/users/{id}", jsonContent);
+            var apiResponse = await _httpClient.PutAsync($"api/users/{userId}", jsonContent);
             var apiResponseAsString = await apiResponse.Content.ReadAsStringAsync();
 
             if (apiResponse.IsSuccessStatusCode == false)

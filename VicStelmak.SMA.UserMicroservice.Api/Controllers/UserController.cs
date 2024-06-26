@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using VicStelmak.SMA.ProductMicroservice.Domain.Enums;
 using VicStelmak.SMA.UserMicroservice.ApiDataLibrary.Application.Interfaces;
 using VicStelmak.SMA.UserMicroservice.ApiDataLibrary.Application.Requests;
 
 namespace VicStelmak.SMA.UserMicroservice.Api.Controllers
 {
+    [Authorize(Roles = nameof(Role.Administrator))]
     [ApiController]
-    [Authorize]
     [Route("api/users")]
     public class UserController : ControllerBase
     {
@@ -35,12 +36,12 @@ namespace VicStelmak.SMA.UserMicroservice.Api.Controllers
             }
         }
 
-        [HttpDelete("roles/{UserId}")]
-        public async Task<IActionResult> DeleteRolesFromUserAsync(string UserId, [FromBody] IEnumerable<string> roles)
+        [HttpDelete("roles/{userId}")]
+        public async Task<IActionResult> DeleteRolesFromUserAsync(string userId, [FromBody] IEnumerable<string> roles)
         {
             try
             {
-                var rolesDeletingResult = await _userService.DeleteRolesFromUserAsync(UserId, roles);
+                var rolesDeletingResult = await _userService.DeleteRolesFromUserAsync(userId, roles);
 
                 if (rolesDeletingResult.RolesDeletedSuccessfully != true)
                 {
@@ -56,15 +57,15 @@ namespace VicStelmak.SMA.UserMicroservice.Api.Controllers
         }
 
         [HttpDelete("{UserId}")]
-        public async Task<IActionResult> DeleteUserAsync(string UserId)
+        public async Task<IActionResult> DeleteUserAsync(string userId)
         {
             try
             {
-                var userToDelete = await _userService.GetUserByIdAsync(UserId);
+                var userToDelete = await _userService.GetUserByIdAsync(userId);
 
-                if (userToDelete == null) return NotFound($"User with the Id {UserId} not found.");
+                if (userToDelete == null) return NotFound($"User with the Id {userId} not found.");
                 
-                await _userService.DeleteUserAsync(UserId);
+                await _userService.DeleteUserAsync(userId);
 
                 return Ok();
             }
@@ -100,13 +101,13 @@ namespace VicStelmak.SMA.UserMicroservice.Api.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Retrieving of data from the database failed.");
             }
         }
-
+        
         [HttpGet("{UserId}")]
-        public async Task<IActionResult> GetUserByIdAsync(string UserId)
+        public async Task<IActionResult> GetUserByIdAsync(string userId)
         {
             try
             {
-                var user = await _userService.GetUserByIdAsync(UserId);
+                var user = await _userService.GetUserByIdAsync(userId);
 
                 if (user == null) return NotFound();
 
@@ -133,15 +134,15 @@ namespace VicStelmak.SMA.UserMicroservice.Api.Controllers
         }
 
         [HttpPut("{UserId}")]
-        public async Task<IActionResult> UpdateUserAsync(string UserId, [FromBody] UpdateUserRequest request)
+        public async Task<IActionResult> UpdateUserAsync(string userId, [FromBody] UpdateUserRequest request)
         {
             try
             {
-                var userToUpdate = await _userService.GetUserByIdAsync(UserId);
+                var userToUpdate = await _userService.GetUserByIdAsync(userId);
 
-                if (userToUpdate == null) return NotFound($"User with the Id {UserId} not found.");
+                if (userToUpdate == null) return NotFound($"User with the Id {userId} not found.");
 
-                await _userService.UpdateUserAsync(UserId, request);
+                await _userService.UpdateUserAsync(userId, request);
 
                 return StatusCode(204);
             }

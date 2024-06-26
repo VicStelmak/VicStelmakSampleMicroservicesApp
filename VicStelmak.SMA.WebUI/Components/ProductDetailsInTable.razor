@@ -1,0 +1,65 @@
+﻿@using VicStelmak.SMA.WebUI.Identity.Enums
+@using VicStelmak.SMA.WebUI.Product.Dtos
+
+<tr>
+    <td>@SequenceNumber</td>
+    <td>@Product.Name</td>
+    <td>@Product.Description</td>
+    <td>@Product.Price</td>
+    <td>@Product.AmountInStock</td>
+    <AuthorizeView Roles="@($"{Role.Administrator}, {Role.User}")">
+        <td>@Product.AmountSold</td>
+        <td>@Product.CreatedAt <br />by @Product.CreatedBy</td>
+
+        @if (Product.UpdatedAt != default(DateTime))
+        {
+            <td>@Product.UpdatedAt <br />by @Product.UpdatedBy</td>
+        }
+        else
+        {
+            <td></td>
+        }
+    </AuthorizeView>
+    <td>
+        <img src="@Product.ImageUri" alt="Product Image" style="width:100px;height:100px" />
+    </td>
+    <AuthorizeView Roles="@($"{Role.Administrator}, {Role.User}")">
+        <td class="text-right">
+            <ProductEditing @ref="ProductEditingModalWindow" ProductId="Product.Id" UpdateButtonClicked="OnUpdateButtonClickedAsync"></ProductEditing>
+            <button class="btn btn-secondary btn-sm" @onclick="@(() => ProductEditingModalWindow.ShowModalAsync())">Update</button>
+            <ProductDeletionConfirmation @ref="ProductDeletionConfirmationModalWindow" DeleteButtonClicked="OnDeleteButtonClickedAsync" Name="@Product.Name"></ProductDeletionConfirmation>
+            <button class="btn btn-danger btn-sm" @onclick="@(() => ProductDeletionConfirmationModalWindow.ShowModal())">Delete</button>
+        </td>
+    </AuthorizeView>
+</tr>
+
+@code {
+    [Parameter]
+    public EventCallback ProductDeleted { get; set; }
+    [Parameter]
+    public EventCallback ProductUpdated { get; set; }
+    [Parameter]
+    public int SequenceNumber { get; set; }
+    [Parameter]
+    public ProductDto Product { get; set; }
+
+    private ProductDeletionConfirmation? ProductDeletionConfirmationModalWindow { get; set; }
+    private ProductEditing? ProductEditingModalWindow { get; set; }
+
+    private async Task OnDeleteButtonClickedAsync()
+    {
+        await _productService.DeleteProductAsync(Product.Id);
+        await ProductDeleted.InvokeAsync();
+    }
+
+    private async Task OnUpdateButtonClickedAsync(UpdateProductDto productDto)
+    {
+        if (productDto.AmountInStock != Product.AmountInStock | !productDto.Description.Equals(Product.Description) | !productDto.ImageUri.Equals(Product.ImageUri) 
+        | !productDto.Name.Equals(Product.Name) | productDto.Price != Product.Price)
+        {
+            await _productService.UpdateProductAsync(Product.Id, productDto);
+        }
+
+        await ProductUpdated.InvokeAsync();
+    }
+}

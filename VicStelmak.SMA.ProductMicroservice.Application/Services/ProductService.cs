@@ -1,6 +1,6 @@
 ﻿using Mapster;
 using MapsterMapper;
-using VicStelmak.SMA.ProductMicroservice.Application.DTOs;
+using VicStelmak.SMA.ProductMicroservice.Application.Dtos;
 using VicStelmak.SMA.ProductMicroservice.Application.Interfaces;
 using VicStelmak.SMA.ProductMicroservice.Domain.Models;
 
@@ -17,34 +17,34 @@ namespace VicStelmak.SMA.ProductMicroservice.Application.Services
             _productRepository = productRepository;
         }
 
-        public Task CreateProduct(ProductCreatingDTO productDTO)
-        {
-            var product = _mapper.Map<ProductModel>(productDTO);
-            return _productRepository.CreateProduct(product);
-        }
-
         public Task DeleteProduct(int productId)
         {
             return _productRepository.DeleteProduct(productId);
         }
 
-        public async Task<ProductReadingDTO> GetProductByIdAsync(int productId)
+        public Task CreateProduct(CreateProductDto productDto)
+        {
+            var product = _mapper.Map<ProductModel>(productDto);
+            return _productRepository.CreateProduct(product);
+        }
+
+        public async Task<ProductDto> GetProductByIdAsync(int productId)
         {
             var product = await _productRepository.GetProductByIdAsync(productId);
 
-            return await _mapper.From(product).AdaptToTypeAsync<ProductReadingDTO>();
+            return await _mapper.From(product).AdaptToTypeAsync<ProductDto>();
         }
 
-        public async Task<List<ProductReadingDTO>> GetProductsList()
+        public async Task<List<ProductDto>> GetProductsListAsync()
         {
-            List<ProductModel> products = await _productRepository.GetProductsList();
+            List<ProductModel> products = await _productRepository.GetProductsListAsync();
 
-            return await _mapper.From(products).AdaptToTypeAsync<List<ProductReadingDTO>>();
+            return await _mapper.From(products).AdaptToTypeAsync<List<ProductDto>>();
         }
 
-        public Task UpdateProduct(int productId, ProductUpdatingDTO productDTO)
+        public Task UpdateProduct(int productId, UpdateProductDto productDto)
         {
-            var product = _mapper.Map<ProductModel>(productDTO);
+            var product = _mapper.Map<ProductModel>(productDto);
             product.Id = productId;
             return _productRepository.UpdateProduct(product);
         }

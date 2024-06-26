@@ -1,4 +1,6 @@
-﻿@using System.Net.Http
+﻿@inject IIdentityService _identityService
+@inject IProductService _productService
+@using System.Net.Http
 @using System.Net.Http.Json
 @using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.AspNetCore.Components.Forms
@@ -9,8 +11,9 @@
 @using Microsoft.JSInterop
 @using VicStelmak.SMA.WebUI
 @using VicStelmak.SMA.WebUI.Identity
+@using VicStelmak.SMA.WebUI.Product
 @using VicStelmak.SMA.WebUI.Shared
 @using VicStelmak.SMA.WebUI.ViewModels
-@inject IIdentityService _identityService
+
 
 

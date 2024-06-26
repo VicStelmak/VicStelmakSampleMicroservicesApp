@@ -19,6 +19,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
 app.UseCors("OpenCorsPolicy");
 app.UseAuthentication();
 app.UseAuthorization();

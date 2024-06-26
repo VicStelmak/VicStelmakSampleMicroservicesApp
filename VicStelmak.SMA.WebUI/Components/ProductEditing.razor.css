@@ -1,0 +1,10 @@
+﻿.form-control-label {
+    font-weight: bold;
+}
+
+div[class=form-group] {
+    text-align: left;
+    vertical-align: middle;
+}
+
+

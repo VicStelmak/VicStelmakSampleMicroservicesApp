@@ -1,13 +1,13 @@
-﻿using VicStelmak.SMA.ProductMicroservice.Application.DTOs;
+﻿using VicStelmak.SMA.ProductMicroservice.Application.Dtos;
 
 namespace VicStelmak.SMA.ProductMicroservice.Application.Interfaces
 {
     public interface IProductService
     {
-        Task CreateProduct(ProductCreatingDTO productDTO);
         Task DeleteProduct(int productId);
-        Task<ProductReadingDTO> GetProductByIdAsync(int productId);
-        Task<List<ProductReadingDTO>> GetProductsList();
-        Task UpdateProduct(int productId, ProductUpdatingDTO product);
+        Task CreateProduct(CreateProductDto productDTO);
+        Task<ProductDto> GetProductByIdAsync(int productId);
+        Task<List<ProductDto>> GetProductsListAsync();
+        Task UpdateProduct(int productId, UpdateProductDto product);
     }
 }
