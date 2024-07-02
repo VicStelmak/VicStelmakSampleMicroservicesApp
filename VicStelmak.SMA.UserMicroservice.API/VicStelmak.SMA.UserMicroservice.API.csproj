@@ -17,10 +17,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\VicStelmak.SMA.Events\VicStelmak.SMA.Events.csproj" />
-    <ProjectReference Include="..\VicStelmak.SMA.MessageBrokerSettings\VicStelmak.SMA.MessageBrokerSettings.csproj" />
-    <ProjectReference Include="..\VicStelmak.SMA.ProductMicroservice.Domain\VicStelmak.SMA.ProductMicroservice.Domain.csproj" />
-    <ProjectReference Include="..\VicStelmak.SMA.UserMicroservice.APIDataLibrary\VicStelmak.SMA.UserMicroservice.ApiDataLibrary.csproj" />
+    <ProjectReference Include="..\VicStelmak.SMA.Events\VicStelmak.Sma.Events.csproj" />
+    <ProjectReference Include="..\VicStelmak.SMA.MessageBrokerSettings\VicStelmak.Sma.MessageBrokerSettings.csproj" />
+    <ProjectReference Include="..\VicStelmak.SMA.ProductMicroservice.Domain\VicStelmak.Sma.ProductMicroservice.Domain.csproj" />
+    <ProjectReference Include="..\VicStelmak.SMA.UserMicroservice.ApiDataLibrary\VicStelmak.Sma.UserMicroservice.ApiDataLibrary.csproj" />
   </ItemGroup>
 
 </Project>

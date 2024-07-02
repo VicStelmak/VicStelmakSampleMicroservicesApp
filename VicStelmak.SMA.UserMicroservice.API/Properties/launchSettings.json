@@ -9,7 +9,7 @@
     }
   },
   "profiles": {
-    "VicStelmak.SMA.UserMicroservice.API": {
+    "VicStelmak.Sma.UserMicroservice.API": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,

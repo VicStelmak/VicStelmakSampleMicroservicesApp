@@ -1,8 +1,8 @@
-﻿using VicStelmak.SMA.UserMicroservice.ApiDataLibrary.Application.Requests;
-using VicStelmak.SMA.UserMicroservice.ApiDataLibrary.Application.Responses;
-using VicStelmak.SMA.UserMicroservice.ApiDataLibrary.Domain.Models;
+﻿using VicStelmak.Sma.UserMicroservice.ApiDataLibrary.Application.Requests;
+using VicStelmak.Sma.UserMicroservice.ApiDataLibrary.Application.Responses;
+using VicStelmak.Sma.UserMicroservice.ApiDataLibrary.Domain.Models;
 
-namespace VicStelmak.SMA.UserMicroservice.ApiDataLibrary.Application.Mappers
+namespace VicStelmak.Sma.UserMicroservice.ApiDataLibrary.Application.Mappers
 {
     internal static class UserMapper
     {

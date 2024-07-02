@@ -1,7 +1,7 @@
 ﻿using MediatR;
-using VicStelmak.SMA.OrderMicroservice.APIDataLibrary.Features.DeliveryAddress;
+using VicStelmak.Sma.OrderMicroservice.APIDataLibrary.Features.DeliveryAddress;
 
-namespace VicStelmak.SMA.OrderMicroservice.APIDataLibrary.Features.Order
+namespace VicStelmak.Sma.OrderMicroservice.APIDataLibrary.Features.Order
 {
     public record CreateOrderCommand(CreateOrderRequest request) : IRequest;
 

@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
-using VicStelmak.SMA.WebUI.Identity.Responses;
-using VicStelmak.SMA.WebUI.Identity.Enums;
+using VicStelmak.Sma.WebUi.Identity.Responses;
+using VicStelmak.Sma.WebUi.Identity.Enums;
 
-namespace VicStelmak.SMA.WebUI.ViewModels
+namespace VicStelmak.Sma.WebUi.ViewModels
 {
     public class UserEditingViewModel
     {

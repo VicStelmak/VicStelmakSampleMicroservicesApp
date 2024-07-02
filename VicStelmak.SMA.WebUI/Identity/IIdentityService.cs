@@ -1,7 +1,7 @@
-﻿using VicStelmak.SMA.WebUI.Identity.Requests;
-using VicStelmak.SMA.WebUI.Identity.Responses;
+﻿using VicStelmak.Sma.WebUi.Identity.Requests;
+using VicStelmak.Sma.WebUi.Identity.Responses;
 
-namespace VicStelmak.SMA.WebUI.Identity
+namespace VicStelmak.Sma.WebUi.Identity
 {
     public interface IIdentityService
     {

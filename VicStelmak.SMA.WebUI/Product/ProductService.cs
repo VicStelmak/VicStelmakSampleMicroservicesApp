@@ -1,9 +1,9 @@
 ﻿using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
-using VicStelmak.SMA.WebUI.Product.Dtos;
+using VicStelmak.Sma.WebUi.Product.Dtos;
 
-namespace VicStelmak.SMA.WebUI.Product
+namespace VicStelmak.Sma.WebUi.Product
 {
     public class ProductService : IProductService
     {

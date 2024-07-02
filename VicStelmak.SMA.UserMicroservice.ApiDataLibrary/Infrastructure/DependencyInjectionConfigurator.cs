@@ -5,12 +5,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using VicStelmak.SMA.UserMicroservice.ApiDataLibrary.Application.Interfaces;
-using VicStelmak.SMA.UserMicroservice.ApiDataLibrary.Application.Services;
-using VicStelmak.SMA.UserMicroservice.ApiDataLibrary.Domain.Models;
-using VicStelmak.SMA.UserMicroservice.ApiDataLibrary.Infrastructure.DataAccess;
+using VicStelmak.Sma.UserMicroservice.ApiDataLibrary.Application.Interfaces;
+using VicStelmak.Sma.UserMicroservice.ApiDataLibrary.Application.Services;
+using VicStelmak.Sma.UserMicroservice.ApiDataLibrary.Domain.Models;
+using VicStelmak.Sma.UserMicroservice.ApiDataLibrary.Infrastructure.DataAccess;
 
-namespace VicStelmak.SMA.UserMicroservice.ApiDataLibrary.Infrastructure
+namespace VicStelmak.Sma.UserMicroservice.ApiDataLibrary.Infrastructure
 {
     public static class DependencyInjectionConfigurator
     {

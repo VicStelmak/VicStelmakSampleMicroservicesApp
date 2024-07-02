@@ -1,15 +1,15 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using System.IdentityModel.Tokens.Jwt;
-using VicStelmak.SMA.UserMicroservice.ApiDataLibrary.Application.Extensions;
-using VicStelmak.SMA.UserMicroservice.ApiDataLibrary.Application.Interfaces;
-using VicStelmak.SMA.UserMicroservice.ApiDataLibrary.Application.Mappers;
-using VicStelmak.SMA.UserMicroservice.ApiDataLibrary.Application.Requests;
-using VicStelmak.SMA.UserMicroservice.ApiDataLibrary.Application.Responses;
-using VicStelmak.SMA.UserMicroservice.ApiDataLibrary.Application.Utils;
-using VicStelmak.SMA.UserMicroservice.ApiDataLibrary.Domain.Models;
+using VicStelmak.Sma.UserMicroservice.ApiDataLibrary.Application.Extensions;
+using VicStelmak.Sma.UserMicroservice.ApiDataLibrary.Application.Interfaces;
+using VicStelmak.Sma.UserMicroservice.ApiDataLibrary.Application.Mappers;
+using VicStelmak.Sma.UserMicroservice.ApiDataLibrary.Application.Requests;
+using VicStelmak.Sma.UserMicroservice.ApiDataLibrary.Application.Responses;
+using VicStelmak.Sma.UserMicroservice.ApiDataLibrary.Application.Utils;
+using VicStelmak.Sma.UserMicroservice.ApiDataLibrary.Domain.Models;
 
-namespace VicStelmak.SMA.UserMicroservice.ApiDataLibrary.Application.Services
+namespace VicStelmak.Sma.UserMicroservice.ApiDataLibrary.Application.Services
 {
     public class UserService : IUserService
     {

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 
-namespace VicStelmak.SMA.WebUI.Identity
+namespace VicStelmak.Sma.WebUi.Identity
 {
     public class CustomAuthenticationStateProvider : AuthenticationStateProvider
     {

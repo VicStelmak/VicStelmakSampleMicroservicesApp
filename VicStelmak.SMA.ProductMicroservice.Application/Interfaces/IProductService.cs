@@ -1,6 +1,6 @@
-﻿using VicStelmak.SMA.ProductMicroservice.Application.Dtos;
+﻿using VicStelmak.Sma.ProductMicroservice.Application.Dtos;
 
-namespace VicStelmak.SMA.ProductMicroservice.Application.Interfaces
+namespace VicStelmak.Sma.ProductMicroservice.Application.Interfaces
 {
     public interface IProductService
     {

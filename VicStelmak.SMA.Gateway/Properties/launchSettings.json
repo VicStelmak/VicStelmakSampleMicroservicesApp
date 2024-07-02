@@ -8,7 +8,7 @@
     }
   },
   "profiles": {
-    "VicStelmak.SMA.Gateway": {
+    "VicStelmak.Sma.Gateway": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,

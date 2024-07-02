@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using VicStelmak.SMA.UserMicroservice.ApiDataLibrary.Domain.Models;
+using VicStelmak.Sma.UserMicroservice.ApiDataLibrary.Domain.Models;
 
-namespace VicStelmak.SMA.UserMicroservice.ApiDataLibrary.Application.Extensions
+namespace VicStelmak.Sma.UserMicroservice.ApiDataLibrary.Application.Extensions
 {
     internal static class ModelBuilderExtensions
     {

@@ -1,4 +1,4 @@
-﻿namespace VicStelmak.SMA.UserMicroservice.ApiDataLibrary.Application.Requests
+﻿namespace VicStelmak.Sma.UserMicroservice.ApiDataLibrary.Application.Requests
 {
     public record CreateUserRequest(
         string Email, 

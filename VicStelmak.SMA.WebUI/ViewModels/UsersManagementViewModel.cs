@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components.Authorization;
-using VicStelmak.SMA.WebUI.Identity.Responses;
+using VicStelmak.Sma.WebUi.Identity.Responses;
 
-namespace VicStelmak.SMA.WebUI.ViewModels
+namespace VicStelmak.Sma.WebUi.ViewModels
 {
     public class UsersManagementViewModel
     {

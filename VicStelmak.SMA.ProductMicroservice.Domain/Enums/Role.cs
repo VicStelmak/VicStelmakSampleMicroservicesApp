@@ -1,4 +1,4 @@
-﻿namespace VicStelmak.SMA.ProductMicroservice.Domain.Enums
+﻿namespace VicStelmak.Sma.ProductMicroservice.Domain.Enums
 {
     public enum Role
     {

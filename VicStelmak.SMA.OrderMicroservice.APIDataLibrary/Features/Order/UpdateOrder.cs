@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace VicStelmak.SMA.OrderMicroservice.APIDataLibrary.Features.Order
+namespace VicStelmak.Sma.OrderMicroservice.APIDataLibrary.Features.Order
 {
     public record UpdateOrderCommand(int orderId, UpdateOrderRequest request) : IRequest;
 

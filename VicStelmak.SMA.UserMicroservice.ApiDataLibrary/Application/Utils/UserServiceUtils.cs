@@ -4,7 +4,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace VicStelmak.SMA.UserMicroservice.ApiDataLibrary.Application.Utils
+namespace VicStelmak.Sma.UserMicroservice.ApiDataLibrary.Application.Utils
 {
     internal static class UserServiceUtils
     {

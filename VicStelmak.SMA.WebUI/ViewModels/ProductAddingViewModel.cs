@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace VicStelmak.SMA.WebUI.ViewModels
+namespace VicStelmak.Sma.WebUi.ViewModels
 {
     public class ProductAddingViewModel
     {

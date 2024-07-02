@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace VicStelmak.SMA.UserMicroservice.ApiDataLibrary.Infrastructure.DataAccess.Migrations
+namespace VicStelmak.Sma.UserMicroservice.ApiDataLibrary.Infrastructure.DataAccess.Migrations
 {
     public partial class IdentityRolesAddition : Migration
     {

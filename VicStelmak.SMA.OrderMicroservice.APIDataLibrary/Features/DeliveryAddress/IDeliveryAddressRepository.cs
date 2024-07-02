@@ -1,6 +1,6 @@
-﻿using VicStelmak.SMA.OrderMicroservice.APIDataLibrary.Domain.Models;
+﻿using VicStelmak.Sma.OrderMicroservice.APIDataLibrary.Domain.Models;
 
-namespace VicStelmak.SMA.OrderMicroservice.APIDataLibrary.Features.DeliveryAddress
+namespace VicStelmak.Sma.OrderMicroservice.APIDataLibrary.Features.DeliveryAddress
 {
     internal interface IDeliveryAddressRepository
     {

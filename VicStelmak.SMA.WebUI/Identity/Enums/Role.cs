@@ -1,4 +1,4 @@
-﻿namespace VicStelmak.SMA.WebUI.Identity.Enums
+﻿namespace VicStelmak.Sma.WebUi.Identity.Enums
 {
     public enum Role
     {

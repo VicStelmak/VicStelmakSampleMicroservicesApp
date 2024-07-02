@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using VicStelmak.SMA.ProductMicroservice.Application.Dtos;
-using VicStelmak.SMA.ProductMicroservice.Application.Interfaces;
-using VicStelmak.SMA.ProductMicroservice.Domain.Enums;
+using VicStelmak.Sma.ProductMicroservice.Application.Dtos;
+using VicStelmak.Sma.ProductMicroservice.Application.Interfaces;
+using VicStelmak.Sma.ProductMicroservice.Domain.Enums;
 
-namespace VicStelmak.SMA.ProductMicroservice.Api
+namespace VicStelmak.Sma.ProductMicroservice.Api
 {
     public static class EndpointsConfigurator
 {

@@ -1,6 +1,6 @@
-using VicStelmak.SMA.OrderMicroservice.APIDataLibrary.Features.DeliveryAddress;
-using VicStelmak.SMA.OrderMicroservice.APIDataLibrary.Features.Order;
-using VicStelmak.SMA.OrderMicroservice.APIDataLibrary.Infrastructure;
+using VicStelmak.Sma.OrderMicroservice.APIDataLibrary.Features.DeliveryAddress;
+using VicStelmak.Sma.OrderMicroservice.APIDataLibrary.Features.Order;
+using VicStelmak.Sma.OrderMicroservice.APIDataLibrary.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 

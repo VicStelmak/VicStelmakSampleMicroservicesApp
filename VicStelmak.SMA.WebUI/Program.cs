@@ -2,12 +2,11 @@ using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using VicStelmak.SMA.WebUI;
-using VicStelmak.SMA.WebUI.Identity;
-using VicStelmak.SMA.WebUI.Product;
+using VicStelmak.Sma.WebUi;
+using VicStelmak.Sma.WebUi.Identity;
+using VicStelmak.Sma.WebUi.Product;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
-
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 

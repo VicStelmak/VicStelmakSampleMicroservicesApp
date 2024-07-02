@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using VicStelmak.SMA.UserMicroservice.ApiDataLibrary.Infrastructure.DataAccess;
+using VicStelmak.Sma.UserMicroservice.ApiDataLibrary.Infrastructure.DataAccess;
 
 #nullable disable
 
-namespace VicStelmak.SMA.UserMicroservice.ApiDataLibrary.Infrastructure.DataAccess.Migrations
+namespace VicStelmak.Sma.UserMicroservice.ApiDataLibrary.Infrastructure.DataAccess.Migrations
 {
     [DbContext(typeof(CustomIdentityDbContext))]
     [Migration("20240501160842_InitialIdentityDbSchemaCreation")]
@@ -156,7 +156,7 @@ namespace VicStelmak.SMA.UserMicroservice.ApiDataLibrary.Infrastructure.DataAcce
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("VicStelmak.SMA.UserMicroservice.ApiDataLibrary.Domain.Models.UserModel", b =>
+            modelBuilder.Entity("VicStelmak.Sma.UserMicroservice.ApiDataLibrary.Domain.Models.UserModel", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -259,7 +259,7 @@ namespace VicStelmak.SMA.UserMicroservice.ApiDataLibrary.Infrastructure.DataAcce
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("VicStelmak.SMA.UserMicroservice.ApiDataLibrary.Domain.Models.UserModel", null)
+                    b.HasOne("VicStelmak.Sma.UserMicroservice.ApiDataLibrary.Domain.Models.UserModel", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -268,7 +268,7 @@ namespace VicStelmak.SMA.UserMicroservice.ApiDataLibrary.Infrastructure.DataAcce
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("VicStelmak.SMA.UserMicroservice.ApiDataLibrary.Domain.Models.UserModel", null)
+                    b.HasOne("VicStelmak.Sma.UserMicroservice.ApiDataLibrary.Domain.Models.UserModel", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -283,7 +283,7 @@ namespace VicStelmak.SMA.UserMicroservice.ApiDataLibrary.Infrastructure.DataAcce
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("VicStelmak.SMA.UserMicroservice.ApiDataLibrary.Domain.Models.UserModel", null)
+                    b.HasOne("VicStelmak.Sma.UserMicroservice.ApiDataLibrary.Domain.Models.UserModel", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -292,7 +292,7 @@ namespace VicStelmak.SMA.UserMicroservice.ApiDataLibrary.Infrastructure.DataAcce
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("VicStelmak.SMA.UserMicroservice.ApiDataLibrary.Domain.Models.UserModel", null)
+                    b.HasOne("VicStelmak.Sma.UserMicroservice.ApiDataLibrary.Domain.Models.UserModel", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)

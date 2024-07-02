@@ -13,9 +13,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\VicStelmak.SMA.Events\VicStelmak.SMA.Events.csproj" />
-    <ProjectReference Include="..\VicStelmak.SMA.MessageBrokerSettings\VicStelmak.SMA.MessageBrokerSettings.csproj" />
-    <ProjectReference Include="..\VicStelmak.SMA.OrderMicroservice.APIDataLibrary\VicStelmak.SMA.OrderMicroservice.ApiDataLibrary.csproj" />
+    <ProjectReference Include="..\VicStelmak.SMA.Events\VicStelmak.Sma.Events.csproj" />
+    <ProjectReference Include="..\VicStelmak.SMA.MessageBrokerSettings\VicStelmak.Sma.MessageBrokerSettings.csproj" />
+    <ProjectReference Include="..\VicStelmak.SMA.OrderMicroservice.ApiDataLibrary\VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.csproj" />
   </ItemGroup>
 
 </Project>

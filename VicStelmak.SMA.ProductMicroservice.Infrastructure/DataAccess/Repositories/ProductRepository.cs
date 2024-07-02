@@ -1,7 +1,7 @@
-﻿using VicStelmak.SMA.ProductMicroservice.Application.Interfaces;
-using VicStelmak.SMA.ProductMicroservice.Domain.Models;
+﻿using VicStelmak.Sma.ProductMicroservice.Application.Interfaces;
+using VicStelmak.Sma.ProductMicroservice.Domain.Models;
 
-namespace VicStelmak.SMA.ProductMicroservice.Infrastructure.DataAccess.Repositories
+namespace VicStelmak.Sma.ProductMicroservice.Infrastructure.DataAccess.Repositories
 {
     public class ProductRepository : IProductRepository
     {

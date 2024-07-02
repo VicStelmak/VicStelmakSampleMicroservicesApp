@@ -1,4 +1,4 @@
-using VicStelmak.SMA.UserMicroservice.ApiDataLibrary.Infrastructure;
+using VicStelmak.Sma.UserMicroservice.ApiDataLibrary.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 

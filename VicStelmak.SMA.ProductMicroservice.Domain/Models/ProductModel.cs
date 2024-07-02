@@ -1,4 +1,4 @@
-﻿namespace VicStelmak.SMA.ProductMicroservice.Domain.Models
+﻿namespace VicStelmak.Sma.ProductMicroservice.Domain.Models
 {
     public class ProductModel
     {

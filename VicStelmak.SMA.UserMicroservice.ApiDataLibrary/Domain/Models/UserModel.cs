@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace VicStelmak.SMA.UserMicroservice.ApiDataLibrary.Domain.Models
+namespace VicStelmak.Sma.UserMicroservice.ApiDataLibrary.Domain.Models
 {
     public class UserModel : IdentityUser
     {

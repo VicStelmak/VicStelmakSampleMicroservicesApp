@@ -1,4 +1,4 @@
-﻿namespace VicStelmak.SMA.ProductMicroservice.Application.Interfaces
+﻿namespace VicStelmak.Sma.ProductMicroservice.Application.Interfaces
 {
     public interface ISqlDbAccess
     {

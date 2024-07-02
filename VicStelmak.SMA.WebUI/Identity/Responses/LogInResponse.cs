@@ -1,4 +1,4 @@
-﻿namespace VicStelmak.SMA.WebUI.Identity.Responses
+﻿namespace VicStelmak.Sma.WebUi.Identity.Responses
 {
     public record LogInResponse(string ErrorMessage, string Jwt, bool IsAuthenticationSuccessful);
 }

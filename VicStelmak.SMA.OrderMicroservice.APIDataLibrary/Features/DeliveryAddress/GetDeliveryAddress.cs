@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace VicStelmak.SMA.OrderMicroservice.APIDataLibrary.Features.DeliveryAddress
+namespace VicStelmak.Sma.OrderMicroservice.APIDataLibrary.Features.DeliveryAddress
 {
     public record GetDeliveryAddressByOrderIdQuery(int orderId) : IRequest<GetDeliveryAddressResponse>;
 
@@ -20,7 +20,7 @@ namespace VicStelmak.SMA.OrderMicroservice.APIDataLibrary.Features.DeliveryAddre
             if (address != null) return address.MapToGetDeliveryAddressResponse();
 
             // Unfortunately I had to return null because I require it if I want DeliveryAddressEndpointsConfigurator to give a 404 response instead of exception
-            // thrown by DeliveryAddressMapper because of an attempt to pass null object to DeliveryAddressMapper. I know it's a bad design practice but that is
+            // thrown by DeliveryAddresSmapper because of an attempt to pass null object to DeliveryAddresSmapper. I know it's a bad design practice but that is
             // what Mapster also do in such cases.
             else return null;
         }

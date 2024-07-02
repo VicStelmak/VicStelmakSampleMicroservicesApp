@@ -1,6 +1,6 @@
-﻿using VicStelmak.SMA.WebUI.Product.Dtos;
+﻿using VicStelmak.Sma.WebUi.Product.Dtos;
 
-namespace VicStelmak.SMA.WebUI.ViewModels
+namespace VicStelmak.Sma.WebUi.ViewModels
 {
     public class CatalogueViewModel
     {

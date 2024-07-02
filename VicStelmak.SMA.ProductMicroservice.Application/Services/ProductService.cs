@@ -1,10 +1,10 @@
 ﻿using Mapster;
 using MapsterMapper;
-using VicStelmak.SMA.ProductMicroservice.Application.Dtos;
-using VicStelmak.SMA.ProductMicroservice.Application.Interfaces;
-using VicStelmak.SMA.ProductMicroservice.Domain.Models;
+using VicStelmak.Sma.ProductMicroservice.Application.Dtos;
+using VicStelmak.Sma.ProductMicroservice.Application.Interfaces;
+using VicStelmak.Sma.ProductMicroservice.Domain.Models;
 
-namespace VicStelmak.SMA.ProductMicroservice.Application.Services
+namespace VicStelmak.Sma.ProductMicroservice.Application.Services
 {
     public class ProductService : IProductService
     {

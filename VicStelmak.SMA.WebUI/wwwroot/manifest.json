@@ -1,6 +1,6 @@
 {
-  "name": "VicStelmak.SMA.WebUI",
-  "short_name": "VicStelmak.SMA.WebUI",
+  "name": "VicStelmak.Sma.WebUi",
+  "short_name": "VicStelmak.Sma.WebUi",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#ffffff",

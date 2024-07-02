@@ -1,4 +1,4 @@
-using VicStelmak.SMA.ProductMicroservice.Api;
+using VicStelmak.Sma.ProductMicroservice.Api;
 
 var builder = WebApplication.CreateBuilder(args);
 

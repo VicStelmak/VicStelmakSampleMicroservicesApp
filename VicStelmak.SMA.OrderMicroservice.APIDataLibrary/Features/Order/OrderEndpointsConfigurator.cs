@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
-namespace VicStelmak.SMA.OrderMicroservice.APIDataLibrary.Features.Order
+namespace VicStelmak.Sma.OrderMicroservice.APIDataLibrary.Features.Order
 {
     public static class OrderEndpointsConfigurator
     {

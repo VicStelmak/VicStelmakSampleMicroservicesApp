@@ -4,12 +4,12 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Reflection;
 using System.Text;
-using VicStelmak.SMA.ProductMicroservice.Application.Interfaces;
-using VicStelmak.SMA.ProductMicroservice.Application.Services;
-using VicStelmak.SMA.ProductMicroservice.Infrastructure.DataAccess;
-using VicStelmak.SMA.ProductMicroservice.Infrastructure.DataAccess.Repositories;
+using VicStelmak.Sma.ProductMicroservice.Application.Interfaces;
+using VicStelmak.Sma.ProductMicroservice.Application.Services;
+using VicStelmak.Sma.ProductMicroservice.Infrastructure.DataAccess;
+using VicStelmak.Sma.ProductMicroservice.Infrastructure.DataAccess.Repositories;
 
-namespace VicStelmak.SMA.ProductMicroservice.Api
+namespace VicStelmak.Sma.ProductMicroservice.Api
 {
     public static class DependencyInjectionConfigurator
     {

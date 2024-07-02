@@ -1,9 +1,9 @@
 ﻿using Dapper;
 using Npgsql;
 using System.Data;
-using VicStelmak.SMA.ProductMicroservice.Application.Interfaces;
+using VicStelmak.Sma.ProductMicroservice.Application.Interfaces;
 
-namespace VicStelmak.SMA.ProductMicroservice.Infrastructure.DataAccess
+namespace VicStelmak.Sma.ProductMicroservice.Infrastructure.DataAccess
 {
     public class SqlDbAccess : ISqlDbAccess
     {

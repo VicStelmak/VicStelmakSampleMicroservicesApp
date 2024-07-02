@@ -1,9 +1,9 @@
-﻿using VicStelmak.SMA.OrderMicroservice.APIDataLibrary.Domain.Models;
-using VicStelmak.SMA.OrderMicroservice.APIDataLibrary.Features.Order;
+﻿using VicStelmak.Sma.OrderMicroservice.APIDataLibrary.Domain.Models;
+using VicStelmak.Sma.OrderMicroservice.APIDataLibrary.Features.Order;
 
-namespace VicStelmak.SMA.OrderMicroservice.APIDataLibrary.Features.DeliveryAddress
+namespace VicStelmak.Sma.OrderMicroservice.APIDataLibrary.Features.DeliveryAddress
 {
-    internal static class DeliveryAddressMapper
+    internal static class DeliveryAddresSmapper
     {
         internal static DeliveryAddressModel MapToDeliveryAddress(this CreateOrderRequest request)
         {

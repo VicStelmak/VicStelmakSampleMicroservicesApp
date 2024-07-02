@@ -2,7 +2,7 @@
 using Npgsql;
 using System.Data;
 
-namespace VicStelmak.SMA.OrderMicroservice.APIDataLibrary.Infrastructure.DataAccess
+namespace VicStelmak.Sma.OrderMicroservice.APIDataLibrary.Infrastructure.DataAccess
 {
     internal class SqlDbAccess : ISqlDbAccess
     {

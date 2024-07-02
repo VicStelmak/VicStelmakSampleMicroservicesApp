@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
-namespace VicStelmak.SMA.OrderMicroservice.APIDataLibrary.Features.DeliveryAddress
+namespace VicStelmak.Sma.OrderMicroservice.APIDataLibrary.Features.DeliveryAddress
 {
     public static class DeliveryAddressEndpointsConfigurator
     {

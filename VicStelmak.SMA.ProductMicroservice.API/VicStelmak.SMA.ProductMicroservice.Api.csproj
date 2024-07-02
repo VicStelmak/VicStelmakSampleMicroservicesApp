@@ -14,9 +14,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\VicStelmak.SMA.Events\VicStelmak.SMA.Events.csproj" />
-    <ProjectReference Include="..\VicStelmak.SMA.MessageBrokerSettings\VicStelmak.SMA.MessageBrokerSettings.csproj" />
-    <ProjectReference Include="..\VicStelmak.SMA.ProductMicroservice.Infrastructure\VicStelmak.SMA.ProductMicroservice.Infrastructure.csproj" />
+    <ProjectReference Include="..\VicStelmak.SMA.Events\VicStelmak.Sma.Events.csproj" />
+    <ProjectReference Include="..\VicStelmak.SMA.MessageBrokerSettings\VicStelmak.Sma.MessageBrokerSettings.csproj" />
+    <ProjectReference Include="..\VicStelmak.SMA.ProductMicroservice.Infrastructure\VicStelmak.Sma.ProductMicroservice.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

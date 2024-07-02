@@ -1,4 +1,4 @@
-﻿namespace VicStelmak.SMA.UserMicroservice.ApiDataLibrary.Domain.Enums
+﻿namespace VicStelmak.Sma.UserMicroservice.ApiDataLibrary.Domain.Enums
 {
     internal enum Role
     {

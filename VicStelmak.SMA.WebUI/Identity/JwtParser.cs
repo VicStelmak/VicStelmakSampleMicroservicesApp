@@ -1,7 +1,7 @@
 ﻿using System.Security.Claims;
 using System.Text.Json;
 
-namespace VicStelmak.SMA.WebUI.Identity
+namespace VicStelmak.Sma.WebUi.Identity
 {
     internal static class JwtParser
     {

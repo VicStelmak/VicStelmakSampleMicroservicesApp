@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\VicStelmak.SMA.ProductMicroservice.Domain\VicStelmak.SMA.ProductMicroservice.Domain.csproj" />
+    <ProjectReference Include="..\VicStelmak.SMA.ProductMicroservice.Domain\VicStelmak.Sma.ProductMicroservice.Domain.csproj" />
   </ItemGroup>
 
 </Project>

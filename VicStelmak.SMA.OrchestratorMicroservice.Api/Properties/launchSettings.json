@@ -9,7 +9,7 @@
     }
   },
   "profiles": {
-    "VicStelmak.SMA.OrchestratorMicroservice.Api": {
+    "VicStelmak.Sma.OrchestratorMicroservice.Api": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,

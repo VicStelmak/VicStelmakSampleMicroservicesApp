@@ -1,4 +1,4 @@
-﻿namespace VicStelmak.SMA.WebUI.Product.Dtos
+﻿namespace VicStelmak.Sma.WebUi.Product.Dtos
 {
     public record ProductDto(
         int Id,

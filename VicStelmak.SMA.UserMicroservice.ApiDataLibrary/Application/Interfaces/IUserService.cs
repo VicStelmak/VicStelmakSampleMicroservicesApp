@@ -1,7 +1,7 @@
-﻿using VicStelmak.SMA.UserMicroservice.ApiDataLibrary.Application.Requests;
-using VicStelmak.SMA.UserMicroservice.ApiDataLibrary.Application.Responses;
+﻿using VicStelmak.Sma.UserMicroservice.ApiDataLibrary.Application.Requests;
+using VicStelmak.Sma.UserMicroservice.ApiDataLibrary.Application.Responses;
 
-namespace VicStelmak.SMA.UserMicroservice.ApiDataLibrary.Application.Interfaces
+namespace VicStelmak.Sma.UserMicroservice.ApiDataLibrary.Application.Interfaces
 {
     public interface IUserService
     {

@@ -3,9 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VicStelmak.SMA.Gateway", "VicStelmak.SMA.Gateway\VicStelmak.SMA.Gateway.csproj", "{6629A7EB-E6E6-4981-83E8-F1F5EE73517E}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VicStelmak.SMA.WebUI", "VicStelmak.SMA.WebUI\VicStelmak.SMA.WebUI.csproj", "{B7FB0C25-2917-41BA-BF0B-0963A722619E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VicStelmak.Sma.Gateway", "VicStelmak.Sma.Gateway\VicStelmak.Sma.Gateway.csproj", "{6629A7EB-E6E6-4981-83E8-F1F5EE73517E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Microservices", "Microservices", "{B41D236B-A00F-406E-860E-8CE790744DA5}"
 EndProject
@@ -13,33 +11,35 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Product", "Product", "{1FFC
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Order", "Order", "{42E08F65-5452-4840-9978-B7BAE760D700}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VicStelmak.SMA.ProductMicroservice.Api", "VicStelmak.SMA.ProductMicroservice.Api\VicStelmak.SMA.ProductMicroservice.Api.csproj", "{CDC1D4A3-8E65-4476-89AA-69859A5FD584}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VicStelmak.Sma.ProductMicroservice.Api", "VicStelmak.Sma.ProductMicroservice.Api\VicStelmak.Sma.ProductMicroservice.Api.csproj", "{CDC1D4A3-8E65-4476-89AA-69859A5FD584}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VicStelmak.SMA.ProductMicroservice.Infrastructure", "VicStelmak.SMA.ProductMicroservice.Infrastructure\VicStelmak.SMA.ProductMicroservice.Infrastructure.csproj", "{E4EBD1E5-B12A-4AB5-88C3-20094AA03BC9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VicStelmak.Sma.ProductMicroservice.Infrastructure", "VicStelmak.Sma.ProductMicroservice.Infrastructure\VicStelmak.Sma.ProductMicroservice.Infrastructure.csproj", "{E4EBD1E5-B12A-4AB5-88C3-20094AA03BC9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VicStelmak.SMA.ProductMicroservice.Application", "VicStelmak.SMA.ProductMicroservice.Application\VicStelmak.SMA.ProductMicroservice.Application.csproj", "{E66B4553-1605-461A-B9C4-3BD9E2257EDF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VicStelmak.Sma.ProductMicroservice.Application", "VicStelmak.Sma.ProductMicroservice.Application\VicStelmak.Sma.ProductMicroservice.Application.csproj", "{E66B4553-1605-461A-B9C4-3BD9E2257EDF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VicStelmak.SMA.ProductMicroservice.Domain", "VicStelmak.SMA.ProductMicroservice.Domain\VicStelmak.SMA.ProductMicroservice.Domain.csproj", "{1A61A4FB-A4EC-4CFD-92B1-299D297AED5A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VicStelmak.Sma.ProductMicroservice.Domain", "VicStelmak.Sma.ProductMicroservice.Domain\VicStelmak.Sma.ProductMicroservice.Domain.csproj", "{1A61A4FB-A4EC-4CFD-92B1-299D297AED5A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VicStelmak.SMA.Events", "VicStelmak.SMA.Events\VicStelmak.SMA.Events.csproj", "{AFCFE771-8C13-4870-808A-B1AB29F5042A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VicStelmak.Sma.Events", "VicStelmak.Sma.Events\VicStelmak.Sma.Events.csproj", "{AFCFE771-8C13-4870-808A-B1AB29F5042A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VicStelmak.SMA.MessageBrokerSettings", "VicStelmak.SMA.MessageBrokerSettings\VicStelmak.SMA.MessageBrokerSettings.csproj", "{909B440A-7540-4789-B2BB-0300080A2254}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VicStelmak.Sma.MessageBrokerSettings", "VicStelmak.Sma.MessageBrokerSettings\VicStelmak.Sma.MessageBrokerSettings.csproj", "{909B440A-7540-4789-B2BB-0300080A2254}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Orchestrator", "Orchestrator", "{261219B8-C977-4EB1-8EB4-A1CE566BCAD0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VicStelmak.SMA.OrchestratorMicroservice.Api", "VicStelmak.SMA.OrchestratorMicroservice.Api\VicStelmak.SMA.OrchestratorMicroservice.Api.csproj", "{DF26A611-1A56-4F00-968A-DAC050E66AA1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VicStelmak.Sma.OrchestratorMicroservice.Api", "VicStelmak.Sma.OrchestratorMicroservice.Api\VicStelmak.Sma.OrchestratorMicroservice.Api.csproj", "{DF26A611-1A56-4F00-968A-DAC050E66AA1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VicStelmak.SMA.OrchestratorMicroservice.States", "VicStelmak.SMA.OrchestratorMicroservice.States\VicStelmak.SMA.OrchestratorMicroservice.States.csproj", "{0653442B-D5DB-4785-A83B-F4C5A225A9F0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VicStelmak.Sma.OrchestratorMicroservice.States", "VicStelmak.Sma.OrchestratorMicroservice.States\VicStelmak.Sma.OrchestratorMicroservice.States.csproj", "{0653442B-D5DB-4785-A83B-F4C5A225A9F0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "User", "User", "{BECC03BD-360F-4521-9693-FD36C6C8F45F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VicStelmak.SMA.OrderMicroservice.Api", "VicStelmak.SMA.OrderMicroservice.API\VicStelmak.SMA.OrderMicroservice.Api.csproj", "{96807FA2-9A5D-4363-A594-EE26AC9F3AA1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VicStelmak.Sma.OrderMicroservice.Api", "VicStelmak.Sma.OrderMicroservice.Api\VicStelmak.Sma.OrderMicroservice.Api.csproj", "{96807FA2-9A5D-4363-A594-EE26AC9F3AA1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VicStelmak.SMA.OrderMicroservice.ApiDataLibrary", "VicStelmak.SMA.OrderMicroservice.APIDataLibrary\VicStelmak.SMA.OrderMicroservice.ApiDataLibrary.csproj", "{A1E834CA-4BE7-462B-8F9A-6996F44C96C4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VicStelmak.Sma.OrderMicroservice.ApiDataLibrary", "VicStelmak.Sma.OrderMicroservice.ApiDataLibrary\VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.csproj", "{A1E834CA-4BE7-462B-8F9A-6996F44C96C4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VicStelmak.SMA.UserMicroservice.Api", "VicStelmak.SMA.UserMicroservice.API\VicStelmak.SMA.UserMicroservice.Api.csproj", "{F634BC49-2EC3-4191-8CD6-4007575653D2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VicStelmak.Sma.UserMicroservice.Api", "VicStelmak.Sma.UserMicroservice.Api\VicStelmak.Sma.UserMicroservice.Api.csproj", "{F634BC49-2EC3-4191-8CD6-4007575653D2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VicStelmak.SMA.UserMicroservice.ApiDataLibrary", "VicStelmak.SMA.UserMicroservice.APIDataLibrary\VicStelmak.SMA.UserMicroservice.ApiDataLibrary.csproj", "{D9CF7653-C6FA-4568-A932-1CE79EC8A9CF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VicStelmak.Sma.UserMicroservice.ApiDataLibrary", "VicStelmak.Sma.UserMicroservice.ApiDataLibrary\VicStelmak.Sma.UserMicroservice.ApiDataLibrary.csproj", "{D9CF7653-C6FA-4568-A932-1CE79EC8A9CF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VicStelmak.Sma.WebUi", "VicStelmak.Sma.WebUi\VicStelmak.Sma.WebUi.csproj", "{A5EF2880-57D8-43EC-B9AF-E877C862C822}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,10 +51,6 @@ Global
 		{6629A7EB-E6E6-4981-83E8-F1F5EE73517E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6629A7EB-E6E6-4981-83E8-F1F5EE73517E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6629A7EB-E6E6-4981-83E8-F1F5EE73517E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B7FB0C25-2917-41BA-BF0B-0963A722619E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B7FB0C25-2917-41BA-BF0B-0963A722619E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B7FB0C25-2917-41BA-BF0B-0963A722619E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B7FB0C25-2917-41BA-BF0B-0963A722619E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CDC1D4A3-8E65-4476-89AA-69859A5FD584}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CDC1D4A3-8E65-4476-89AA-69859A5FD584}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CDC1D4A3-8E65-4476-89AA-69859A5FD584}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -103,6 +99,10 @@ Global
 		{D9CF7653-C6FA-4568-A932-1CE79EC8A9CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D9CF7653-C6FA-4568-A932-1CE79EC8A9CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D9CF7653-C6FA-4568-A932-1CE79EC8A9CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5EF2880-57D8-43EC-B9AF-E877C862C822}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5EF2880-57D8-43EC-B9AF-E877C862C822}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5EF2880-57D8-43EC-B9AF-E877C862C822}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5EF2880-57D8-43EC-B9AF-E877C862C822}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

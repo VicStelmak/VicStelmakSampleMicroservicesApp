@@ -1,4 +1,4 @@
-﻿namespace VicStelmak.SMA.OrderMicroservice.APIDataLibrary
+﻿namespace VicStelmak.Sma.OrderMicroservice.APIDataLibrary
 {
     internal class MediatREntrypoint
     {

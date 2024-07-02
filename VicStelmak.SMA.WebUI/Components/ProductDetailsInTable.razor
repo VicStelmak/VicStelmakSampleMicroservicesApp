@@ -1,5 +1,5 @@
-﻿@using VicStelmak.SMA.WebUI.Identity.Enums
-@using VicStelmak.SMA.WebUI.Product.Dtos
+﻿@using VicStelmak.Sma.WebUi.Identity.Enums
+@using VicStelmak.Sma.WebUi.Product.Dtos
 
 <tr>
     <td>@SequenceNumber</td>
@@ -54,8 +54,8 @@
 
     private async Task OnUpdateButtonClickedAsync(UpdateProductDto productDto)
     {
-        if (productDto.AmountInStock != Product.AmountInStock | !productDto.Description.Equals(Product.Description) | !productDto.ImageUri.Equals(Product.ImageUri) 
-        | !productDto.Name.Equals(Product.Name) | productDto.Price != Product.Price)
+        if (productDto.AmountInStock != Product.AmountInStock | !productDto.Description.Equals(Product.Description) | !productDto.ImageUri.Equals(Product.ImageUri)
+            | !productDto.Name.Equals(Product.Name) | productDto.Price != Product.Price)
         {
             await _productService.UpdateProductAsync(Product.Id, productDto);
         }

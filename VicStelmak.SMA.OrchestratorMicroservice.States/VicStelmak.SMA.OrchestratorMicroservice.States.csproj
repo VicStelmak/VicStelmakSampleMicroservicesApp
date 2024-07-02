@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\VicStelmak.SMA.Events\VicStelmak.SMA.Events.csproj" />
+    <ProjectReference Include="..\VicStelmak.SMA.Events\VicStelmak.Sma.Events.csproj" />
   </ItemGroup>
 
 </Project>

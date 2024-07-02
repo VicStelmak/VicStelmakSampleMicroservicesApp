@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using VicStelmak.SMA.ProductMicroservice.Domain.Enums;
-using VicStelmak.SMA.UserMicroservice.ApiDataLibrary.Application.Interfaces;
-using VicStelmak.SMA.UserMicroservice.ApiDataLibrary.Application.Requests;
+using VicStelmak.Sma.ProductMicroservice.Domain.Enums;
+using VicStelmak.Sma.UserMicroservice.ApiDataLibrary.Application.Interfaces;
+using VicStelmak.Sma.UserMicroservice.ApiDataLibrary.Application.Requests;
 
-namespace VicStelmak.SMA.UserMicroservice.Api.Controllers
+namespace VicStelmak.Sma.UserMicroservice.Api.Controllers
 {
     [Authorize(Roles = nameof(Role.Administrator))]
     [ApiController]

@@ -1,4 +1,4 @@
-﻿namespace VicStelmak.SMA.ProductMicroservice.Application.Dtos
+﻿namespace VicStelmak.Sma.ProductMicroservice.Application.Dtos
 {
     public record ProductDto(
         int Id,

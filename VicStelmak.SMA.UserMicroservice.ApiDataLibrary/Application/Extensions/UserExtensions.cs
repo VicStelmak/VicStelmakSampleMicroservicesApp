@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using VicStelmak.SMA.UserMicroservice.ApiDataLibrary.Domain.Models;
+using VicStelmak.Sma.UserMicroservice.ApiDataLibrary.Domain.Models;
 
-namespace VicStelmak.SMA.UserMicroservice.ApiDataLibrary.Application.Extensions
+namespace VicStelmak.Sma.UserMicroservice.ApiDataLibrary.Application.Extensions
 {
     internal static class UserExtensions
     {
