@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using VicStelmak.Sma.ProductMicroservice.Domain.Enums;
 using VicStelmak.Sma.UserMicroservice.ApiDataLibrary.Application.Interfaces;
 using VicStelmak.Sma.UserMicroservice.ApiDataLibrary.Application.Requests;
+using VicStelmak.Sma.UserMicroservice.ApiDataLibrary.Domain.Enums;
 
 namespace VicStelmak.Sma.UserMicroservice.Api.Controllers
 {

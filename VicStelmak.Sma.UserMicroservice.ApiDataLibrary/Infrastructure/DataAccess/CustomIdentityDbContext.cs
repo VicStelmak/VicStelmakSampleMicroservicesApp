@@ -15,6 +15,12 @@ namespace VicStelmak.Sma.UserMicroservice.ApiDataLibrary.Infrastructure.DataAcce
         {
             base.OnModelCreating(builder);
 
+            builder.Entity<UserModel>(entity =>
+            {
+                entity.Property(user => user.FirstName).IsRequired(false);
+                entity.Property(user => user.LastName).IsRequired(false);
+            });
+
             builder.SeedInitialData();
             builder.SeedRoles();
         }

@@ -1,10 +1,10 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using VicStelmak.Sma.OrderMicroservice.APIDataLibrary.Features.DeliveryAddress;
-using VicStelmak.Sma.OrderMicroservice.APIDataLibrary.Features.Order;
-using VicStelmak.Sma.OrderMicroservice.APIDataLibrary.Infrastructure.DataAccess;
+using VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.DeliveryAddress;
+using VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.Order;
+using VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Infrastructure.DataAccess;
 
-namespace VicStelmak.Sma.OrderMicroservice.APIDataLibrary.Infrastructure
+namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Infrastructure
 {
     public static class DependencyInjectionConfigurator
     {

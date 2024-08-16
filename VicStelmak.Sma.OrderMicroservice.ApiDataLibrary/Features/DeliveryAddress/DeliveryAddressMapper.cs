@@ -1,7 +1,7 @@
-﻿using VicStelmak.Sma.OrderMicroservice.APIDataLibrary.Domain.Models;
-using VicStelmak.Sma.OrderMicroservice.APIDataLibrary.Features.Order;
+﻿using VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Domain.Models;
+using VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.Order;
 
-namespace VicStelmak.Sma.OrderMicroservice.APIDataLibrary.Features.DeliveryAddress
+namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.DeliveryAddress
 {
     internal static class DeliveryAddresSmapper
     {

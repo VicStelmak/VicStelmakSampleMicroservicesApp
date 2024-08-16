@@ -1,7 +1,7 @@
-﻿using VicStelmak.Sma.OrderMicroservice.APIDataLibrary.Domain.Models;
-using VicStelmak.Sma.OrderMicroservice.APIDataLibrary.Infrastructure.DataAccess;
+﻿using VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Domain.Models;
+using VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Infrastructure.DataAccess;
 
-namespace VicStelmak.Sma.OrderMicroservice.APIDataLibrary.Features.Order
+namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.Order
 {
     internal class OrderRepository : IOrderRepository
     {
@@ -18,7 +18,7 @@ namespace VicStelmak.Sma.OrderMicroservice.APIDataLibrary.Features.Order
             arg_building = address.Building,
             arg_city = address.City,
             arg_created_by = order.CreatedBy,
-            arg_external_id = order.ExternalId,
+            arg_order_code = order.OrderCode,
             arg_postal_code = address.PostalCode,
             arg_quantity_of_products = order.QuantityOfProducts,
             arg_status = order.Status,

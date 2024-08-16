@@ -1,4 +1,4 @@
-﻿namespace VicStelmak.Sma.OrderMicroservice.APIDataLibrary.Domain.Models
+﻿namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Domain.Models
 {
     internal class DeliveryAddressModel
     {

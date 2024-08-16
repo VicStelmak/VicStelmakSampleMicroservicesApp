@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace VicStelmak.Sma.OrderMicroservice.APIDataLibrary.Features.DeliveryAddress
+namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.DeliveryAddress
 {
     public record UpdateDeliveryAddressCommand(int orderId, UpdateDeliveryAddressRequest request) : IRequest;
 

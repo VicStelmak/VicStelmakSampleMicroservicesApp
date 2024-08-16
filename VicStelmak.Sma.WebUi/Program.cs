@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using VicStelmak.Sma.WebUi;
-using VicStelmak.Sma.WebUi.Identity;
-using VicStelmak.Sma.WebUi.Product;
+using VicStelmak.Sma.WebUiDataLibrary.Identity;
+using VicStelmak.Sma.WebUiDataLibrary.Product;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");

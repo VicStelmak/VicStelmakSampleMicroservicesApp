@@ -1,6 +1,6 @@
-﻿using VicStelmak.Sma.OrderMicroservice.APIDataLibrary.Domain.Models;
+﻿using VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Domain.Models;
 
-namespace VicStelmak.Sma.OrderMicroservice.APIDataLibrary.Features.Order
+namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.Order
 {
     internal static class OrderMapper
     {
@@ -9,7 +9,7 @@ namespace VicStelmak.Sma.OrderMicroservice.APIDataLibrary.Features.Order
             return new GetOrderResponse(
                 order.CreatedAt, 
                 order.CreatedBy,
-                order.ExternalId, 
+                order.OrderCode, 
                 order.QuantityOfProducts, 
                 order.Status, 
                 order.Total,

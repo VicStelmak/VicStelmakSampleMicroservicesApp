@@ -4,6 +4,6 @@
         string Email, 
         string FirstName,
         string LastName,
-        string Password, 
-        string PasswordForConfirmation);
+        string? Password, 
+        string? PasswordForConfirmation);
 }

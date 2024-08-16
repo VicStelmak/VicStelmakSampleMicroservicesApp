@@ -19,10 +19,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VicStelmak.Sma.ProductMicro
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VicStelmak.Sma.ProductMicroservice.Domain", "VicStelmak.Sma.ProductMicroservice.Domain\VicStelmak.Sma.ProductMicroservice.Domain.csproj", "{1A61A4FB-A4EC-4CFD-92B1-299D297AED5A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VicStelmak.Sma.Events", "VicStelmak.Sma.Events\VicStelmak.Sma.Events.csproj", "{AFCFE771-8C13-4870-808A-B1AB29F5042A}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VicStelmak.Sma.MessageBrokerSettings", "VicStelmak.Sma.MessageBrokerSettings\VicStelmak.Sma.MessageBrokerSettings.csproj", "{909B440A-7540-4789-B2BB-0300080A2254}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Orchestrator", "Orchestrator", "{261219B8-C977-4EB1-8EB4-A1CE566BCAD0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VicStelmak.Sma.OrchestratorMicroservice.Api", "VicStelmak.Sma.OrchestratorMicroservice.Api\VicStelmak.Sma.OrchestratorMicroservice.Api.csproj", "{DF26A611-1A56-4F00-968A-DAC050E66AA1}"
@@ -40,6 +36,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VicStelmak.Sma.UserMicroservice.ApiDataLibrary", "VicStelmak.Sma.UserMicroservice.ApiDataLibrary\VicStelmak.Sma.UserMicroservice.ApiDataLibrary.csproj", "{D9CF7653-C6FA-4568-A932-1CE79EC8A9CF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VicStelmak.Sma.WebUi", "VicStelmak.Sma.WebUi\VicStelmak.Sma.WebUi.csproj", "{A5EF2880-57D8-43EC-B9AF-E877C862C822}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Frontend", "Frontend", "{656CFF42-D4EE-4E23-91E7-F75120DA5F51}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VicStelmak.Sma.WebUiDataLibrary", "VicStelmak.Sma.WebUiDataLibrary\VicStelmak.Sma.WebUiDataLibrary.csproj", "{3CFB0435-3050-4B03-8BDC-4976A7ADDE76}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -67,14 +67,6 @@ Global
 		{1A61A4FB-A4EC-4CFD-92B1-299D297AED5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1A61A4FB-A4EC-4CFD-92B1-299D297AED5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1A61A4FB-A4EC-4CFD-92B1-299D297AED5A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AFCFE771-8C13-4870-808A-B1AB29F5042A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AFCFE771-8C13-4870-808A-B1AB29F5042A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AFCFE771-8C13-4870-808A-B1AB29F5042A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AFCFE771-8C13-4870-808A-B1AB29F5042A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{909B440A-7540-4789-B2BB-0300080A2254}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{909B440A-7540-4789-B2BB-0300080A2254}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{909B440A-7540-4789-B2BB-0300080A2254}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{909B440A-7540-4789-B2BB-0300080A2254}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DF26A611-1A56-4F00-968A-DAC050E66AA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DF26A611-1A56-4F00-968A-DAC050E66AA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DF26A611-1A56-4F00-968A-DAC050E66AA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -103,6 +95,10 @@ Global
 		{A5EF2880-57D8-43EC-B9AF-E877C862C822}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A5EF2880-57D8-43EC-B9AF-E877C862C822}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A5EF2880-57D8-43EC-B9AF-E877C862C822}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3CFB0435-3050-4B03-8BDC-4976A7ADDE76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3CFB0435-3050-4B03-8BDC-4976A7ADDE76}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3CFB0435-3050-4B03-8BDC-4976A7ADDE76}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3CFB0435-3050-4B03-8BDC-4976A7ADDE76}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -122,6 +118,8 @@ Global
 		{A1E834CA-4BE7-462B-8F9A-6996F44C96C4} = {42E08F65-5452-4840-9978-B7BAE760D700}
 		{F634BC49-2EC3-4191-8CD6-4007575653D2} = {BECC03BD-360F-4521-9693-FD36C6C8F45F}
 		{D9CF7653-C6FA-4568-A932-1CE79EC8A9CF} = {BECC03BD-360F-4521-9693-FD36C6C8F45F}
+		{A5EF2880-57D8-43EC-B9AF-E877C862C822} = {656CFF42-D4EE-4E23-91E7-F75120DA5F51}
+		{3CFB0435-3050-4B03-8BDC-4976A7ADDE76} = {656CFF42-D4EE-4E23-91E7-F75120DA5F51}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A107C1E3-63E4-4D9E-ACEC-35426C478769}

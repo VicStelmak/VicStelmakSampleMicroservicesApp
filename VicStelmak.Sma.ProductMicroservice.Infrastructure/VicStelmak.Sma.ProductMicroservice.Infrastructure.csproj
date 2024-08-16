@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\VicStelmak.SMA.ProductMicroservice.Application\VicStelmak.Sma.ProductMicroservice.Application.csproj" />
-    <ProjectReference Include="..\VicStelmak.SMA.ProductMicroservice.Domain\VicStelmak.Sma.ProductMicroservice.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>

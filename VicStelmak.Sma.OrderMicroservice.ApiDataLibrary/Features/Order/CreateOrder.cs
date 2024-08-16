@@ -1,7 +1,7 @@
 ﻿using MediatR;
-using VicStelmak.Sma.OrderMicroservice.APIDataLibrary.Features.DeliveryAddress;
+using VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.DeliveryAddress;
 
-namespace VicStelmak.Sma.OrderMicroservice.APIDataLibrary.Features.Order
+namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.Order
 {
     public record CreateOrderCommand(CreateOrderRequest request) : IRequest;
 
@@ -18,7 +18,7 @@ namespace VicStelmak.Sma.OrderMicroservice.APIDataLibrary.Features.Order
         {
             var address = command.request.MapToDeliveryAddress();
             var order = command.request.MapToOrder();
-            order.ExternalId = Guid.NewGuid().ToString();
+            order.OrderCode = Guid.NewGuid().ToString();
             
             var orderCreatingResult = _orderRepository.CreateOrder(address, order);
 

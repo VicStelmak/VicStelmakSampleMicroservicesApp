@@ -1,5 +1,5 @@
 ﻿
-namespace VicStelmak.Sma.OrderMicroservice.APIDataLibrary.Infrastructure.DataAccess
+namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Infrastructure.DataAccess
 {
     internal interface ISqlDbAccess
     {

@@ -1,6 +1,6 @@
 ﻿@page "/signup"
 
-@using VicStelmak.Sma.WebUi.Identity.Requests
+@using VicStelmak.Sma.WebUiDataLibrary.Identity.Requests
 @inject NavigationManager _navigationManager
 
 <h3>Signup</h3>
@@ -15,7 +15,7 @@
     </div>
 }
 
-<EditForm Model="ViewModel" OnValidSubmit="OnValidSubmitAsync" class="card card-body bg-light mt-5">
+<EditForm Model="ViewModel" OnValidSubmit="HandleValidSubmitAsync" class="card card-body bg-light mt-5">
     <DataAnnotationsValidator />
     <div class="form-group row">
         <label for="email" class="col-md-2 col-form-label">Email:</label>
@@ -69,7 +69,7 @@
     private bool SignupErrorIsShown { get; set; }
     public SignupViewModel ViewModel { get; set; } = new();
 
-    public async Task OnValidSubmitAsync()
+    public async Task HandleValidSubmitAsync()
     {
         SignupErrorIsShown = false;
 

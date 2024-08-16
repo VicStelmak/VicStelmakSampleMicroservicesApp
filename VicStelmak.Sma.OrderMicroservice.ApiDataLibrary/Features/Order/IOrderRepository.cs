@@ -1,6 +1,6 @@
-﻿using VicStelmak.Sma.OrderMicroservice.APIDataLibrary.Domain.Models;
+﻿using VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Domain.Models;
 
-namespace VicStelmak.Sma.OrderMicroservice.APIDataLibrary.Features.Order
+namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.Order
 {
     internal interface IOrderRepository
     {

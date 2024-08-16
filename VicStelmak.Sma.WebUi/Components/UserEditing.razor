@@ -1,5 +1,5 @@
-﻿@using VicStelmak.Sma.WebUi.Identity.Requests
-@using VicStelmak.Sma.WebUi.Identity.Responses
+﻿@using VicStelmak.Sma.WebUiDataLibrary.Identity.Requests
+@using VicStelmak.Sma.WebUiDataLibrary.Identity.Responses
 
 @if (ModalWindowIsShown == true)
 {
@@ -15,7 +15,7 @@
                 <div class="modal-body">
                     @if (ViewModel != null)
                     {
-                        <EditForm Model="@ViewModel" OnValidSubmit="@OnValidSubmitAsync">
+                        <EditForm Model="@ViewModel" OnValidSubmit="@HandleValidSubmitAsync">
                             <DataAnnotationsValidator />
                             <div class="form-group">
                                 <label>First Name</label>
@@ -82,7 +82,7 @@
         ModalWindowIsShown = false;
     }
 
-    private async Task OnValidSubmitAsync()
+    private async Task HandleValidSubmitAsync()
     {
         var request = new UpdateUserRequest(ViewModel.Email, ViewModel.FirstName, ViewModel.LastName);
 
@@ -99,7 +99,7 @@
         StateHasChanged();
     }
 
-    public async Task ToggleRoleSelection(ChangeEventArgs arguments, string roleName)
+    public void ToggleRoleSelection(ChangeEventArgs arguments, string roleName)
     {
         bool isSelected = (bool)arguments.Value;
 

@@ -1,7 +1,7 @@
 ﻿
 using MediatR;
 
-namespace VicStelmak.Sma.OrderMicroservice.APIDataLibrary.Features.Order
+namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.Order
 {
     public record GetOrderByIdQuery(int orderId) : IRequest<GetOrderResponse>;
 
@@ -29,7 +29,7 @@ namespace VicStelmak.Sma.OrderMicroservice.APIDataLibrary.Features.Order
     public record GetOrderResponse(
         DateTime CreatedAt,
         string CreatedBy,
-        string ExternalId,
+        string OrderCode,
         int QuantityOfProducts,
         string Status,
         decimal Total,

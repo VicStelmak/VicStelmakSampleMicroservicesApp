@@ -1,7 +1,7 @@
-﻿using VicStelmak.Sma.OrderMicroservice.APIDataLibrary.Domain.Models;
-using VicStelmak.Sma.OrderMicroservice.APIDataLibrary.Infrastructure.DataAccess;
+﻿using VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Domain.Models;
+using VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Infrastructure.DataAccess;
 
-namespace VicStelmak.Sma.OrderMicroservice.APIDataLibrary.Features.DeliveryAddress
+namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.DeliveryAddress
 {
     internal class DeliveryAddressRepository : IDeliveryAddressRepository
     {

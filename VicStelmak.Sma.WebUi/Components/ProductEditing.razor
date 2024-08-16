@@ -1,4 +1,4 @@
-﻿@using VicStelmak.Sma.WebUi.Product.Dtos
+﻿@using VicStelmak.Sma.WebUiDataLibrary.Product.Dtos
 
 @if (ModalWindowIsShown == true)
 {
@@ -14,7 +14,7 @@
                 <div class="modal-body" style="align-content:center">
                     @if (ViewModel != null)
                     {
-                        <EditForm Model="@ViewModel" OnValidSubmit="@OnValidSubmitAsync">
+                        <EditForm Model="@ViewModel" OnValidSubmit="@HandleValidSubmitAsync">
                             <DataAnnotationsValidator />
                             <div class="form-group">
                                 <label class="form-control-label">Name</label>
@@ -78,7 +78,7 @@
         await UpdateButtonClicked.InvokeAsync((productDto));
     }
 
-    private async Task OnValidSubmitAsync()
+    private async Task HandleValidSubmitAsync()
     {
         var product = new UpdateProductDto(ViewModel.AmountInStock, AuthenticatedUserName, ViewModel.Description, ViewModel.ImageUri, ViewModel.Name, ViewModel.Price);
 

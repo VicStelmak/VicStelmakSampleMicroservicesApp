@@ -1,6 +1,6 @@
 ﻿namespace VicStelmak.Sma.UserMicroservice.ApiDataLibrary.Domain.Enums
 {
-    internal enum Role
+    public enum Role
     {
         Administrator,
         Customer,

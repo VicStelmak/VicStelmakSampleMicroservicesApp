@@ -1,4 +1,4 @@
-﻿namespace VicStelmak.Sma.OrderMicroservice.APIDataLibrary.Domain.Models
+﻿namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Domain.Models
 {
     internal class OrderModel
     {
@@ -8,7 +8,7 @@
 
         public string CreatedBy { get; set; }
 
-        public string ExternalId { get; set; }
+        public string OrderCode { get; set; }
 
         public int QuantityOfProducts { get; set; }
 

@@ -1,5 +1,5 @@
 ﻿@inject NavigationManager _navigationManager
-@using VicStelmak.Sma.WebUi.Product.Dtos
+@using VicStelmak.Sma.WebUiDataLibrary.Product.Dtos
 
 @if (ModalWindowIsShown == true)
 {
@@ -15,7 +15,7 @@
                 <div class="modal-body">
                     @if (ViewModel != null)
                     {
-                        <EditForm Model="ViewModel" OnValidSubmit="OnValidSubmitAsync" class="card card-body bg-light mt-5">
+                        <EditForm Model="ViewModel" OnValidSubmit="HandleValidSubmitAsync" class="card card-body bg-light mt-5">
                             <DataAnnotationsValidator />
                             <div class="form-group row">
                                 <label for="name" class="col-md-2 col-form-label">Name:</label>
@@ -88,7 +88,7 @@
         await ProductAdded.InvokeAsync();
     }
 
-    public async Task OnValidSubmitAsync()
+    public async Task HandleValidSubmitAsync()
     {
         CreateProductDto productDto = new(ViewModel.AmountInStock, 0, AuthenticatedUserName, ViewModel.Description, ViewModel.ImageUri, ViewModel.Name, ViewModel.Price);
 
@@ -97,7 +97,7 @@
         await OnProductAddedAsync();
     }
 
-    internal async void ShowModal()
+    internal void ShowModal()
     {
         ViewModel = new();
 

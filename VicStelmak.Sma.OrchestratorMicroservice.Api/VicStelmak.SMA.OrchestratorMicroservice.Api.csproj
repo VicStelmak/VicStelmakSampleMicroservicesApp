@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\VicStelmak.SMA.Events\VicStelmak.Sma.Events.csproj" />
+    <ProjectReference Include="..\VicStelmak.Sma.OrchestratorMicroservice.States\VicStelmak.Sma.OrchestratorMicroservice.States.csproj" />
   </ItemGroup>
 
 </Project>
