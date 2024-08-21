@@ -1,0 +1,173 @@
+﻿@inject IOrderService _orderService
+@using FluentValidation.Results
+@using VicStelmak.Sma.WebUiDataLibrary.Order
+@using VicStelmak.Sma.WebUiDataLibrary.Order.Requests
+@using VicStelmak.Sma.WebUiDataLibrary.Product.Dtos
+@using VicStelmak.Sma.WebUiDataLibrary.Validators
+@using VicStelmak.Sma.WebUiDataLibraryDataLibrary.Validators
+
+@if (ModalWindowIsShown == true)
+{
+    <div class="modal fade show d-block" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Purchase Product (@ViewModel.ProductName)</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="() => CloseModal()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="align-content:center">
+                    @if (ViewModel != null)
+                    {
+                        <EditForm Model="@ViewModel" OnValidSubmit="@HandleValidSubmitAsync">
+                            <FluentValidationValidator @ref="ValidationComponent" Options="@(options => options.IncludeAllRuleSets())" Validator="ProductValidator" />
+
+                            <div class="form-group">
+                                <label class="form-control-label">Amount to Purchase</label>
+                                <InputNumber class="form-control" @bind-Value="ViewModel.AmountToPurchase" />
+                                <ValidationMessage For="@(() => ViewModel.AmountToPurchase)" />
+                            </div>
+                            <br />
+                            <div class="form-group">
+                                <label class="form-control-label">Email Address</label>
+                                <InputText class="form-control" @bind-Value="ViewModel.Email" />
+                                <ValidationMessage For="@(() => ViewModel.Email)" />
+                            </div>
+                            <br />
+                            <h5>Delivery Address:</h5>
+                            <div class="form-group">
+                                <label class="form-control-label">Postal Code</label>
+                                <InputText class="form-control" @bind-Value="ViewModel.PostalCode" />
+                                <ValidationMessage For="@(() => ViewModel.PostalCode)" />
+                            </div>
+                            <div class="form-group">
+                                <label class="form-control-label">Apartment Number</label>
+                                <InputNumber class="form-control" @bind-Value="ViewModel.Apartment" />
+                                <ValidationMessage For="@(() => ViewModel.Apartment)" />
+                            </div>
+                            <div class="form-group">
+                                <label class="form-control-label">Building Number</label>
+                                <InputText class="form-control" @bind-Value="ViewModel.Building" />
+                                <ValidationMessage For="@(() => ViewModel.Building)" />
+                            </div>
+                            <div class="form-group">
+                                <label class="form-control-label">Street</label>
+                                <InputText class="form-control" @bind-Value="ViewModel.Street" />
+                                <ValidationMessage For="@(() => ViewModel.Street)" />
+                            </div>
+                            <div class="form-group">
+                                <label class="form-control-label">City</label>
+                                <InputText class="form-control" @bind-Value="ViewModel.City" />
+                                <ValidationMessage For="@(() => ViewModel.City)" />
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-md-12 text-right">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="() => CloseModal()">Cancel</button>
+                                    <button type="submit" class="btn btn-primary">Purchase</button>
+                                </div>
+                            </div>
+                        </EditForm>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [CascadingParameter]
+    public string? AuthenticatedUserName { get; set; }
+    [Parameter]
+    public int ProductId { get; set; }
+    [Parameter]
+    public EventCallback<(AddLineItemToOrderRequest, CreateOrderRequest)> PurchaseButtonClicked { get; set; }
+
+    private bool ModalWindowIsShown { get; set; }
+    private FluentValidationValidator? ValidationComponent;
+    private ProductPurchasingViewModel ViewModel { get; set; }
+    private ProductDto Product { get; set; }
+    private ProductPurchasingViewModelValidator ProductValidator { get; set; }
+
+    private async Task HandleValidSubmitAsync()
+    {
+        bool userExists = await _identityService.CheckIfUserExistsByEmailAsync(ViewModel.Email);
+
+        if (userExists != true)
+        {
+            var orderCreatingRequest = new CreateOrderRequest(
+                ViewModel.Apartment,
+                ViewModel.Building,
+                ViewModel.City,
+                ViewModel.Email,
+                ViewModel.PostalCode,
+                ProductId,
+                ViewModel.AmountToPurchase,
+                OrderStatus.Pending.ToString(),
+                ViewModel.Street,
+                ViewModel.AmountToPurchase * Product.Price,
+                false);
+
+            AddLineItemToOrderRequest lineItemAddingRequest = null;
+
+            await OnPurchaseButtonClickedAsync(lineItemAddingRequest, orderCreatingRequest);
+        }
+        if (userExists == true)
+        {
+            bool orderExists = await _orderService.CheckIfOrderExistsAsync(OrderStatus.Pending.ToString(), ViewModel.Email);
+
+            if (orderExists != true)
+            {
+                var orderCreatingRequest = new CreateOrderRequest(
+                    ViewModel.Apartment,
+                    ViewModel.Building,
+                    ViewModel.City,
+                    ViewModel.Email,
+                    ViewModel.PostalCode,
+                    ProductId,
+                    ViewModel.AmountToPurchase,
+                    OrderStatus.Pending.ToString(),
+                    ViewModel.Street,
+                    ViewModel.AmountToPurchase * Product.Price,
+                    true);
+
+                AddLineItemToOrderRequest lineItemAddingRequest = null;
+
+                await OnPurchaseButtonClickedAsync(lineItemAddingRequest, orderCreatingRequest);
+            }
+            else
+            {
+                CreateOrderRequest orderCreatingRequest = null;
+
+                var order = await _orderService.FindOrderByUserEmailAsync(OrderStatus.Pending.ToString(), ViewModel.Email);
+                var lineItemAddingRequest = new AddLineItemToOrderRequest(order.OrderId, ViewModel.Email, ProductId, ViewModel.AmountToPurchase);
+
+                await OnPurchaseButtonClickedAsync(lineItemAddingRequest, orderCreatingRequest);
+            }
+        }
+    }
+
+    private async Task OnPurchaseButtonClickedAsync(AddLineItemToOrderRequest lineItemAddingRequest, CreateOrderRequest orderCreatingRequest)
+    {
+        ModalWindowIsShown = false;
+
+        await PurchaseButtonClicked.InvokeAsync((lineItemAddingRequest, orderCreatingRequest));
+    }
+
+    internal void CloseModal()
+    {
+        ModalWindowIsShown = false;
+    }
+
+    internal async void ShowModalAsync()
+    {
+        Product = await _productService.GetProductByIdAsync(ProductId);
+        ProductValidator = new(Product.AmountInStock);
+        ViewModel = new(AuthenticatedUserName, Product.Name);
+
+        ModalWindowIsShown = true;
+
+        StateHasChanged();
+    }
+}

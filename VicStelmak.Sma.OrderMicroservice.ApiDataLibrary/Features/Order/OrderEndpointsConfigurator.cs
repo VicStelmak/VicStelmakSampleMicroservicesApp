@@ -6,17 +6,48 @@ namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.Order
 {
     public static class OrderEndpointsConfigurator
     {
-        public static void ConfigureOrderEndpoints(this WebApplication app)
+        public static void ConfigureOrderEndpoints(this WebApplication application)
         {
             // API endpoint mapping
-            app.MapGet("api/orders", GetOrdersList);
-            app.MapGet("api/orders/{id}", GetOrder);
-            app.MapPost("api/orders", CreateOrder);
-            app.MapPut("api/orders", UpdateOrder);
-            app.MapDelete("api/orders", DeleteOrder);
+            application.MapPost("api/orders/line-items", AddLineItemToOrderAsync);
+            application.MapDelete("api/orders", DeleteOrderAsync);
+            application.MapGet("api/orders/created-by", FindOrderByUserEmailAsync);
+            application.MapGet("api/orders/exists", CheckIfOrderExistsAsync);
+            application.MapPost("api/orders", CreateOrderAsync);
+            application.MapGet("api/orders", GetOrdersListAsync);
+            application.MapGet("api/orders/id", GetOrderAsync);
+            application.MapPut("api/orders/{orderId}", UpdateOrderAsync);
         }
 
-        private static async Task<IResult> CreateOrder(CreateOrderRequest request, IMediator mediator)
+        private static async Task<IResult> AddLineItemToOrderAsync(AddLineItemToOrderRequest request, IMediator mediator)
+        {
+            try
+            {
+                await mediator.Send(new AddLineItemToOrderCommand(request));
+
+                return Results.Ok();
+            }
+            catch (Exception ex)
+            {
+                return Results.Problem(ex.Message);
+            }
+        }
+
+        private static async Task<IResult> CheckIfOrderExistsAsync(string orderStatus, string userEmail, IMediator mediator)
+        {
+            try
+            {
+                bool orderExists = await mediator.Send(new CheckIfOrderExistsQuery(orderStatus, userEmail));
+
+                return Results.Ok(orderExists);
+            }
+            catch (Exception ex)
+            {
+                return Results.Problem(ex.Message);
+            }
+        }
+
+        private static async Task<IResult> CreateOrderAsync(CreateOrderRequest request, IMediator mediator)
         {
             try
             {
@@ -30,11 +61,11 @@ namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.Order
             }
         }
 
-        private static async Task<IResult> DeleteOrder(int orderId, IMediator mediator)
+        private static async Task<IResult> DeleteOrderAsync(int orderId, string orderStatus, IMediator mediator)
         {
             try
             {
-                await mediator.Send(new DeleteOrderCommand(orderId));
+                await mediator.Send(new DeleteOrderCommand(orderId, orderStatus));
 
                 return Results.Ok();
             }
@@ -44,11 +75,26 @@ namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.Order
             }
         }
 
-        private static async Task<IResult> GetOrder(int orderId, IMediator mediator)
+        private static async Task<IResult> FindOrderByUserEmailAsync(string orderStatus, string userEmail, IMediator mediator)
         {
             try
             {
-                var results = await mediator.Send(new GetOrderByIdQuery(orderId));
+                var result = await mediator.Send(new FindOrderByUserEmailQuery(orderStatus, userEmail));
+                if (result is null) return Results.NotFound();
+
+                return Results.Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return Results.Problem(ex.Message);
+            }
+        }
+
+        private static async Task<IResult> GetOrderAsync(int orderId, string orderStatus, IMediator mediator)
+        {
+            try
+            {
+                var results = await mediator.Send(new GetOrderByIdQuery(orderId, orderStatus));
                 if (results == null) return Results.NotFound();
 
                 return Results.Ok(results);
@@ -59,7 +105,7 @@ namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.Order
             }
         }
 
-        private static async Task<IResult> GetOrdersList(IMediator mediator)
+        private static async Task<IResult> GetOrdersListAsync(IMediator mediator)
         {
             try
             {
@@ -71,7 +117,7 @@ namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.Order
             }
         }
 
-        private static async Task<IResult> UpdateOrder(int orderId, UpdateOrderRequest request, IMediator mediator)
+        private static async Task<IResult> UpdateOrderAsync(int orderId, UpdateOrderRequest request, IMediator mediator)
         {
             try
             {

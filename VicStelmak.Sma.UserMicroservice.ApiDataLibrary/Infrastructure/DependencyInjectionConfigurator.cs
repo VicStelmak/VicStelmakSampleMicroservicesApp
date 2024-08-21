@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using MassTransit;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -16,6 +17,10 @@ namespace VicStelmak.Sma.UserMicroservice.ApiDataLibrary.Infrastructure
     {
         public static IServiceCollection AddDependencies(this IServiceCollection services, IConfiguration configuration)
         {
+            const string RabbitMqUrl = "rabbitmq://localhost/";
+            const string UserName = "guest";
+            const string Password = "guest";
+
             var connectionString = configuration.GetConnectionString("postgresUserDbConnection") ??
                 throw new InvalidOperationException("Connection string 'postgresUserDbConnection' not found.");
             var jwtSettings = configuration.GetSection("JwtSettings");
@@ -48,6 +53,21 @@ namespace VicStelmak.Sma.UserMicroservice.ApiDataLibrary.Infrastructure
             });
 
             services.AddScoped<IUserService, UserService>();
+
+            services.AddMassTransit(configuration =>
+            {
+                configuration.AddConsumer<UserCreatingConsumer>();
+                configuration.UsingRabbitMq((context, bus) =>
+                {
+                    bus.Host(new Uri(RabbitMqUrl), host =>
+                    {
+                        host.Username(UserName);
+                        host.Password(Password);
+                    });
+
+                    bus.ConfigureEndpoints(context);
+                });
+            });
 
             return services;
         }

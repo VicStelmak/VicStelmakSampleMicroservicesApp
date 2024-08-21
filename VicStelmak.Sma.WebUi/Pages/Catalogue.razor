@@ -42,8 +42,8 @@
                 int sequenceNumber = ViewModel.SequenceNumber++;
 
                 <CascadingValue Value="@AuthenticatedUserName">
-                    <ProductDetailsInTable Product="product" ProductDeleted="OnProductCrudActionCompletedAsync" ProductUpdated="OnProductCrudActionCompletedAsync"
-                        SequenceNumber="@sequenceNumber"></ProductDetailsInTable>
+                    <ProductDetailsInTable Product="product" ProductDeleted="OnProductCrudActionCompletedAsync" ProductPurchased="OnProductCrudActionCompletedAsync"
+                        ProductUpdated="OnProductCrudActionCompletedAsync" SequenceNumber="@sequenceNumber"></ProductDetailsInTable>
                 </CascadingValue>
             }
         </tbody>
@@ -61,7 +61,7 @@
 
     private async Task OnProductCrudActionCompletedAsync()
     {
-        await Task.Delay(1000);
+        await Task.Delay(1200);
 
         ViewModel.Products = await _productService.GetProductsListAsync();
         ViewModel.Products = ViewModel.Products.OrderBy(product => product.Name).ToList();

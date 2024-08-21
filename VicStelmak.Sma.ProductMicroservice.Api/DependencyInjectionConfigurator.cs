@@ -1,11 +1,13 @@
 ﻿using Mapster;
 using MapsterMapper;
+using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Reflection;
 using System.Text;
 using VicStelmak.Sma.ProductMicroservice.Application.Interfaces;
 using VicStelmak.Sma.ProductMicroservice.Application.Services;
+using VicStelmak.Sma.ProductMicroservice.Infrastructure.Consumers;
 using VicStelmak.Sma.ProductMicroservice.Infrastructure.DataAccess;
 using VicStelmak.Sma.ProductMicroservice.Infrastructure.DataAccess.Repositories;
 
@@ -27,6 +29,10 @@ namespace VicStelmak.Sma.ProductMicroservice.Api
 
         public static IServiceCollection AddInfrastructureDependencies(this IServiceCollection services, IConfiguration configuration)
         {
+            const string RabbitMqUrl = "rabbitmq://localhost/";
+            const string UserName = "guest";
+            const string Password = "guest";
+
             var connectionString = configuration.GetConnectionString("PostgresProductDbConnection") ??
                 throw new InvalidOperationException("Connection string 'PostgresProductDbConnection' not found.");
             var jwtSettings = configuration.GetSection("JwtSettings");
@@ -52,6 +58,22 @@ namespace VicStelmak.Sma.ProductMicroservice.Api
                     ValidAudience = jwtSettings["validAudience"],
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["secretKey"]))
                 };
+            });
+
+            services.AddMassTransit(configuration =>
+            {
+                configuration.AddConsumer<OrderCreatedConsumer>();
+                configuration.AddConsumer<OrderDeletedConsumer>();
+                configuration.UsingRabbitMq((context, bus) =>
+                {
+                    bus.Host(new Uri(RabbitMqUrl), host =>
+                    {
+                        host.Username(UserName);
+                        host.Password(Password);
+                    });
+
+                    bus.ConfigureEndpoints(context);
+                });
             });
 
             return services;

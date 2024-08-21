@@ -37,6 +37,11 @@ namespace VicStelmak.Sma.WebUiDataLibrary.Identity
             }
         }
 
+        public async Task<bool> CheckIfUserExistsByEmailAsync(string email)
+        {
+            return await _httpClient.GetFromJsonAsync<bool>($"api/users/email?email={email}");
+        }
+
         public async Task<CreateUserResponse> CreateUserAsync(CreateUserRequest request)
         {
             var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");

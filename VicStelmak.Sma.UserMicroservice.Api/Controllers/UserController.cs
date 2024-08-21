@@ -36,6 +36,24 @@ namespace VicStelmak.Sma.UserMicroservice.Api.Controllers
             }
         }
 
+        [AllowAnonymous]
+        [HttpGet("email")]
+        public async Task<ActionResult<bool>> CheckIfUserExistsByEmailAsync([FromQuery] string email)
+        {
+            try
+            {
+                var userExists = await _userService.CheckIfUserExistsByEmailAsync(email);
+
+                if (userExists != true) return false;
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Retrieving of data from the database failed.");
+            }
+        }
+
         [HttpDelete("roles/{userId}")]
         public async Task<IActionResult> DeleteRolesFromUserAsync(string userId, [FromBody] IEnumerable<string> roles)
         {

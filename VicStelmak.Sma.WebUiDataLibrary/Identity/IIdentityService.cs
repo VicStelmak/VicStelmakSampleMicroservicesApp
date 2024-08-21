@@ -6,6 +6,7 @@ namespace VicStelmak.Sma.WebUiDataLibrary.Identity
     public interface IIdentityService
     {
         Task AddRoleToUserAsync(string roleName, string userId);
+        Task<bool> CheckIfUserExistsByEmailAsync(string email);
         Task<CreateUserResponse> CreateUserAsync(CreateUserRequest request);
         Task DeleteRolesFromUserAsync(string userId, IEnumerable<string> roles);
         Task DeleteUserAsync(string email);

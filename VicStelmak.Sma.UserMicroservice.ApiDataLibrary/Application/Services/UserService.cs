@@ -54,6 +54,14 @@ namespace VicStelmak.Sma.UserMicroservice.ApiDataLibrary.Application.Services
             }
         }
 
+        public async Task<bool> CheckIfUserExistsByEmailAsync(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+
+            if (user is not null) return true;
+            else return false;
+        }
+
         public async Task<DeleteRolesFromUserResponse> DeleteRolesFromUserAsync(string userId, IEnumerable<string> roles)
         {
             var user = await _userManager.FindByIdAsync(userId);

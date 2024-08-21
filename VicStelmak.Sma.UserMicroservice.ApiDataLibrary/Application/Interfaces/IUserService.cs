@@ -6,6 +6,7 @@ namespace VicStelmak.Sma.UserMicroservice.ApiDataLibrary.Application.Interfaces
     public interface IUserService
     {
         Task<AddRoleToUserResponse> AddRoleToUserAsync(string roleName, string userId);
+        Task<bool> CheckIfUserExistsByEmailAsync(string email);
         Task<CreateUserResponse> CreateUserAsync(CreateUserRequest request);
         Task<DeleteRolesFromUserResponse> DeleteRolesFromUserAsync(string id, IEnumerable<string> roles);
         Task DeleteUserAsync(string id);

@@ -2,6 +2,7 @@
 {
     public record UpdateProductDto(
      int AmountInStock,
+     int AmountSold,
      string UpdatedBy,
      string Description,
      string ImageUri,

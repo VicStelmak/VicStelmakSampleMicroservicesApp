@@ -69,6 +69,7 @@
     public int ProductId { get; set; }
 
     private bool ModalWindowIsShown { get; set; }
+    private ProductDto Product { get; set; }
     private ProductEditingViewModel ViewModel { get; set; }
 
     private async Task OnUpdateButtonClickedAsync(UpdateProductDto productDto)
@@ -80,9 +81,10 @@
 
     private async Task HandleValidSubmitAsync()
     {
-        var product = new UpdateProductDto(ViewModel.AmountInStock, AuthenticatedUserName, ViewModel.Description, ViewModel.ImageUri, ViewModel.Name, ViewModel.Price);
+        var productUpdateRequest = new UpdateProductDto(ViewModel.AmountInStock, Product.AmountSold, AuthenticatedUserName, ViewModel.Description,
+            ViewModel.ImageUri, ViewModel.Name, ViewModel.Price);
 
-        await OnUpdateButtonClickedAsync(product);
+        await OnUpdateButtonClickedAsync(productUpdateRequest);
     }
 
     internal void CloseModal()
@@ -92,8 +94,8 @@
 
     internal async void ShowModalAsync()
     {
-        var product = await _productService.GetProductByIdAsync(ProductId);
-        ViewModel = new(product);
+        Product = await _productService.GetProductByIdAsync(ProductId);
+        ViewModel = new(Product);
 
         ModalWindowIsShown = true;
 

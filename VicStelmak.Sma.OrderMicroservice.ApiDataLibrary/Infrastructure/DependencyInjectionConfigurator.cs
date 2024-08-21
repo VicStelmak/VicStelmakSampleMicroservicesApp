@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using MassTransit;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.DeliveryAddress;
 using VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.Order;
@@ -10,6 +11,10 @@ namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Infrastructure
     {
         public static IServiceCollection AddDependencies(this IServiceCollection services, IConfiguration configuration)
         {
+            const string RabbitMqUrl = "rabbitmq://localhost/";
+            const string UserName = "guest";
+            const string Password = "guest";
+
             var connectionString = configuration.GetConnectionString("PostgresOrderDbConnection") ??
                 throw new InvalidOperationException("Connection string 'PostgresOrderDbConnection' not found.");
             
@@ -23,6 +28,21 @@ namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Infrastructure
             services.AddSingleton<ISqlDbAccess>(s => new SqlDbAccess(connectionString));
             services.AddSingleton<IDeliveryAddressRepository, DeliveryAddressRepository>();
             services.AddSingleton<IOrderRepository, OrderRepository>();
+
+            services.AddMassTransit(configuration =>
+            {
+                configuration.AddConsumer<OrderCreatingConsumer>();
+                configuration.UsingRabbitMq((context, bus) =>
+                {
+                    bus.Host(new Uri(RabbitMqUrl), host =>
+                    {
+                        host.Username(UserName);
+                        host.Password(Password);
+                    });
+
+                    bus.ConfigureEndpoints(context);
+                });
+            });
 
             return services;
         }
