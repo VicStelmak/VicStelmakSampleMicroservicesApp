@@ -1,22 +1,22 @@
 ﻿@inject IOrderService _orderService
+
 @using VicStelmak.Sma.WebUiDataLibrary.Identity.Enums
 @using VicStelmak.Sma.WebUiDataLibrary.Order
-@using VicStelmak.Sma.WebUiDataLibrary.Order.Requests
 @using VicStelmak.Sma.WebUiDataLibrary.Product.Dtos
 
 <tr>
     <td>@SequenceNumber</td>
-    <td>@Product.Name</td>
-    <td>@Product.Description</td>
-    <td>@Product.Price</td>
-    <td>@Product.AmountInStock</td>
+    <td>@ViewModel.Name</td>
+    <td>@ViewModel.Description</td>
+    <td>@ViewModel.Price</td>
+    <td>@ViewModel.AmountInStock</td>
     <AuthorizeView Roles="@($"{Role.Administrator}, {Role.User}")">
-        <td>@Product.AmountSold</td>
-        <td>@Product.CreatedAt <br />by @Product.CreatedBy</td>
+        <td>@ViewModel.AmountSold</td>
+        <td>@ViewModel.CreatedAt <br />by @ViewModel.CreatedBy</td>
 
-        @if (Product.UpdatedAt != default(DateTime))
+        @if (ViewModel.UpdatedAt != default(DateTime))
         {
-            <td>@Product.UpdatedAt <br />by @Product.UpdatedBy</td>
+            <td>@ViewModel.UpdatedAt <br />by @ViewModel.UpdatedBy</td>
         }
         else
         {
@@ -24,68 +24,65 @@
         }
     </AuthorizeView>
     <td>
-        <img src="@Product.ImageUri" alt="Product Image" style="width:100px;height:100px" />
+        <img src="@ViewModel.ImageUri" alt="Product Image" style="width:100px;height:100px" />
     </td>
     <td class="text-right">
-        <ProductPurchasing @ref="ProductPurchasingModalWindow" ProductId="Product.Id" PurchaseButtonClicked="@((arguments) =>
-            OnPurchaseButtonClickedAsync(arguments.Item1,arguments.Item2))"></ProductPurchasing>
+        <ProductPurchasing @ref="ProductPurchasingModalWindow" ProductId="Product.Id" ProductPage="this"></ProductPurchasing>
         <button class="btn btn-primary btn-sm" @onclick="@(() => ProductPurchasingModalWindow.ShowModalAsync())">Purchase</button>
         <AuthorizeView Roles="@($"{Role.Administrator}, {Role.User}")">
             <ProductEditing @ref="ProductEditingModalWindow" ProductId="Product.Id" UpdateButtonClicked="OnUpdateButtonClickedAsync"></ProductEditing>
             <button class="btn btn-secondary btn-sm" @onclick="@(() => ProductEditingModalWindow.ShowModalAsync())">Update</button>
-            <ProductDeletionConfirmation @ref="ProductDeletionConfirmationModalWindow" DeleteButtonClicked="OnDeleteButtonClickedAsync" Name="@Product.Name"></ProductDeletionConfirmation>
-            <button class="btn btn-danger btn-sm" @onclick="@(() => ProductDeletionConfirmationModalWindow.ShowModal())">Delete</button>
+            <ProductDeletionConfirmation @ref="ProductDeletionConfirmationModalWindow" ProductId="Product.Id" 
+            DeleteButtonClicked="OnDeleteButtonClickedAsync"></ProductDeletionConfirmation>
+            <button class="btn btn-danger btn-sm" @onclick="@(() => ProductDeletionConfirmationModalWindow.ShowModalAsync())">Delete</button>
         </AuthorizeView>
     </td>
 </tr>
 
 @code {
     [Parameter]
-    public EventCallback ProductDeleted { get; set; }
+    public ProductDto Product { get; set; }
     [Parameter]
-    public EventCallback ProductPurchased { get; set; }
+    public EventCallback ProductDeleted { get; set; }
     [Parameter]
     public EventCallback ProductUpdated { get; set; }
     [Parameter]
     public int SequenceNumber { get; set; }
-    [Parameter]
-    public ProductDto Product { get; set; }
 
     private ProductDeletionConfirmation? ProductDeletionConfirmationModalWindow { get; set; }
     private ProductEditing? ProductEditingModalWindow { get; set; }
     private ProductPurchasing? ProductPurchasingModalWindow { get; set; }
+    private ProductDetailsInTableViewModel ViewModel { get; set; } = new();
 
-    private async Task OnDeleteButtonClickedAsync()
+    private async Task OnDeleteButtonClickedAsync(int productId)
     {
-        await _productService.DeleteProductAsync(Product.Id);
+        await _productService.DeleteProductAsync(productId);
         await ProductDeleted.InvokeAsync();
-    }
-
-    private async Task OnPurchaseButtonClickedAsync(AddLineItemToOrderRequest lineItemAddingRequest, CreateOrderRequest orderCreatingRequest)
-    {
-        if (lineItemAddingRequest is null)
-        {
-            await _orderService.CreateOrderAsync(orderCreatingRequest);
-        }
-        else
-        {
-            await _orderService.AddLineItemToOrderAsync(lineItemAddingRequest);
-
-            var order = await _orderService.GetOrderByIdAsync(lineItemAddingRequest.OrderId, OrderStatus.Pending.ToString());
-            var product = await _productService.GetProductByIdAsync(lineItemAddingRequest.ProductId);
-            var updateRequest = new UpdateOrderRequest(order.QuantityOfProducts + lineItemAddingRequest.Quantity, OrderStatus.Pending.ToString(),
-                order.Total + (product.Price * lineItemAddingRequest.Quantity), lineItemAddingRequest.OrderUpdatedBy);
-
-            await _orderService.UpdateOrderAsync(lineItemAddingRequest.OrderId, updateRequest);
-        }
-
-        await ProductPurchased.InvokeAsync();
     }
 
     private async Task OnUpdateButtonClickedAsync(UpdateProductDto productDto)
     {
         await _productService.UpdateProductAsync(Product.Id, productDto);
-
         await ProductUpdated.InvokeAsync();
+    }
+
+    protected override void OnInitialized()
+    {
+        ViewModel = new(Product, SequenceNumber);
+    }
+
+    protected override void OnParametersSet()
+    {
+        ViewModel = new(Product, SequenceNumber);
+    }
+
+    internal void SetProductDetailsInTableDataAsync(ProductDto updatedProduct)
+    {
+        ViewModel.AmountInStock = updatedProduct.AmountInStock;
+        ViewModel.AmountSold = updatedProduct.AmountSold;
+        ViewModel.UpdatedAt = updatedProduct.UpdatedAt;
+        ViewModel.UpdatedBy = updatedProduct.UpdatedBy;
+
+        StateHasChanged();
     }
 }

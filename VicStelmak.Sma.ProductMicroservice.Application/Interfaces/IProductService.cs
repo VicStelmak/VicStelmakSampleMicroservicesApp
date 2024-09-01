@@ -8,6 +8,6 @@ namespace VicStelmak.Sma.ProductMicroservice.Application.Interfaces
         Task CreateProduct(CreateProductDto productDTO);
         Task<ProductDto> GetProductByIdAsync(int productId);
         Task<List<ProductDto>> GetProductsListAsync();
-        Task UpdateProduct(int productId, UpdateProductDto product);
+        Task UpdateProductAsync(int productId, UpdateProductDto productDto);
     }
 }

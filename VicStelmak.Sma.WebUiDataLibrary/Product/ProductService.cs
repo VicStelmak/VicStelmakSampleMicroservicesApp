@@ -16,9 +16,9 @@ namespace VicStelmak.Sma.WebUiDataLibrary.Product
             _options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
         }
 
-        public async Task DeleteProductAsync(int ProductId)
+        public async Task DeleteProductAsync(int productId)
         {
-            var apiResponse = await _httpClient.DeleteAsync($"api/products/{ProductId}");
+            var apiResponse = await _httpClient.DeleteAsync($"api/products/{productId}");
             var apiResponseAsString = await apiResponse.Content.ReadAsStringAsync();
 
             if (apiResponse.IsSuccessStatusCode == false)

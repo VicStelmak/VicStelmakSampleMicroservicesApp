@@ -2,7 +2,7 @@
 
 namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.Order
 {
-    public record GetOrderByIdQuery(int OrderId, string OrderStatus) : IRequest<GetOrderResponse>;
+    public record GetOrderByIdQuery(int OrderId) : IRequest<GetOrderResponse>;
 
     internal class GetOrderByIdHandler : IRequestHandler<GetOrderByIdQuery, GetOrderResponse>
     {
@@ -15,7 +15,7 @@ namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.Order
 
         public async Task<GetOrderResponse> Handle(GetOrderByIdQuery query, CancellationToken cancellationToken)
         {
-            var order = await _orderRepository.GetOrderByIdAsync(query.OrderId, query.OrderStatus);
+            var order = await _orderRepository.GetOrderByIdAsync(query.OrderId);
 
             if (order != null) return order.MapToGetOrderResponse();
 

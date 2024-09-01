@@ -1,5 +1,4 @@
 ﻿using VicStelmak.Sma.Events;
-using VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Domain.Enums;
 using VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Domain.Models;
 
 namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.Order
@@ -16,10 +15,8 @@ namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.Order
                 orderCreatingEvent.PostalCode,
                 orderCreatingEvent.ProductId,
                 orderCreatingEvent.QuantityOfProducts,
-                OrderStatus.Pending.ToString(),
                 orderCreatingEvent.Street,
-                orderCreatingEvent.Total,
-                true);
+                orderCreatingEvent.Total);
         }
 
         internal static GetOrderResponse MapToGetOrderResponse(this OrderModel order)
@@ -41,7 +38,6 @@ namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.Order
             {
                 CreatedBy = request.CreatedBy,
                 QuantityOfProducts = request.QuantityOfProducts,
-                Status = request.Status,
                 Total = request.Total
             };
         }
@@ -55,6 +51,16 @@ namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.Order
                 Total = request.Total,
                 UpdatedBy = request.UpdatedBy
             };
+        }
+
+        internal static PublishOrderCreatedRequest MapToPublishOrderCreatedRequest(this AddLineItemToOrderResponse response)
+        {
+            return new PublishOrderCreatedRequest(response.OrderUpdatedBy, response.OrderCode, response.ProductId, response.Quantity);
+        }
+
+        internal static PublishOrderCreatedRequest MapToPublishOrderCreatedRequest(this CreateOrderResponse response)
+        {
+            return new PublishOrderCreatedRequest(response.CreatedBy, response.OrderCode, response.ProductId, response.QuantityOfProducts);
         }
     }
 }

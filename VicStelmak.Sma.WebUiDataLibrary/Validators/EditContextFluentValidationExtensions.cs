@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.Extensions.DependencyInjection;
 using static FluentValidation.AssemblyScanner;
 
-namespace VicStelmak.Sma.WebUiDataLibraryDataLibrary.Validators
+namespace VicStelmak.Sma.WebUiDataLibrary.Validators
 {
     public static class EditContextFluentValidationExtensions
     {

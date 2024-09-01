@@ -1,10 +1,9 @@
 ﻿@inject IOrderService _orderService
-@using FluentValidation.Results
+
 @using VicStelmak.Sma.WebUiDataLibrary.Order
 @using VicStelmak.Sma.WebUiDataLibrary.Order.Requests
 @using VicStelmak.Sma.WebUiDataLibrary.Product.Dtos
 @using VicStelmak.Sma.WebUiDataLibrary.Validators
-@using VicStelmak.Sma.WebUiDataLibraryDataLibrary.Validators
 
 @if (ModalWindowIsShown == true)
 {
@@ -82,7 +81,7 @@
     [Parameter]
     public int ProductId { get; set; }
     [Parameter]
-    public EventCallback<(AddLineItemToOrderRequest, CreateOrderRequest)> PurchaseButtonClicked { get; set; }
+    public ProductDetailsInTable ProductPage { get; set; }
 
     private bool ModalWindowIsShown { get; set; }
     private FluentValidationValidator? ValidationComponent;
@@ -94,9 +93,9 @@
     {
         bool userExists = await _identityService.CheckIfUserExistsByEmailAsync(ViewModel.Email);
 
-        if (userExists != true)
+        if (userExists == false)
         {
-            var orderCreatingRequest = new CreateOrderRequest(
+            var submitOrderRequest = new SendOrderSubmittingEventRequest(
                 ViewModel.Apartment,
                 ViewModel.Building,
                 ViewModel.City,
@@ -104,20 +103,17 @@
                 ViewModel.PostalCode,
                 ProductId,
                 ViewModel.AmountToPurchase,
-                OrderStatus.Pending.ToString(),
                 ViewModel.Street,
                 ViewModel.AmountToPurchase * Product.Price,
                 false);
 
-            AddLineItemToOrderRequest lineItemAddingRequest = null;
-
-            await OnPurchaseButtonClickedAsync(lineItemAddingRequest, orderCreatingRequest);
+            await _orderService.SendOrderSubmittingEventAsync(submitOrderRequest);
         }
         if (userExists == true)
         {
-            bool orderExists = await _orderService.CheckIfOrderExistsAsync(OrderStatus.Pending.ToString(), ViewModel.Email);
+            bool orderExists = await _orderService.CheckIfPendingOrderExistsAsync(ViewModel.Email);
 
-            if (orderExists != true)
+            if (orderExists == false)
             {
                 var orderCreatingRequest = new CreateOrderRequest(
                     ViewModel.Apartment,
@@ -127,32 +123,48 @@
                     ViewModel.PostalCode,
                     ProductId,
                     ViewModel.AmountToPurchase,
-                    OrderStatus.Pending.ToString(),
                     ViewModel.Street,
-                    ViewModel.AmountToPurchase * Product.Price,
-                    true);
+                    ViewModel.AmountToPurchase * Product.Price);
 
-                AddLineItemToOrderRequest lineItemAddingRequest = null;
-
-                await OnPurchaseButtonClickedAsync(lineItemAddingRequest, orderCreatingRequest);
+                await _orderService.CreateOrderAsync(orderCreatingRequest);
             }
             else
             {
-                CreateOrderRequest orderCreatingRequest = null;
-
-                var order = await _orderService.FindOrderByUserEmailAsync(OrderStatus.Pending.ToString(), ViewModel.Email);
+                var order = await _orderService.FindPendingOrderByUserEmailAsync(ViewModel.Email);
                 var lineItemAddingRequest = new AddLineItemToOrderRequest(order.OrderId, ViewModel.Email, ProductId, ViewModel.AmountToPurchase);
 
-                await OnPurchaseButtonClickedAsync(lineItemAddingRequest, orderCreatingRequest);
+                await _orderService.AddLineItemToOrderAsync(lineItemAddingRequest);
+
+                var product = await _productService.GetProductByIdAsync(ProductId);
+                var updateRequest = new UpdateOrderRequest(order.QuantityOfProducts + lineItemAddingRequest.Quantity, OrderStatus.Pending.ToString(),
+                    order.Total + (product.Price * lineItemAddingRequest.Quantity), lineItemAddingRequest.OrderUpdatedBy);
+
+                await _orderService.UpdateOrderAsync(order.OrderId, updateRequest);
             }
         }
+
+        SetProductDetailsInTableDataAsync();
+
+        CloseModal();
     }
 
-    private async Task OnPurchaseButtonClickedAsync(AddLineItemToOrderRequest lineItemAddingRequest, CreateOrderRequest orderCreatingRequest)
+    private void SetProductDetailsInTableDataAsync()
     {
-        ModalWindowIsShown = false;
+        var updatedProduct = new ProductDto(
+            ProductId,
+            Product.AmountInStock - ViewModel.AmountToPurchase, 
+            Product.AmountSold + ViewModel.AmountToPurchase, 
+            Product.CreatedAt,
+            Product.CreatedBy,
+            Product.Description,
+            Product.ImageUri,
+            Product.Name,
+            Product.Price,
+            DateTime.UtcNow,
+            ViewModel.Email
+        );
 
-        await PurchaseButtonClicked.InvokeAsync((lineItemAddingRequest, orderCreatingRequest));
+        ProductPage.SetProductDetailsInTableDataAsync(updatedProduct);
     }
 
     internal void CloseModal()

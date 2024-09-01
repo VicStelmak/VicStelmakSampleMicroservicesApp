@@ -1,44 +1,29 @@
-﻿using MassTransit;
-using MediatR;
-using VicStelmak.Sma.Events;
-using VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Domain.Enums;
+﻿using MediatR;
 using VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Domain.Models;
 
 namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.Order
 {
-    internal record AddLineItemToOrderCommand(AddLineItemToOrderRequest request) : IRequest;
+    internal record AddLineItemToOrderCommand(AddLineItemToOrderRequest Request) : IRequest<AddLineItemToOrderResponse>;
 
-    internal class AddLineItemToOrderHandler : IRequestHandler<AddLineItemToOrderCommand>
+    internal class AddLineItemToOrderHandler : IRequestHandler<AddLineItemToOrderCommand, AddLineItemToOrderResponse>
     {
-        private const string OrderCreatedBusQueue = "OrderCreated";
-
-        private readonly IBus _bus;
         private readonly IOrderRepository _orderRepository;
 
-        public AddLineItemToOrderHandler(IBus bus, IOrderRepository orderRepository)
+        public AddLineItemToOrderHandler(IOrderRepository orderRepository)
         {
-            _bus = bus;
             _orderRepository = orderRepository;
         }
 
-        public async Task Handle(AddLineItemToOrderCommand command, CancellationToken cancellationToken)
+        public async Task<AddLineItemToOrderResponse> Handle(AddLineItemToOrderCommand command, CancellationToken cancellationToken)
         {
-            var item = new LineItemModel() { OrderId = command.request.OrderId, ProductId = command.request.ProductId, Quantity = command.request.Quantity };
-            var order = await _orderRepository.GetOrderByIdAsync(command.request.OrderId, OrderStatus.Pending.ToString());
+            var item = new LineItemModel() { OrderId = command.Request.OrderId, ProductId = command.Request.ProductId, 
+                Quantity = command.Request.Quantity };
+            var order = await _orderRepository.GetOrderByIdAsync(command.Request.OrderId);
 
-            _orderRepository.AddLineItemToOrder(item);
+            await _orderRepository.AddLineItemToOrderAsync(item);
 
-            var endpoint = await _bus.GetSendEndpoint(new Uri("queue:" + OrderCreatedBusQueue));
-            await endpoint.Send<OrderCreated>(new
-            {
-                Email = command.request.OrderUpdatedBy,
-
-                OrderCode = order.OrderCode,
-
-                ProductId = command.request.ProductId,
-
-                QuantityOfProducts = command.request.Quantity
-            });
+            return new AddLineItemToOrderResponse(order.OrderCode, command.Request.OrderUpdatedBy, command.Request.ProductId, 
+                command.Request.Quantity);
         }
     }
 
@@ -47,4 +32,10 @@ namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.Order
            string OrderUpdatedBy,
            int ProductId,
            int Quantity);
+
+    internal record AddLineItemToOrderResponse(
+        string OrderCode,
+        string OrderUpdatedBy,
+        int ProductId,
+        int Quantity);
 }

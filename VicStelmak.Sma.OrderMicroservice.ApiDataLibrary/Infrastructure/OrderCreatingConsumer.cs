@@ -22,18 +22,9 @@ namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Infrastructure
             {
                 var request = messageContents.MapToCreateOrderRequest();
 
-                await _mediator.Send(new CreateOrderCommand(request));
+                var orderCreatingResponse = await _mediator.Send(new CreateOrderCommand(request, messageContents.OrderCode));
 
-                await context.Publish<OrderCreated>(new
-                {
-                    Email = messageContents.Email,
-
-                    OrderCode = messageContents.OrderCode,
-
-                    ProductId = messageContents.ProductId,
-
-                    QuantityOfProducts = messageContents.QuantityOfProducts
-                });
+                await _mediator.Send(new PublishOrderCreatedCommand(orderCreatingResponse.MapToPublishOrderCreatedRequest()));
             }
         }
     }

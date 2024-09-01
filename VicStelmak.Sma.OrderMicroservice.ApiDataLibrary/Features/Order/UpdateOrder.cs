@@ -13,14 +13,12 @@ namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.Order
             _orderRepository = orderRepository;
         }
 
-        public Task Handle(UpdateOrderCommand command, CancellationToken cancellationToken)
+        public async Task Handle(UpdateOrderCommand command, CancellationToken cancellationToken)
         {
             var order = command.request.MapToOrder();
             order.Id = command.orderId;
 
-            var orderUpdatingResult = _orderRepository.UpdateOrder(order);
-
-            return Task.CompletedTask;
+            await _orderRepository.UpdateOrderAsync(order);
         }
     }
 

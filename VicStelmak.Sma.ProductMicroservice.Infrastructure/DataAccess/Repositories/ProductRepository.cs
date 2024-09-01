@@ -36,7 +36,7 @@ namespace VicStelmak.Sma.ProductMicroservice.Infrastructure.DataAccess.Repositor
         public async Task<List<ProductModel>> GetProductsListAsync() => 
             await _dbAccess.LoadDataAsync<ProductModel, dynamic> ("SELECT * FROM funcproducts_getproducts()", new { });
 
-        public Task UpdateProduct(ProductModel product) => _dbAccess.SaveDataAsync("spproducts_updateproduct", new
+        public async Task UpdateProductAsync(ProductModel product) => await _dbAccess.SaveDataAsync("spproducts_updateproduct", new
         {
             arg_id = product.Id,
             arg_amount_in_stock = product.AmountInStock,

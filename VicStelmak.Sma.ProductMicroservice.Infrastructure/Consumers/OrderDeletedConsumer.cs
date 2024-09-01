@@ -20,17 +20,20 @@ namespace VicStelmak.Sma.ProductMicroservice.Infrastructure.Consumers
 
             if (messageContents is not null)
             {
-                var product = await _productService.GetProductByIdAsync(messageContents.ProductId);
-                var updateRequest = new UpdateProductDto(
-                    product.AmountInStock + messageContents.QuantityOfProducts,
-                    product.AmountSold - messageContents.QuantityOfProducts,
-                    messageContents.Email,
-                    product.Description,
-                    product.ImageUri,
-                    product.Name,
-                    product.Price);
+                if (messageContents.ProductId is not default(int))
+                {
+                    var product = await _productService.GetProductByIdAsync(messageContents.ProductId);
+                    var updateRequest = new UpdateProductDto(
+                        product.AmountInStock + messageContents.QuantityOfProducts,
+                        product.AmountSold - messageContents.QuantityOfProducts,
+                        messageContents.Email,
+                        product.Description,
+                        product.ImageUri,
+                        product.Name,
+                        product.Price);
 
-                _productService.UpdateProduct(product.Id, updateRequest);
+                    await _productService.UpdateProductAsync(product.Id, updateRequest);
+                }
             }
         }
     }

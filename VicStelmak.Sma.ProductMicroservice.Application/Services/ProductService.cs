@@ -42,11 +42,11 @@ namespace VicStelmak.Sma.ProductMicroservice.Application.Services
             return await _mapper.From(products).AdaptToTypeAsync<List<ProductDto>>();
         }
 
-        public Task UpdateProduct(int productId, UpdateProductDto productDto)
+        public async Task UpdateProductAsync(int productId, UpdateProductDto productDto)
         {
             var product = _mapper.Map<ProductModel>(productDto);
             product.Id = productId;
-            return _productRepository.UpdateProduct(product);
+            await _productRepository.UpdateProductAsync(product);
         }
     }
 }

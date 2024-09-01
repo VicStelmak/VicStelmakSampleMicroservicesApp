@@ -2,34 +2,31 @@
 
 namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.Order
 {
-    internal record FindOrderByUserEmailQuery(string orderStatus, string userEmail) : IRequest<FindOrderResponse>;
+    internal record FindPendingOrderByUserEmailQuery(string UserEmail) : IRequest<FindPendingOrderResponse>;
 
-    internal class FindOrderByUserEmailHandler : IRequestHandler<FindOrderByUserEmailQuery, FindOrderResponse>
+    internal class FindPendingOrderByUserEmailHandler : IRequestHandler<FindPendingOrderByUserEmailQuery, FindPendingOrderResponse>
     {
         private readonly IOrderRepository _orderRepository;
 
-        public FindOrderByUserEmailHandler(IOrderRepository orderRepository)
+        public FindPendingOrderByUserEmailHandler(IOrderRepository orderRepository)
         {
             _orderRepository = orderRepository;
         }
 
-        public async Task<FindOrderResponse> Handle(FindOrderByUserEmailQuery query, CancellationToken cancellationToken)
+        public async Task<FindPendingOrderResponse> Handle(FindPendingOrderByUserEmailQuery query, CancellationToken cancellationToken)
         {
-            var order = await _orderRepository.FindOrderByUserEmailAsync(query.orderStatus, query.userEmail);
+            var order = await _orderRepository.FindPendingOrderByUserEmailAsync(query.UserEmail);
 
-            // Unfortunately I had to return null because I require it if I want OrderEndpointsConfigurator to give a 404 response instead of exception.
-            // I know it's a bad practice.
+            // Unfortunately I had to return null because I require it if I want OrderEndpointsConfigurator to give a 404 response instead
+            // of exception. I know it's a bad practice.
             if (order is null) return null;
 
             var lineItems = await _orderRepository.GetLineItemsByOrderIdAsync(order.Id);
             var lineItemsIds = lineItems.Select(lineItem => lineItem.ProductId).ToList();
 
-            return new FindOrderResponse(order.Id, lineItemsIds, order.QuantityOfProducts);
+            return new FindPendingOrderResponse(order.Id, lineItemsIds, order.QuantityOfProducts, order.Total);
         }
     }
 
-    internal record FindOrderResponse(
-        int OrderId,
-        List<int>? ProductsIds,
-        int QuantityOfProducts);
+    internal record FindPendingOrderResponse(int OrderId, List<int>? ProductsIds, int QuantityOfProducts, decimal Total);
 }

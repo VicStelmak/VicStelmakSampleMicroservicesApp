@@ -41,19 +41,27 @@ namespace VicStelmak.Sma.WebUiDataLibrary.Order
             }
         }
 
-        public async Task<bool> CheckIfOrderExistsAsync(string orderStatus, string userEmail)
+        public async Task<bool> CheckIfPendingOrderExistsAsync(string userEmail)
         {
-            return await _httpClient.GetFromJsonAsync<bool>($"api/orders/exists?orderStatus={orderStatus}&userEmail={userEmail}");
+            return await _httpClient.GetFromJsonAsync<bool>($"api/orders/exists?userEmail={userEmail}");
         }
 
-        public async Task<FindOrderResponse> FindOrderByUserEmailAsync(string orderStatus, string userEmail)
+        public async Task<FindPendingOrderResponse> FindPendingOrderByUserEmailAsync(string userEmail)
         {
-            return await _httpClient.GetFromJsonAsync<FindOrderResponse>($"api/orders/created-by?orderStatus={orderStatus}&userEmail={userEmail}");
+            return await _httpClient.GetFromJsonAsync<FindPendingOrderResponse>($"api/orders/created-by?userEmail={userEmail}");
         }
 
-        public async Task<GetOrderResponse> GetOrderByIdAsync(int orderId, string orderStatus)
+        public async Task SendOrderSubmittingEventAsync(SendOrderSubmittingEventRequest request)
         {
-            return await _httpClient.GetFromJsonAsync<GetOrderResponse>($"api/orders/id?orderId={orderId}&orderStatus={orderStatus}");
+            var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
+
+            var apiResponse = await _httpClient.PostAsync("api/orders/events", jsonContent);
+            var apiResponseAsString = await apiResponse.Content.ReadAsStringAsync();
+
+            if (apiResponse.IsSuccessStatusCode == false)
+            {
+                throw new ArgumentException(apiResponseAsString);
+            }
         }
 
         public async Task UpdateOrderAsync(int orderId, UpdateOrderRequest request)

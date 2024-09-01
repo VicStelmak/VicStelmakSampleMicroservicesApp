@@ -31,7 +31,10 @@ namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Infrastructure
 
             services.AddMassTransit(configuration =>
             {
-                configuration.AddConsumer<OrderCreatingConsumer>();
+                configuration.AddConsumer<OrderCreatingConsumer>((context, configurator) => 
+                {
+                    configurator.UseInMemoryOutbox(context);
+                });
                 configuration.UsingRabbitMq((context, bus) =>
                 {
                     bus.Host(new Uri(RabbitMqUrl), host =>

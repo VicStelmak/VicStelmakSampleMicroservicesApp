@@ -30,7 +30,7 @@ namespace VicStelmak.Sma.ProductMicroservice.Infrastructure.Consumers
                     product.Name,
                     product.Price);
 
-                _productService.UpdateProduct(product.Id, updateRequest);
+                await _productService.UpdateProductAsync(product.Id, updateRequest);
             }
         }
     }

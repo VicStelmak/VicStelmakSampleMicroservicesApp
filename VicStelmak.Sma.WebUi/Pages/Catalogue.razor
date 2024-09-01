@@ -42,8 +42,8 @@
                 int sequenceNumber = ViewModel.SequenceNumber++;
 
                 <CascadingValue Value="@AuthenticatedUserName">
-                    <ProductDetailsInTable Product="product" ProductDeleted="OnProductCrudActionCompletedAsync" ProductPurchased="OnProductCrudActionCompletedAsync"
-                        ProductUpdated="OnProductCrudActionCompletedAsync" SequenceNumber="@sequenceNumber"></ProductDetailsInTable>
+                    <ProductDetailsInTable ProductDeleted="OnProductCrudActionCompletedAsync" Product="product" 
+                        ProductUpdated="OnProductCrudActionCompletedAsync" SequenceNumber="sequenceNumber"></ProductDetailsInTable>
                 </CascadingValue>
             }
         </tbody>
@@ -55,17 +55,10 @@
     private Task<AuthenticationState>? AuthenticationState { get; set; }
 
     private string? AuthenticatedUserName { get; set; }
+
     private ProductAdding? ProductAddingModalWindow { get; set; }
-
+    private ProductDetailsInTable? ProductDetailsInTable { get; set; }
     private CatalogueViewModel ViewModel { get; set; } = new();
-
-    private async Task OnProductCrudActionCompletedAsync()
-    {
-        await Task.Delay(1200);
-
-        ViewModel.Products = await _productService.GetProductsListAsync();
-        ViewModel.Products = ViewModel.Products.OrderBy(product => product.Name).ToList();
-    }
 
     protected override async Task OnInitializedAsync()
     {
@@ -83,5 +76,11 @@
         {
             AuthenticatedUserName = null;
         }
+    }
+
+    private async Task OnProductCrudActionCompletedAsync()
+    {
+        ViewModel.Products = await _productService.GetProductsListAsync();
+        ViewModel.Products = ViewModel.Products.OrderBy(product => product.Name).ToList();
     }
 }

@@ -2,9 +2,9 @@
 
 namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.Order
 {
-    public record CheckIfOrderExistsQuery(string orderStatus, string userEmail) : IRequest<bool>;
+    public record CheckIfPendingOrderExistsQuery(string userEmail) : IRequest<bool>;
 
-    internal class CheckIfPendingOrderExistsHandler : IRequestHandler<CheckIfOrderExistsQuery, bool>
+    internal class CheckIfPendingOrderExistsHandler : IRequestHandler<CheckIfPendingOrderExistsQuery, bool>
     {
         private readonly IOrderRepository _orderRepository;
 
@@ -13,9 +13,9 @@ namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.Order
             _orderRepository = orderRepository;
         }
 
-        public async Task<bool> Handle(CheckIfOrderExistsQuery query, CancellationToken cancellationToken)
+        public async Task<bool> Handle(CheckIfPendingOrderExistsQuery query, CancellationToken cancellationToken)
         {
-            var order = await _orderRepository.FindOrderByUserEmailAsync(query.orderStatus, query.userEmail);
+            var order = await _orderRepository.FindPendingOrderByUserEmailAsync(query.userEmail);
 
             if (order is null) return false;
             else return true;

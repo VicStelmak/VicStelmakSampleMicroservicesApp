@@ -4,7 +4,7 @@ using FluentValidation;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components;
 
-namespace VicStelmak.Sma.WebUiDataLibraryDataLibrary.Validators
+namespace VicStelmak.Sma.WebUiDataLibrary.Validators
 {
     public class FluentValidationValidator : ComponentBase
     {

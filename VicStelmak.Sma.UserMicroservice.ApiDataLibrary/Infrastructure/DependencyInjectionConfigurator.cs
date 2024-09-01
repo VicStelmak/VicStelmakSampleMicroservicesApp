@@ -56,7 +56,10 @@ namespace VicStelmak.Sma.UserMicroservice.ApiDataLibrary.Infrastructure
 
             services.AddMassTransit(configuration =>
             {
-                configuration.AddConsumer<UserCreatingConsumer>();
+                configuration.AddConsumer<UserCreatingConsumer>((context, configurator) => 
+                {
+                    configurator.UseInMemoryOutbox(context);
+                });
                 configuration.UsingRabbitMq((context, bus) =>
                 {
                     bus.Host(new Uri(RabbitMqUrl), host =>

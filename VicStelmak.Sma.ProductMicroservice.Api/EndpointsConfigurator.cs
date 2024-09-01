@@ -78,11 +78,11 @@ namespace VicStelmak.Sma.ProductMicroservice.Api
             }
         }
 
-        private static IResult UpdateProduct(int productId, UpdateProductDto product, IProductService productService)
+        private static async Task<IResult> UpdateProduct(int productId, UpdateProductDto product, IProductService productService)
         {
             try
             {
-                productService.UpdateProduct(productId, product);
+                await productService.UpdateProductAsync(productId, product);
                 return Results.Ok();
             }
             catch (Exception ex)
