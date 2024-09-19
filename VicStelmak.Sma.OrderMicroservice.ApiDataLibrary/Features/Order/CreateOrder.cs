@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Domain.Enums;
-using VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.DeliveryAddress;
 
 namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.Order
 {
@@ -17,13 +16,12 @@ namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.Order
 
         public async Task<CreateOrderResponse> Handle(CreateOrderCommand command, CancellationToken cancellationToken)
         {
-            var deliveryAddress = command.Request.MapToDeliveryAddress();
             var order = command.Request.MapToOrder();
 
             order.OrderCode = command.OrderCode.ToString();
             order.Status = OrderStatus.Pending.ToString();
 
-            await _orderRepository.CreateOrderAsync(deliveryAddress, order, command.Request.ProductId);
+            await _orderRepository.CreateOrderAsync(order, command.Request.ProductId, command.Request.LineItemTotalPrice);
 
             return new CreateOrderResponse(order.CreatedBy, order.OrderCode, command.Request.ProductId, order.QuantityOfProducts);
         }
@@ -34,6 +32,7 @@ namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.Order
         string Building,
         string City,
         string CreatedBy,
+        decimal LineItemTotalPrice,
         string PostalCode,
         int ProductId,
         int QuantityOfProducts,

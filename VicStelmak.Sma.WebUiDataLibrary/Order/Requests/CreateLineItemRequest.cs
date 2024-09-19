@@ -1,8 +1,9 @@
 ﻿namespace VicStelmak.Sma.WebUiDataLibrary.Order.Requests
 {
-    public record AddLineItemToOrderRequest(
+    public record CreateLineItemRequest(
         int OrderId,
         string OrderUpdatedBy,
         int ProductId,
-        int Quantity);
+        int Quantity,
+        decimal TotalPrice);
 }

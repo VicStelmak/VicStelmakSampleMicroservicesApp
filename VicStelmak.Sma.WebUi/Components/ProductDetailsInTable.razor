@@ -76,12 +76,23 @@
         ViewModel = new(Product, SequenceNumber);
     }
 
-    internal void SetProductDetailsInTableDataAsync(ProductDto updatedProduct)
+    internal async Task SetProductDetailsInTableDataAsync(int productId, bool userExists)
     {
-        ViewModel.AmountInStock = updatedProduct.AmountInStock;
-        ViewModel.AmountSold = updatedProduct.AmountSold;
-        ViewModel.UpdatedAt = updatedProduct.UpdatedAt;
-        ViewModel.UpdatedBy = updatedProduct.UpdatedBy;
+        if (userExists == false)
+        {
+            await Task.Delay(1700);
+        }
+        else
+        {
+            await Task.Delay(500);
+        }
+
+        var product = await _productService.GetProductByIdAsync(productId);
+
+        ViewModel.AmountInStock = product.AmountInStock;
+        ViewModel.AmountSold = product.AmountSold;
+        ViewModel.UpdatedAt = product.UpdatedAt;
+        ViewModel.UpdatedBy = product.UpdatedBy;
 
         StateHasChanged();
     }

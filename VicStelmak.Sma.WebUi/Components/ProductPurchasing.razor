@@ -2,6 +2,7 @@
 
 @using VicStelmak.Sma.WebUiDataLibrary.Order
 @using VicStelmak.Sma.WebUiDataLibrary.Order.Requests
+@using VicStelmak.Sma.WebUiDataLibrary.Order.Responses
 @using VicStelmak.Sma.WebUiDataLibrary.Product.Dtos
 @using VicStelmak.Sma.WebUiDataLibrary.Validators
 
@@ -20,46 +21,90 @@
                     @if (ViewModel != null)
                     {
                         <EditForm Model="@ViewModel" OnValidSubmit="@HandleValidSubmitAsync">
-                            <FluentValidationValidator @ref="ValidationComponent" Options="@(options => options.IncludeAllRuleSets())" Validator="ProductValidator" />
-
+                            <FluentValidationValidator @ref="ValidationComponent" Options="@(options => options.IncludeAllRuleSets())" 
+                                Validator="ProductValidator" />
                             <div class="form-group">
                                 <label class="form-control-label">Amount to Purchase</label>
                                 <InputNumber class="form-control" @bind-Value="ViewModel.AmountToPurchase" />
                                 <ValidationMessage For="@(() => ViewModel.AmountToPurchase)" />
                             </div>
                             <br />
-                            <div class="form-group">
-                                <label class="form-control-label">Email Address</label>
-                                <InputText class="form-control" @bind-Value="ViewModel.Email" />
-                                <ValidationMessage For="@(() => ViewModel.Email)" />
-                            </div>
+                            @if (AuthenticatedUserName is null)
+                            {
+                                <div class="form-group">
+                                    <label class="form-control-label">Email Address</label>
+                                    <InputText class="form-control" Value="@ViewModel.Email" ValueChanged="HandleInputEmailChangeAsync" 
+                                    ValueExpression="() => ViewModel.Email" />
+                                    <ValidationMessage For="@(() => ViewModel.Email)" />
+                                </div>
+                            }
+                            else if (AuthenticatedUserName is not null && UserExists == true)
+                            {
+                                <div class="form-group">
+                                    <label class="form-control-label">Email Address</label>
+                                    <InputText class="form-control" @bind-Value="ViewModel.Email" disabled />
+                                    <ValidationMessage For="@(() => ViewModel.Email)" />
+                                </div>
+                            }
                             <br />
                             <h5>Delivery Address:</h5>
-                            <div class="form-group">
-                                <label class="form-control-label">Postal Code</label>
-                                <InputText class="form-control" @bind-Value="ViewModel.PostalCode" />
-                                <ValidationMessage For="@(() => ViewModel.PostalCode)" />
-                            </div>
-                            <div class="form-group">
-                                <label class="form-control-label">Apartment Number</label>
-                                <InputNumber class="form-control" @bind-Value="ViewModel.Apartment" />
-                                <ValidationMessage For="@(() => ViewModel.Apartment)" />
-                            </div>
-                            <div class="form-group">
-                                <label class="form-control-label">Building Number</label>
-                                <InputText class="form-control" @bind-Value="ViewModel.Building" />
-                                <ValidationMessage For="@(() => ViewModel.Building)" />
-                            </div>
-                            <div class="form-group">
-                                <label class="form-control-label">Street</label>
-                                <InputText class="form-control" @bind-Value="ViewModel.Street" />
-                                <ValidationMessage For="@(() => ViewModel.Street)" />
-                            </div>
-                            <div class="form-group">
-                                <label class="form-control-label">City</label>
-                                <InputText class="form-control" @bind-Value="ViewModel.City" />
-                                <ValidationMessage For="@(() => ViewModel.City)" />
-                            </div>
+                            @if (OrderExists == false)
+                            {
+                                <div class="form-group">
+                                    <label class="form-control-label">Postal Code</label>
+                                    <InputText class="form-control" @bind-Value="ViewModel.PostalCode" />
+                                    <ValidationMessage For="@(() => ViewModel.PostalCode)" />
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-control-label">Apartment Number</label>
+                                    <InputNumber class="form-control" @bind-Value="ViewModel.Apartment" />
+                                    <ValidationMessage For="@(() => ViewModel.Apartment)" />
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-control-label">Building Number</label>
+                                    <InputText class="form-control" @bind-Value="ViewModel.Building" />
+                                    <ValidationMessage For="@(() => ViewModel.Building)" />
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-control-label">Street</label>
+                                    <InputText class="form-control" @bind-Value="ViewModel.Street" />
+                                    <ValidationMessage For="@(() => ViewModel.Street)" />
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-control-label">City</label>
+                                    <InputText class="form-control" @bind-Value="ViewModel.City" />
+                                    <ValidationMessage For="@(() => ViewModel.City)" />
+                                </div>
+                            }
+                            else
+                            {
+                                <p style="color:red">Pending order with notified address already exists. All new products will be added to it.</p>
+                                <div class="form-group">
+                                    <label class="form-control-label">Postal Code</label>
+                                    <InputText class="form-control" @bind-Value="ViewModel.PostalCode" disabled />
+                                    <ValidationMessage For="@(() => ViewModel.PostalCode)" />
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-control-label">Apartment Number</label>
+                                    <InputNumber class="form-control" @bind-Value="ViewModel.Apartment" disabled />
+                                    <ValidationMessage For="@(() => ViewModel.Apartment)" />
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-control-label">Building Number</label>
+                                    <InputText class="form-control" @bind-Value="ViewModel.Building" disabled />
+                                    <ValidationMessage For="@(() => ViewModel.Building)" />
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-control-label">Street</label>
+                                    <InputText class="form-control" @bind-Value="ViewModel.Street" disabled />
+                                    <ValidationMessage For="@(() => ViewModel.Street)" />
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-control-label">City</label>
+                                    <InputText class="form-control" @bind-Value="ViewModel.City" disabled />
+                                    <ValidationMessage For="@(() => ViewModel.City)" />
+                                </div>
+                            }
                             <br />
                             <div class="row">
                                 <div class="col-md-12 text-right">
@@ -84,16 +129,50 @@
     public ProductDetailsInTable ProductPage { get; set; }
 
     private bool ModalWindowIsShown { get; set; }
+    private bool OrderExists { get; set; }
+    private bool UserExists { get; set; }
+
+    private FindPendingOrderResponse Order { get; set; }
     private FluentValidationValidator? ValidationComponent;
+    private GetOrderResponse OrderDetailedData { get; set; }
     private ProductPurchasingViewModel ViewModel { get; set; }
     private ProductDto Product { get; set; }
     private ProductPurchasingViewModelValidator ProductValidator { get; set; }
 
+    private async Task HandleInputEmailChangeAsync(string userEmail)
+    {
+        ViewModel.Email = userEmail;
+        OrderExists = await _orderService.CheckIfPendingOrderExistsAsync(ViewModel.Email);
+        UserExists = await _identityService.CheckIfUserExistsByEmailAsync(ViewModel.Email);
+
+        if (OrderExists == true && UserExists == true)
+        {
+            Order = await _orderService.FindPendingOrderByUserEmailAsync(ViewModel.Email);
+            OrderDetailedData = await _orderService.GetOrderByIdAsync(Order.OrderId);
+
+            ViewModel.Apartment = OrderDetailedData.Apartment;
+            ViewModel.Building = OrderDetailedData.Building;
+            ViewModel.City = OrderDetailedData.City;
+            ViewModel.PostalCode = OrderDetailedData.PostalCode;
+            ViewModel.Street = OrderDetailedData.Street;
+
+            StateHasChanged();
+        }
+        else
+        {
+            ViewModel.Apartment = default(int);
+            ViewModel.Building = null;
+            ViewModel.City = null;
+            ViewModel.PostalCode = null;
+            ViewModel.Street = null;
+
+            StateHasChanged();
+        }
+    }
+
     private async Task HandleValidSubmitAsync()
     {
-        bool userExists = await _identityService.CheckIfUserExistsByEmailAsync(ViewModel.Email);
-
-        if (userExists == false)
+        if (UserExists == false)
         {
             var submitOrderRequest = new SendOrderSubmittingEventRequest(
                 ViewModel.Apartment,
@@ -104,22 +183,20 @@
                 ProductId,
                 ViewModel.AmountToPurchase,
                 ViewModel.Street,
-                ViewModel.AmountToPurchase * Product.Price,
-                false);
+                ViewModel.AmountToPurchase * Product.Price);
 
             await _orderService.SendOrderSubmittingEventAsync(submitOrderRequest);
         }
-        if (userExists == true)
+        else
         {
-            bool orderExists = await _orderService.CheckIfPendingOrderExistsAsync(ViewModel.Email);
-
-            if (orderExists == false)
+            if (OrderExists == false)
             {
                 var orderCreatingRequest = new CreateOrderRequest(
                     ViewModel.Apartment,
                     ViewModel.Building,
                     ViewModel.City,
                     ViewModel.Email,
+                    ViewModel.AmountToPurchase * Product.Price,
                     ViewModel.PostalCode,
                     ProductId,
                     ViewModel.AmountToPurchase,
@@ -130,45 +207,48 @@
             }
             else
             {
-                var order = await _orderService.FindPendingOrderByUserEmailAsync(ViewModel.Email);
-                var lineItemAddingRequest = new AddLineItemToOrderRequest(order.OrderId, ViewModel.Email, ProductId, ViewModel.AmountToPurchase);
+                Order = await _orderService.FindPendingOrderByUserEmailAsync(ViewModel.Email);
+                OrderDetailedData = await _orderService.GetOrderByIdAsync(Order.OrderId);
 
-                await _orderService.AddLineItemToOrderAsync(lineItemAddingRequest);
+                var lineItemCreatingRequest = new CreateLineItemRequest(
+                    Order.OrderId, 
+                    ViewModel.Email, 
+                    ProductId, 
+                    ViewModel.AmountToPurchase, 
+                    Product.Price * ViewModel.AmountToPurchase);
 
-                var product = await _productService.GetProductByIdAsync(ProductId);
-                var updateRequest = new UpdateOrderRequest(order.QuantityOfProducts + lineItemAddingRequest.Quantity, OrderStatus.Pending.ToString(),
-                    order.Total + (product.Price * lineItemAddingRequest.Quantity), lineItemAddingRequest.OrderUpdatedBy);
+                await _orderService.CreateLineItemAsync(lineItemCreatingRequest);
 
-                await _orderService.UpdateOrderAsync(order.OrderId, updateRequest);
+                var updateRequest = new UpdateOrderRequest(
+                    OrderDetailedData.Apartment, 
+                    OrderDetailedData.Building, 
+                    OrderDetailedData.City, 
+                    OrderDetailedData.PostalCode,
+                    Order.QuantityOfProducts + lineItemCreatingRequest.Quantity, 
+                    OrderStatus.Pending.ToString(),
+                    OrderDetailedData.Street,
+                    Order.Total + lineItemCreatingRequest.TotalPrice, 
+                    lineItemCreatingRequest.OrderUpdatedBy);
+
+                await _orderService.UpdateOrderAsync(Order.OrderId, updateRequest);
             }
         }
 
-        SetProductDetailsInTableDataAsync();
+        await SetProductDetailsInTableDataAsync(UserExists);
 
         CloseModal();
     }
 
-    private void SetProductDetailsInTableDataAsync()
+    private async Task SetProductDetailsInTableDataAsync(bool userExists)
     {
-        var updatedProduct = new ProductDto(
-            ProductId,
-            Product.AmountInStock - ViewModel.AmountToPurchase, 
-            Product.AmountSold + ViewModel.AmountToPurchase, 
-            Product.CreatedAt,
-            Product.CreatedBy,
-            Product.Description,
-            Product.ImageUri,
-            Product.Name,
-            Product.Price,
-            DateTime.UtcNow,
-            ViewModel.Email
-        );
-
-        ProductPage.SetProductDetailsInTableDataAsync(updatedProduct);
+        await ProductPage.SetProductDetailsInTableDataAsync(ProductId, userExists);
     }
 
     internal void CloseModal()
     {
+        OrderExists = default(bool);
+        UserExists = default(bool);
+
         ModalWindowIsShown = false;
     }
 
@@ -177,6 +257,28 @@
         Product = await _productService.GetProductByIdAsync(ProductId);
         ProductValidator = new(Product.AmountInStock);
         ViewModel = new(AuthenticatedUserName, Product.Name);
+
+        if (ViewModel.Email is not null)
+        {
+            UserExists = await _identityService.CheckIfUserExistsByEmailAsync(ViewModel.Email);
+
+            if (UserExists == true)
+            {
+                OrderExists = await _orderService.CheckIfPendingOrderExistsAsync(ViewModel.Email);
+
+                if (OrderExists == true)
+                {
+                    Order = await _orderService.FindPendingOrderByUserEmailAsync(ViewModel.Email);
+                    OrderDetailedData = await _orderService.GetOrderByIdAsync(Order.OrderId);
+
+                    ViewModel.Apartment = OrderDetailedData.Apartment;
+                    ViewModel.Building = OrderDetailedData.Building;
+                    ViewModel.City = OrderDetailedData.City;
+                    ViewModel.PostalCode = OrderDetailedData.PostalCode;
+                    ViewModel.Street = OrderDetailedData.Street;
+                }
+            }
+        }
 
         ModalWindowIsShown = true;
 

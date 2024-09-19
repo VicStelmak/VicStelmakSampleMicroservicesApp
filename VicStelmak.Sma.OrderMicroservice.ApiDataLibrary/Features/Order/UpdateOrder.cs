@@ -2,7 +2,7 @@
 
 namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.Order
 {
-    public record UpdateOrderCommand(int orderId, UpdateOrderRequest request) : IRequest;
+    public record UpdateOrderCommand(int OrderId, UpdateOrderRequest Request) : IRequest;
 
     internal class UpdateOrderHandler : IRequestHandler<UpdateOrderCommand>
     {
@@ -15,12 +15,21 @@ namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.Order
 
         public async Task Handle(UpdateOrderCommand command, CancellationToken cancellationToken)
         {
-            var order = command.request.MapToOrder();
-            order.Id = command.orderId;
+            var order = command.Request.MapToOrder();
+            order.Id = command.OrderId;
 
             await _orderRepository.UpdateOrderAsync(order);
         }
     }
 
-    public record UpdateOrderRequest(int QuantityOfProducts, string Status, decimal Total, string UpdatedBy);
+    public record UpdateOrderRequest(
+        int Apartment,
+        string Building,
+        string City,
+        string PostalCode,
+        int QuantityOfProducts, 
+        string Status, 
+        string Street,
+        decimal Total, 
+        string UpdatedBy);
 }

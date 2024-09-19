@@ -1,7 +1,6 @@
 ﻿using MassTransit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.DeliveryAddress;
 using VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.Order;
 using VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Infrastructure.DataAccess;
 
@@ -26,7 +25,6 @@ namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Infrastructure
             services.AddMediatR(config => config.RegisterServicesFromAssemblyContaining<MediatREntrypoint>());
 
             services.AddSingleton<ISqlDbAccess>(s => new SqlDbAccess(connectionString));
-            services.AddSingleton<IDeliveryAddressRepository, DeliveryAddressRepository>();
             services.AddSingleton<IOrderRepository, OrderRepository>();
 
             services.AddMassTransit(configuration =>

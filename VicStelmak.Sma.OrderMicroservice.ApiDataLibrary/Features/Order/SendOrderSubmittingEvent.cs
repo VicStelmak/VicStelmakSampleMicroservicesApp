@@ -54,6 +54,5 @@ namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.Order
         int ProductId,
         int QuantityOfProducts,
         string Street,
-        decimal Total,
-        bool? UserExists);
+        decimal Total);
 }

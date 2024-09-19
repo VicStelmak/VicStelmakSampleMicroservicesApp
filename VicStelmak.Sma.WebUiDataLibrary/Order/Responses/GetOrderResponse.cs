@@ -1,12 +1,18 @@
 ﻿namespace VicStelmak.Sma.WebUiDataLibrary.Order.Responses
 {
     public record GetOrderResponse(
-         DateTime CreatedAt,
-         string CreatedBy,
-         string OrderCode,
-         int QuantityOfProducts,
-         string Status,
-         decimal Total,
-         DateTime? UpdatedAt,
-         string? UpdatedBy);
+        int Id,
+        int Apartment,
+        string Building,
+        string City,
+        DateTime CreatedAt,
+        string CreatedBy,
+        string OrderCode,
+        string PostalCode,
+        int QuantityOfProducts,
+        string Status,
+        string Street,
+        decimal Total,
+        DateTime? UpdatedAt,
+        string? UpdatedBy);
 }

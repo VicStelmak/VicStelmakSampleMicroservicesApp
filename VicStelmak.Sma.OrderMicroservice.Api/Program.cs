@@ -1,4 +1,3 @@
-using VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.DeliveryAddress;
 using VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.Order;
 using VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Infrastructure;
 
@@ -16,8 +15,5 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.ConfigureOrderEndpoints();
-app.ConfigureDeliveryAddressEndpoints();
-
 app.Run();

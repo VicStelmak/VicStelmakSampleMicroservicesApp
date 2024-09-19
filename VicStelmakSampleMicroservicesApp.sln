@@ -39,7 +39,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Saga", "Saga", "{7D339D5A-2
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VicStelmak.Sma.SagaMicroservice.ApiDataLibrary", "VicStelmak.Sma.SagaMicroservice.ApiDataLibrary\VicStelmak.Sma.SagaMicroservice.ApiDataLibrary.csproj", "{923588C1-3BE2-4EDC-BC6B-183D2FF6C81A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VicStelmak.Sma.SagaMicroservice.Api", "VicStelmak.Sma.SagaMicroservice.Api\VicStelmak.Sma.SagaMicroservice.Api.csproj", "{C5459864-C6DC-4E33-9FBB-A34309918539}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VicStelmak.Sma.SagaMicroservice.Api", "VicStelmak.Sma.SagaMicroservice.Api\VicStelmak.Sma.SagaMicroservice.Api.csproj", "{C5459864-C6DC-4E33-9FBB-A34309918539}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

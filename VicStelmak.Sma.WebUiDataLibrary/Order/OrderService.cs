@@ -15,7 +15,7 @@ namespace VicStelmak.Sma.WebUiDataLibrary.Order
             _httpClient = httpClient;
         }
 
-        public async Task AddLineItemToOrderAsync(AddLineItemToOrderRequest request)
+        public async Task CreateLineItemAsync(CreateLineItemRequest request)
         {
             var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
 
@@ -43,12 +43,43 @@ namespace VicStelmak.Sma.WebUiDataLibrary.Order
 
         public async Task<bool> CheckIfPendingOrderExistsAsync(string userEmail)
         {
-            return await _httpClient.GetFromJsonAsync<bool>($"api/orders/exists?userEmail={userEmail}");
+            return await _httpClient.GetFromJsonAsync<bool>($"api/orders/order?userEmail={userEmail}");
+        }
+
+        public async Task DeleteOrderAsync(string deletedBy, int orderId)
+        {
+            var apiResponse = await _httpClient.DeleteAsync($"api/orders?deletedBy={deletedBy}&orderId={orderId}");
+            var apiResponseAsString = await apiResponse.Content.ReadAsStringAsync();
+
+            if (apiResponse.IsSuccessStatusCode == false)
+            {
+                throw new ArgumentException(apiResponseAsString);
+            }
+        }
+
+        public async Task<List<GetOrderResponse>> FindOrdersByUserEmailAsync(string userEmail)
+        {
+            return await _httpClient.GetFromJsonAsync<List<GetOrderResponse>>($"api/orders/created-by?userEmail={userEmail}");
         }
 
         public async Task<FindPendingOrderResponse> FindPendingOrderByUserEmailAsync(string userEmail)
         {
-            return await _httpClient.GetFromJsonAsync<FindPendingOrderResponse>($"api/orders/created-by?userEmail={userEmail}");
+            return await _httpClient.GetFromJsonAsync<FindPendingOrderResponse>($"api/orders/order/created-by?userEmail={userEmail}");
+        }
+
+        public async Task<List<GetLineItemsResponse>> GetLineItemsByOrderIdAsync(int orderId)
+        {
+            return await _httpClient.GetFromJsonAsync<List<GetLineItemsResponse>>($"api/orders/line-items?orderId={orderId}");
+        }
+
+        public async Task<GetOrderResponse> GetOrderByIdAsync(int orderId)
+        {
+            return await _httpClient.GetFromJsonAsync<GetOrderResponse>($"api/orders/id?orderId={orderId}");
+        }
+
+        public async Task<List<GetOrderResponse>> GetOrdersAsync()
+        {
+            return await _httpClient.GetFromJsonAsync<List<GetOrderResponse>>("api/orders");
         }
 
         public async Task SendOrderSubmittingEventAsync(SendOrderSubmittingEventRequest request)
