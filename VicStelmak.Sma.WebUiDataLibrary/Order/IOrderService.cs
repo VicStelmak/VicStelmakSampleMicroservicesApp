@@ -16,5 +16,6 @@ namespace VicStelmak.Sma.WebUiDataLibrary.Order
         Task<List<GetOrderResponse>> GetOrdersAsync();
         Task SendOrderSubmittingEventAsync(SendOrderSubmittingEventRequest request);
         Task UpdateOrderAsync(int orderId, UpdateOrderRequest request);
+        Task UpdateLineItemAsync(int orderId, UpdateLineItemRequest request);
     }
 }

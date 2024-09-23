@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Domain.Enums;
 
 namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.Order
 {
@@ -19,6 +20,7 @@ namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.Order
             application.MapGet("api/orders/id", GetOrderByIdAsync);
             application.MapGet("api/orders", GetOrdersAsync);
             application.MapPost("api/orders/events", SendOrderSubmittingEventAsync);
+            application.MapPut("api/orders/line-items/{orderId}", UpdateLineItemAsync);
             application.MapPut("api/orders/{orderId}", UpdateOrderAsync);
         }
 
@@ -74,12 +76,15 @@ namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.Order
             {
                 var orderDeletingResponse = await mediator.Send(new DeleteOrderCommand(deletedBy, orderId));
 
-                foreach (var lineItem in orderDeletingResponse.LineItems) 
+                if (orderDeletingResponse.OrderStatus != OrderStatus.Delivered.ToString())
                 {
-                    var publishEventRequest = new PublishOrderDeletedRequest(orderDeletingResponse.DeletedBy, orderDeletingResponse.OrderCode, 
-                        lineItem.ProductId, lineItem.Quantity);
+                    foreach (var lineItem in orderDeletingResponse.LineItems)
+                    {
+                        var publishEventRequest = new PublishOrderDeletedRequest(orderDeletingResponse.DeletedBy, orderDeletingResponse.OrderCode,
+                            lineItem.ProductId, lineItem.Quantity);
 
-                    await mediator.Send(new PublishOrderDeletedCommand(publishEventRequest));
+                        await mediator.Send(new PublishOrderDeletedCommand(publishEventRequest));
+                    }
                 }
                 
                 return Results.Ok();
@@ -164,6 +169,22 @@ namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.Order
             try
             {
                 await mediator.Send(new SendOrderSubmittingEventCommand(request));
+
+                return Results.Ok();
+            }
+            catch (Exception ex)
+            {
+                return Results.Problem(ex.Message);
+            }
+        }
+
+        private static async Task<IResult> UpdateLineItemAsync(int orderId, UpdateLineItemRequest request, IMediator mediator)
+        {
+            try
+            {
+                var lineItemUpdatingRequest = await mediator.Send(new UpdateLineItemCommand(orderId, request));
+
+                await mediator.Send(new PublishOrderCreatedCommand(lineItemUpdatingRequest.MapToPublishOrderCreatedRequest()));
 
                 return Results.Ok();
             }

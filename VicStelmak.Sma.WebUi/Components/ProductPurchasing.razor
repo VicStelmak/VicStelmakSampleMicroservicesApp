@@ -198,7 +198,7 @@
                     ViewModel.AmountToPurchase,
                     ViewModel.Street,
                     ViewModel.AmountToPurchase * Product.Price);
-
+                
                 await _orderService.CreateOrderAsync(orderCreatingRequest);
             }
             else
@@ -206,27 +206,81 @@
                 Order = await _orderService.FindPendingOrderByUserEmailAsync(ViewModel.Email);
                 OrderDetailedData = await _orderService.GetOrderByIdAsync(Order.OrderId);
 
-                var lineItemCreatingRequest = new CreateLineItemRequest(
-                    Order.OrderId, 
-                    ViewModel.Email, 
-                    ProductId, 
-                    ViewModel.AmountToPurchase, 
-                    Product.Price * ViewModel.AmountToPurchase);
+                UpdateLineItemRequest lineItemUpdatingRequest = null;
+                UpdateOrderRequest orderUpdatingRequest = null;
 
-                await _orderService.CreateLineItemAsync(lineItemCreatingRequest);
+                if (Order.ProductsIds.Contains(ProductId) == true)
+                {
+                    if (AuthenticatedUserName is not null)
+                    {
+                        lineItemUpdatingRequest = new UpdateLineItemRequest(
+                           OrderDetailedData.OrderCode,
+                           ProductId,
+                           ViewModel.AmountToPurchase,
+                           Product.Price * ViewModel.AmountToPurchase,
+                           ViewModel.Email);
+                    }
+                    else
+                    {
+                        lineItemUpdatingRequest = new UpdateLineItemRequest(
+                           OrderDetailedData.OrderCode,
+                           ProductId,
+                           ViewModel.AmountToPurchase,
+                           Product.Price * ViewModel.AmountToPurchase,
+                           "unknown");
+                    }
+                   
+                    await _orderService.UpdateLineItemAsync(Order.OrderId, lineItemUpdatingRequest);
 
-                var updateRequest = new UpdateOrderRequest(
-                    OrderDetailedData.Apartment, 
-                    OrderDetailedData.Building, 
-                    OrderDetailedData.City, 
-                    OrderDetailedData.PostalCode,
-                    Order.QuantityOfProducts + lineItemCreatingRequest.Quantity, 
-                    OrderStatus.Pending.ToString(),
-                    OrderDetailedData.Street,
-                    Order.Total + lineItemCreatingRequest.TotalPrice, 
-                    lineItemCreatingRequest.OrderUpdatedBy);
+                    orderUpdatingRequest = new UpdateOrderRequest(
+                        OrderDetailedData.Apartment,
+                        OrderDetailedData.Building,
+                        OrderDetailedData.City,
+                        OrderDetailedData.PostalCode,
+                        OrderDetailedData.QuantityOfProducts + ViewModel.AmountToPurchase,
+                        OrderDetailedData.Status,
+                        OrderDetailedData.Street,
+                        OrderDetailedData.Total + (Product.Price * ViewModel.AmountToPurchase),
+                        lineItemUpdatingRequest.UpdatedBy);
+                }
+                else
+                {
+                    CreateLineItemRequest lineItemCreatingRequest = null; 
 
-                await _orderService.UpdateOrderAsync(Order.OrderId, updateRequest);
+                    if (AuthenticatedUserName is not null)
+                    {
+                        lineItemCreatingRequest = new CreateLineItemRequest(
+                           Order.OrderId,
+                           ViewModel.Email,
+                           ProductId,
+                           ViewModel.AmountToPurchase,
+                           Product.Price * ViewModel.AmountToPurchase);
+                    }
+                    else
+                    {
+                        lineItemCreatingRequest = new CreateLineItemRequest(
+                           Order.OrderId,
+                           "Unknown",
+                           ProductId,
+                           ViewModel.AmountToPurchase,
+                           Product.Price * ViewModel.AmountToPurchase);
+                    }
+                    
+                    await _orderService.CreateLineItemAsync(lineItemCreatingRequest);
+
+                    orderUpdatingRequest = new UpdateOrderRequest(
+                        OrderDetailedData.Apartment,
+                        OrderDetailedData.Building,
+                        OrderDetailedData.City,
+                        OrderDetailedData.PostalCode,
+                        Order.QuantityOfProducts + lineItemCreatingRequest.Quantity,
+                        OrderStatus.Pending.ToString(),
+                        OrderDetailedData.Street,
+                        Order.Total + lineItemCreatingRequest.TotalPrice,
+                        lineItemCreatingRequest.OrderUpdatedBy);
+                }
+                
+                await _orderService.UpdateOrderAsync(Order.OrderId, orderUpdatingRequest);
             }
         }
 

@@ -68,6 +68,14 @@ namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.Order
         public async Task<List<OrderModel>> GetOrdersAsync() =>
             await _dbAccess.LoadDataAsync<OrderModel, dynamic>("SELECT * FROM func_getorders()", new { });
 
+        public async Task UpdateLineItemAsync(LineItemModel lineItem) => await _dbAccess.SaveDataAsync("sp_updatelineitem", new
+        {
+            arg_order_id = lineItem.OrderId,
+            arg_product_id = lineItem.ProductId,
+            arg_quantity = lineItem.Quantity,
+            arg_total_price = lineItem.TotalPrice
+        });
+
         public async Task UpdateOrderAsync(OrderModel order) => await _dbAccess.SaveDataAsync("sp_updateorder", new
         {
             arg_id = order.Id,

@@ -1,0 +1,141 @@
+﻿@using VicStelmak.Sma.WebUiDataLibrary.Order.Requests
+@using VicStelmak.Sma.WebUiDataLibrary.Order.Responses
+
+<div class="col-lg-4 mb-3 d-flex align-items-stretch">
+    <div class="card text-center">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">Order Details:</h5>
+                <p class="card-text mb-4">Order Code: @ViewModel.OrderCode</p>
+                <p class="card-text mb-4" style="font-size:medium">Order Status: @ViewModel.Status</p>
+
+                <h6>Delivery Address:</h6>
+                <p class="card-text" style="font-size:medium">
+                    PostCode @ViewModel.PostalCode,
+                    Apt. @ViewModel.Apartment,
+                    Bldg. @ViewModel.Building,
+                    St. @ViewModel.Street,
+                    City @ViewModel.City
+                </p>
+            </div>
+        </div>
+       
+        <table class="h-100" style="border-bottom:3px solid; border-top:3px solid; font-size:15px">
+            <thead style="border-bottom:ridge">
+                <tr>
+                    <th style="border-right:ridge">Line Item Name</th>
+                    <th style="border-right:ridge">Unit Price</th>
+                    <th style="border-right:ridge">Quantity</th>
+                    <th>Total Price</th>
+                </tr>
+            </thead>
+
+            @for (int counter = 0; counter < ViewModel.LineItems.Count; counter++)
+            {
+                <tbody>
+                    <tr>
+                        <td style="border-bottom:ridge; border-right:ridge">@ViewModel.Products[counter].Name</td>
+                        <td style="border-bottom:ridge; border-right:ridge">@ViewModel.Products[counter].Price</td>
+                        <td style="border-bottom:ridge; border-right:ridge">@ViewModel.LineItems[counter].Quantity</td>
+                        <td style="border-bottom:ridge">@ViewModel.LineItems[counter].TotalPrice</td>
+                    </tr>
+                </tbody>
+            }
+        </table>
+        <br />
+        <div>
+            <strong>Total Quantity: @ViewModel.QuantityOfProducts</strong>
+        </div>
+        <div>
+            <strong>Total: @ViewModel.Total</strong>
+        </div>
+        <div class="card-body">
+            @if (UserRoles.Contains(Role.Administrator.ToString()) || UserRoles.Contains(Role.User.ToString()))
+            {
+                @if (ViewModel.Status == OrderStatus.Pending.ToString())
+                {
+                    <button type="button" class="btn btn-success btn-sm" style="display:inline-block; height:37px"
+                        @onclick="() => MarkOrderAsDeliveredAsync()">
+                        Mark as Delivered
+                    </button>
+                }
+            }
+            <OrderDeletionConfirmation @ref="OrderDeletionConfirmationModalWindow"
+                OrderId="@OrderId" DeleteButtonClicked="((arguments) => OnDeleteButtonClickedAsync(arguments.Item1, arguments.Item2))">
+            </OrderDeletionConfirmation>
+            <button type="button" class="btn btn-danger" style="display:inline-block; height:37px"
+                @onclick="@(() => OrderDeletionConfirmationModalWindow.ShowModalAsync())">
+                Delete
+            </button>
+        </div>
+        <div class="card-footer h-100">
+            <small class="text-muted">Created at: @ViewModel.CreatedAt by @ViewModel.CreatedBy</small>
+            <br />
+            @if (ViewModel.UpdatedAt is not null)
+            {
+                <small class="text-muted">Last updated at: @ViewModel.UpdatedAt by @ViewModel.UpdatedBy</small>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    [CascadingParameter]
+    public string AuthenticatedUserName { get; set; }
+    [Parameter]
+    public EventCallback OrderDataChanged { get; set; }
+    [Parameter]
+    public int OrderId { get; set; }
+    [Parameter]
+    public List<string>? UserRoles { get; set; } 
+
+    private GetOrderResponse Order { get; set; }
+    private OrderDeletionConfirmation OrderDeletionConfirmationModalWindow { get; set; }
+    private OrderDetailsCardViewModel ViewModel { get; set; } = new();
+
+    private async Task MarkOrderAsDeliveredAsync()
+    {
+        var updatingRequest = new UpdateOrderRequest(
+            Order.Apartment,
+            Order.Building, 
+            Order.City, 
+            Order.PostalCode,
+            Order.QuantityOfProducts, 
+            OrderStatus.Delivered.ToString(), 
+            Order.Street,
+            Order.Total, 
+            AuthenticatedUserName);
+
+        await _orderService.UpdateOrderAsync(OrderId, updatingRequest);
+
+        Order = await _orderService.GetOrderByIdAsync(OrderId);
+
+        ViewModel.Status = Order.Status;
+        ViewModel.UpdatedAt = Order.UpdatedAt;
+        ViewModel.UpdatedBy = Order.UpdatedBy;
+
+        StateHasChanged();
+    }
+
+    private async Task OnDeleteButtonClickedAsync(int orderId, string userName)
+    {
+        await _orderService.DeleteOrderAsync(userName, orderId);
+        await OrderDataChanged.InvokeAsync();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Order = await _orderService.GetOrderByIdAsync(OrderId);
+
+        ViewModel = new(Order);
+
+        ViewModel.LineItems = await _orderService.GetLineItemsByOrderIdAsync(OrderId); 
+
+        foreach (var lineItem in ViewModel.LineItems)
+        {
+            var product = await _productService.GetProductByIdAsync(lineItem.ProductId);
+            
+            ViewModel.Products.Add(product);
+        }
+    }
+}

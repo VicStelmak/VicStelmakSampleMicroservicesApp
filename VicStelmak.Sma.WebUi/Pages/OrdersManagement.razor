@@ -1,0 +1,68 @@
+﻿@attribute [Authorize]
+
+@page "/orders-management"
+
+@using Microsoft.AspNetCore.Authorization
+@using System.Security.Claims
+@using VicStelmak.Sma.WebUi.Components
+@using VicStelmak.Sma.WebUiDataLibrary.Order.Responses
+
+<h3>Orders Management</h3>
+<br />
+<div class="container">
+    <div class="row">
+        @foreach (var order in Orders)
+        {
+            <CascadingValue Value="AuthenticatedUserName">
+                <OrderDetailsCard OrderDataChanged="OnOrderDataChangedAsync" OrderId="order.Id" UserRoles="UserRoles"></OrderDetailsCard>
+            </CascadingValue>
+        }
+    </div>
+</div>
+
+@code {
+    [CascadingParameter]
+    private Task<AuthenticationState>? AuthenticationState { get; set; }
+
+    private string AuthenticatedUserName { get; set; }
+
+    private List<GetOrderResponse> Orders { get; set; } = new();
+    private OrderDetailsCard OrderDetailsCard { get; set; }
+    private List<string>? UserRoles { get; set; } = new();
+
+    private async Task OnOrderDataChangedAsync()
+    {
+        if (UserRoles.Contains(Role.Administrator.ToString()) || UserRoles.Contains(Role.User.ToString()))
+        {
+            Orders.Clear();
+            Orders = await _orderService.GetOrdersAsync();
+            Orders = Orders.OrderBy(order => order.CreatedBy).OrderBy(order => order.Status).ToList();
+        }
+        else
+        {
+            Orders = await _orderService.FindOrdersByUserEmailAsync(AuthenticatedUserName);
+            Orders = Orders.OrderBy(order => order.Status).ToList();
+
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var userAuthenticationState = await AuthenticationState;
+
+        AuthenticatedUserName = userAuthenticationState.User.Identity.Name;
+
+        UserRoles = ((ClaimsIdentity)userAuthenticationState.User.Identity).Claims.Where(claim => claim.Type == ClaimTypes.Role)
+            .Select(claim => claim.Value).ToList();
+
+        if (UserRoles.Contains(Role.Administrator.ToString()) || UserRoles.Contains(Role.User.ToString()))
+        {
+            Orders = await _orderService.GetOrdersAsync();
+            Orders = Orders.OrderBy(order => order.CreatedBy).ToList();
+        }
+        else
+        {
+            Orders = await _orderService.FindOrdersByUserEmailAsync(AuthenticatedUserName);
+        }
+    }
+}

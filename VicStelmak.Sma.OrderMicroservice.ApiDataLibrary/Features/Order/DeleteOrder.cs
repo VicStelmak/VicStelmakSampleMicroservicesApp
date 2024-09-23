@@ -20,12 +20,14 @@ namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.Order
 
             await _orderRepository.DeleteOrderAsync(command.orderId);
             
-            return new DeleteOrderResponse(command.DeletedBy, order.OrderCode, lineItems.Select(c => (c.ProductId, c.Quantity)).ToList());
+            return new DeleteOrderResponse(command.DeletedBy, order.OrderCode, order.Status, 
+                lineItems.Select(c => (c.ProductId, c.Quantity)).ToList());
         }
     }
 
     internal record DeleteOrderResponse(
         string DeletedBy,
         string OrderCode,
+        string OrderStatus,
         List<(int ProductId, int Quantity)> LineItems);
 }

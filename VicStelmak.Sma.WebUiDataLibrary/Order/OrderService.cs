@@ -95,6 +95,19 @@ namespace VicStelmak.Sma.WebUiDataLibrary.Order
             }
         }
 
+        public async Task UpdateLineItemAsync(int orderId, UpdateLineItemRequest request)
+        {
+            var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
+
+            var apiResponse = await _httpClient.PutAsync($"api/orders/line-items/{orderId}", jsonContent);
+            var apiResponseAsString = await apiResponse.Content.ReadAsStringAsync();
+
+            if (apiResponse.IsSuccessStatusCode == false)
+            {
+                throw new ArgumentException(apiResponseAsString);
+            }
+        }
+
         public async Task UpdateOrderAsync(int orderId, UpdateOrderRequest request)
         {
             var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");

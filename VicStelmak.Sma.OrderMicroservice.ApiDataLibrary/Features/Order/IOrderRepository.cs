@@ -12,6 +12,7 @@ namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.Order
         Task<List<LineItemModel>> GetLineItemsByOrderIdAsync(int orderId);
         Task<OrderModel> GetOrderByIdAsync(int orderId);
         Task<List<OrderModel>> GetOrdersAsync();
+        Task UpdateLineItemAsync(LineItemModel lineItem);
         Task UpdateOrderAsync(OrderModel order);
     }
 }

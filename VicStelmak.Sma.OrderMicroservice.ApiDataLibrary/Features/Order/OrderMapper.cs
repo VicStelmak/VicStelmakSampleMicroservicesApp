@@ -84,5 +84,10 @@ namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.Order
         {
             return new PublishOrderCreatedRequest(response.CreatedBy, response.OrderCode, response.ProductId, response.QuantityOfProducts);
         }
+
+        internal static PublishOrderCreatedRequest MapToPublishOrderCreatedRequest(this UpdateLineItemResponse response)
+        {
+            return new PublishOrderCreatedRequest(response.UpdatedBy, response.OrderCode, response.ProductId, response.Quantity);
+        }
     }
 }
