@@ -8,6 +8,7 @@ using VicStelmak.Sma.WebUiDataLibrary.Order;
 using VicStelmak.Sma.WebUiDataLibrary.Product;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
+
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 

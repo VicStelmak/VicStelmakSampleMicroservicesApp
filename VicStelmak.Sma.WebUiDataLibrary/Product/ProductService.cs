@@ -8,12 +8,10 @@ namespace VicStelmak.Sma.WebUiDataLibrary.Product
     public class ProductService : IProductService
     {
         private readonly HttpClient _httpClient;
-        private readonly JsonSerializerOptions _options;
 
         public ProductService(HttpClient httpClient)
         {
             _httpClient = httpClient;
-            _options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
         }
 
         public async Task DeleteProductAsync(int productId)

@@ -10,10 +10,6 @@ namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Infrastructure
     {
         public static IServiceCollection AddDependencies(this IServiceCollection services, IConfiguration configuration)
         {
-            const string RabbitMqUrl = "rabbitmq://localhost/";
-            const string UserName = "guest";
-            const string Password = "guest";
-
             var connectionString = configuration.GetConnectionString("PostgresOrderDbConnection") ??
                 throw new InvalidOperationException("Connection string 'PostgresOrderDbConnection' not found.");
             
@@ -27,18 +23,18 @@ namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Infrastructure
             services.AddSingleton<ISqlDbAccess>(s => new SqlDbAccess(connectionString));
             services.AddSingleton<IOrderRepository, OrderRepository>();
 
-            services.AddMassTransit(configuration =>
+            services.AddMassTransit(busConfiguration =>
             {
-                configuration.AddConsumer<OrderCreatingConsumer>((context, configurator) => 
+                busConfiguration.AddConsumer<OrderCreatingConsumer>((context, consumer) => 
                 {
-                    configurator.UseInMemoryOutbox(context);
+                    consumer.UseInMemoryOutbox(context);
                 });
-                configuration.UsingRabbitMq((context, bus) =>
+                busConfiguration.UsingRabbitMq((context, bus) =>
                 {
-                    bus.Host(new Uri(RabbitMqUrl), host =>
+                    bus.Host(new Uri(configuration.GetValue<string>("RabbitMqSettings:Url")), host =>
                     {
-                        host.Username(UserName);
-                        host.Password(Password);
+                        host.Username(configuration.GetValue<string>("RabbitMqSettings:Username"));
+                        host.Password(configuration.GetValue<string>("RabbitMqSettings:Password"));
                     });
 
                     bus.ConfigureEndpoints(context);

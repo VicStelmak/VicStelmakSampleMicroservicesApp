@@ -29,10 +29,6 @@ namespace VicStelmak.Sma.ProductMicroservice.Api
 
         public static IServiceCollection AddInfrastructureDependencies(this IServiceCollection services, IConfiguration configuration)
         {
-            const string RabbitMqUrl = "rabbitmq://localhost/";
-            const string UserName = "guest";
-            const string Password = "guest";
-
             var connectionString = configuration.GetConnectionString("PostgresProductDbConnection") ??
                 throw new InvalidOperationException("Connection string 'PostgresProductDbConnection' not found.");
             var jwtSettings = configuration.GetSection("JwtSettings");
@@ -60,22 +56,22 @@ namespace VicStelmak.Sma.ProductMicroservice.Api
                 };
             });
 
-            services.AddMassTransit(configuration =>
+            services.AddMassTransit(busConfiguration =>
             {
-                configuration.AddConsumer<OrderCreatedConsumer>((context, configurator) => 
+                busConfiguration.AddConsumer<OrderCreatedConsumer>((context, consumer) => 
                 {
-                    configurator.UseInMemoryOutbox(context);
+                    consumer.UseInMemoryOutbox(context);
                 });
-                configuration.AddConsumer<OrderDeletedConsumer>((context, configurator) => 
+                busConfiguration.AddConsumer<OrderDeletedConsumer>((context, consumer) => 
                 {
-                    configurator.UseInMemoryOutbox(context);
+                    consumer.UseInMemoryOutbox(context);
                 });
-                configuration.UsingRabbitMq((context, bus) =>
+                busConfiguration.UsingRabbitMq((context, bus) =>
                 {
-                    bus.Host(new Uri(RabbitMqUrl), host =>
+                    bus.Host(new Uri(configuration.GetValue<string>("RabbitMqSettings:Url")), host =>
                     {
-                        host.Username(UserName);
-                        host.Password(Password);
+                        host.Username(configuration.GetValue<string>("RabbitMqSettings:Username"));
+                        host.Password(configuration.GetValue<string>("RabbitMqSettings:Password"));
                     });
 
                     bus.ConfigureEndpoints(context);

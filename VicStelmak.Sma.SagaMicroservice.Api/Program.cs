@@ -3,28 +3,23 @@ using VicStelmak.Sma.SagaMicroservice.ApiDataLibrary;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddMassTransit(configuration =>
+builder.Services.AddMassTransit(busConfiguration =>
 {
-    const string Password = "guest";
-    const string RabbitMqUrl = "rabbitmq://localhost/";
-    const string RedisConnectionString = "127.0.0.1";
-    const string UserName = "guest";
-
-    configuration.UsingRabbitMq((context, bus) =>
+    busConfiguration.UsingRabbitMq((context, bus) =>
     {
-        bus.Host(new Uri(RabbitMqUrl), host =>
+        bus.Host(new Uri(builder.Configuration.GetValue<string>("RabbitMqSettings:Url")), host =>
         {
-            host.Username(UserName);
-            host.Password(Password);
+            host.Username(builder.Configuration.GetValue<string>("RabbitMqSettings:Username"));
+            host.Password(builder.Configuration.GetValue<string>("RabbitMqSettings:Password"));
         });
 
         bus.ConfigureEndpoints(context);
     });
 
-    configuration.AddSagaStateMachine<OrderSagaStateMachine, OrderSagaStateData, OrderSagaStateDataDefinition>().RedisRepository(configuration => 
+    busConfiguration.AddSagaStateMachine<OrderSagaStateMachine, OrderSagaStateData, OrderSagaStateDataDefinition>().RedisRepository(redis => 
     {
-        configuration.DatabaseConfiguration(RedisConnectionString);
-        configuration.ConcurrencyMode = ConcurrencyMode.Optimistic;
+        redis.DatabaseConfiguration(builder.Configuration.GetConnectionString("RedisSagaDbConnection"));
+        redis.ConcurrencyMode = ConcurrencyMode.Optimistic;
     });
 });
 
