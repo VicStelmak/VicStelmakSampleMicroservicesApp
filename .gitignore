@@ -235,10 +235,14 @@ ClientBin/
 *~
 *.dbmdl
 *.dbproj.schemaview
+*.env
 *.jfm
 *.pfx
 *.publishsettings
+dbs_dump_16-10-2024.sql
+NuGet.Config
 orleans.codegen.cs
+
 
 # Including strong name files can present a security risk
 # (https://github.com/github/gitignore/pull/2483#issue-259490424)

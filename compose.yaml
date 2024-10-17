@@ -1,0 +1,121 @@
+version: '3.4'
+ 
+services:
+  vicstelmak.sma.gateway:
+    image: torrvic/sma_gateway:1.0.0
+    container_name: sma_gateway
+    ports:
+      - 1030:80
+      - 1031:443
+    env_file: "gateway_variables.env"
+    volumes:
+      - $APPDATA/Microsoft/UserSecrets/$USER_SECRETS_ID:/root/.microsoft/usersecrets/$USER_SECRETS_ID
+      - $HOME/.microsoft/usersecrets/$USER_SECRETS_ID:/root/.microsoft/usersecrets/$USER_SECRETS_ID
+    depends_on:
+      - "vicstelmak.sma.postgres"
+      - "vicstelmak.sma.rabbitmq"
+      - "vicstelmak.sma.redis"
+
+  vicstelmak.sma.ordermicroservice:
+    image: torrvic/sma_order_microservice:1.0.0
+    container_name: sma_order_microservice
+    ports:
+      - 1032:80
+      - 1033:443
+    env_file: "order_microservice_variables.env"
+    volumes:
+      - $APPDATA/Microsoft/UserSecrets/$USER_SECRETS_ID:/root/.microsoft/usersecrets/$USER_SECRETS_ID
+      - $HOME/.microsoft/usersecrets/$USER_SECRETS_ID:/root/.microsoft/usersecrets/$USER_SECRETS_ID    
+    depends_on:
+      - "vicstelmak.sma.postgres"
+      - "vicstelmak.sma.rabbitmq"
+      - "vicstelmak.sma.redis"
+
+  vicstelmak.sma.postgres:
+    image: postgres:16.1
+    container_name: sma_postgres
+    ports:
+      - 5432:5432
+    env_file: "postgres_variables.env"
+    volumes: 
+      - db:/var/lib/postgresql/data
+      - ./dbs_dump_16-10-2024.sql:/docker-entrypoint-initdb.d/init-sma-dbs.sql
+
+  vicstelmak.sma.productmicroservice:
+    image: torrvic/sma_product_microservice:1.0.0
+    container_name: sma_product_microservice
+    ports:
+      - 1034:80
+      - 1035:443
+    env_file: "product_microservice_variables.env"
+    volumes:
+      - $APPDATA/Microsoft/UserSecrets/$USER_SECRETS_ID:/root/.microsoft/usersecrets/$USER_SECRETS_ID
+      - $HOME/.microsoft/usersecrets/$USER_SECRETS_ID:/root/.microsoft/usersecrets/$USER_SECRETS_ID
+    depends_on:
+      - "vicstelmak.sma.postgres"
+      - "vicstelmak.sma.rabbitmq"
+      - "vicstelmak.sma.redis"
+
+  vicstelmak.sma.sagamicroservice:
+    image: torrvic/sma_saga_microservice:1.0.0
+    container_name: sma_saga_microservice
+    ports:
+      - 1036:80
+      - 1037:443
+    env_file: "saga_microservice_variables.env"
+    volumes:
+      - $APPDATA/Microsoft/UserSecrets/$USER_SECRETS_ID:/root/.microsoft/usersecrets/$USER_SECRETS_ID
+      - $HOME/.microsoft/usersecrets/$USER_SECRETS_ID:/root/.microsoft/usersecrets/$USER_SECRETS_ID
+    depends_on:
+      - "vicstelmak.sma.postgres"
+      - "vicstelmak.sma.rabbitmq"
+      - "vicstelmak.sma.redis"
+
+  vicstelmak.sma.rabbitmq:
+    image: rabbitmq:3-management
+    container_name: sma_rabbitmq
+    ports:
+      - 5672:5672
+      - 15672:15672
+    env_file: "rabbitmq_variables.env"
+
+  vicstelmak.sma.redis:
+    image: redis:7.2.4
+    container_name: sma_redis
+    ports:
+      - 6379:6379
+    
+  vicstelmak.sma.usermicroservice:
+    image: torrvic/sma_user_microservice:1.0.0
+    container_name: sma_user_microservice
+    ports:
+      - 1038:80
+      - 1039:443
+    env_file: "user_microservice_variables.env"
+    volumes:
+      - $APPDATA/Microsoft/UserSecrets/$USER_SECRETS_ID:/root/.microsoft/usersecrets/$USER_SECRETS_ID
+      - $HOME/.microsoft/usersecrets/$USER_SECRETS_ID:/root/.microsoft/usersecrets/$USER_SECRETS_ID
+    depends_on:
+      - "vicstelmak.sma.postgres"
+      - "vicstelmak.sma.rabbitmq"
+      - "vicstelmak.sma.redis"
+    
+  vicstelmak.sma.webui:
+    image: torrvic/sma_blazor_frontend:1.0.0
+    container_name: sma_blazor_frontend
+    ports:
+      - 1040:80
+      - 1041:443
+    depends_on:
+      - "vicstelmak.sma.gateway"
+      - "vicstelmak.sma.ordermicroservice"
+      - "vicstelmak.sma.postgres"
+      - "vicstelmak.sma.productmicroservice"
+      - "vicstelmak.sma.rabbitmq"
+      - "vicstelmak.sma.redis"
+      - "vicstelmak.sma.sagamicroservice"
+      - "vicstelmak.sma.usermicroservice"
+    
+volumes:
+  db:
+    driver: local

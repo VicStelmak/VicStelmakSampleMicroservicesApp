@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\VicStelmak.SMA.ProductMicroservice.Infrastructure\VicStelmak.Sma.ProductMicroservice.Infrastructure.csproj" />
+    <ProjectReference Include="..\VicStelmak.Sma.ProductMicroservice.Infrastructure\VicStelmak.Sma.ProductMicroservice.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

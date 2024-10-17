@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\VicStelmak.SMA.UserMicroservice.ApiDataLibrary\VicStelmak.Sma.UserMicroservice.ApiDataLibrary.csproj" />
+    <ProjectReference Include="..\VicStelmak.Sma.UserMicroservice.ApiDataLibrary\VicStelmak.Sma.UserMicroservice.ApiDataLibrary.csproj" />
   </ItemGroup>
 
 </Project>
