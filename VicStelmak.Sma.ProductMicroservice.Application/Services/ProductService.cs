@@ -17,15 +17,18 @@ namespace VicStelmak.Sma.ProductMicroservice.Application.Services
             _productRepository = productRepository;
         }
 
-        public Task DeleteProduct(int productId)
-        {
-            return _productRepository.DeleteProduct(productId);
-        }
-
         public Task CreateProduct(CreateProductDto productDto)
         {
             var product = _mapper.Map<ProductModel>(productDto);
+
             return _productRepository.CreateProduct(product);
+        }
+
+        public Task DeleteProduct(int productId)
+        {
+            if (productId == 0) throw new ArgumentException();
+            
+            return _productRepository.DeleteProduct(productId);
         }
 
         public async Task<ProductDto> GetProductByIdAsync(int productId)
@@ -38,14 +41,17 @@ namespace VicStelmak.Sma.ProductMicroservice.Application.Services
         public async Task<List<ProductDto>> GetProductsListAsync()
         {
             List<ProductModel> products = await _productRepository.GetProductsListAsync();
-
+            
             return await _mapper.From(products).AdaptToTypeAsync<List<ProductDto>>();
         }
 
         public async Task UpdateProductAsync(int productId, UpdateProductDto productDto)
         {
+            if (productId == 0) throw new ArgumentException(); 
+
             var product = _mapper.Map<ProductModel>(productDto);
             product.Id = productId;
+
             await _productRepository.UpdateProductAsync(product);
         }
     }

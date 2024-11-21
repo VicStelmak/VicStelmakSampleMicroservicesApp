@@ -16,6 +16,8 @@ namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.Order
 
         public async Task<CreateLineItemResponse> Handle(CreateLineItemCommand command, CancellationToken cancellationToken)
         {
+            if (command.Request.OrderId == 0) throw new ArgumentException();
+
             var order = await _orderRepository.GetOrderByIdAsync(command.Request.OrderId);
 
             var lineItem = new LineItemModel()

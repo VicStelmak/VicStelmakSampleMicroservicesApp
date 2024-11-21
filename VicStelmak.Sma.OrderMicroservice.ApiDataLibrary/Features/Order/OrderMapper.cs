@@ -27,17 +27,17 @@ namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.Order
 
         internal static GetOrderResponse MapToGetOrderResponse(this OrderModel order)
         {
-            return new GetOrderResponse(
+                return new GetOrderResponse(
                 order.Id,
-                order.Apartment, 
-                order.Building, 
+                order.Apartment,
+                order.Building,
                 order.City,
-                order.CreatedAt, 
+                order.CreatedAt,
                 order.CreatedBy,
                 order.OrderCode,
                 order.PostalCode,
-                order.QuantityOfProducts, 
-                order.Status, 
+                order.QuantityOfProducts,
+                order.Status,
                 order.Street,
                 order.Total,
                 order.UpdatedAt,

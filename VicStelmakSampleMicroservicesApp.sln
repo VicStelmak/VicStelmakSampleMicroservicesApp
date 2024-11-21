@@ -41,6 +41,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VicStelmak.Sma.SagaMicroser
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VicStelmak.Sma.SagaMicroservice.Api", "VicStelmak.Sma.SagaMicroservice.Api\VicStelmak.Sma.SagaMicroservice.Api.csproj", "{C5459864-C6DC-4E33-9FBB-A34309918539}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{EBD716B5-2DDF-464B-B997-F896757B1C04}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VicStelmak.Sma.ProductMicroservice.Tests", "VicStelmak.Sma.ProductMicroservice.Tests\VicStelmak.Sma.ProductMicroservice.Tests.csproj", "{188AFE43-7CBC-4309-9E28-06418E335380}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VicStelmak.Sma.OrderMicroservice.Tests", "VicStelmak.Sma.OrderMicroservice.Tests\VicStelmak.Sma.OrderMicroservice.Tests.csproj", "{2066987C-12D1-41C1-8BB5-3601FF08E189}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VicStelmak.Sma.UserMicroservice.Tests", "VicStelmak.Sma.UserMicroservice.Tests\VicStelmak.Sma.UserMicroservice.Tests.csproj", "{5492B7F6-5A10-4E06-BA40-3D6640ABDA10}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -99,6 +107,18 @@ Global
 		{C5459864-C6DC-4E33-9FBB-A34309918539}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C5459864-C6DC-4E33-9FBB-A34309918539}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C5459864-C6DC-4E33-9FBB-A34309918539}.Release|Any CPU.Build.0 = Release|Any CPU
+		{188AFE43-7CBC-4309-9E28-06418E335380}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{188AFE43-7CBC-4309-9E28-06418E335380}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{188AFE43-7CBC-4309-9E28-06418E335380}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{188AFE43-7CBC-4309-9E28-06418E335380}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2066987C-12D1-41C1-8BB5-3601FF08E189}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2066987C-12D1-41C1-8BB5-3601FF08E189}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2066987C-12D1-41C1-8BB5-3601FF08E189}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2066987C-12D1-41C1-8BB5-3601FF08E189}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5492B7F6-5A10-4E06-BA40-3D6640ABDA10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5492B7F6-5A10-4E06-BA40-3D6640ABDA10}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5492B7F6-5A10-4E06-BA40-3D6640ABDA10}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5492B7F6-5A10-4E06-BA40-3D6640ABDA10}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -120,6 +140,9 @@ Global
 		{7D339D5A-2ED9-469D-B11F-9D2984E29E55} = {B41D236B-A00F-406E-860E-8CE790744DA5}
 		{923588C1-3BE2-4EDC-BC6B-183D2FF6C81A} = {7D339D5A-2ED9-469D-B11F-9D2984E29E55}
 		{C5459864-C6DC-4E33-9FBB-A34309918539} = {7D339D5A-2ED9-469D-B11F-9D2984E29E55}
+		{188AFE43-7CBC-4309-9E28-06418E335380} = {EBD716B5-2DDF-464B-B997-F896757B1C04}
+		{2066987C-12D1-41C1-8BB5-3601FF08E189} = {EBD716B5-2DDF-464B-B997-F896757B1C04}
+		{5492B7F6-5A10-4E06-BA40-3D6640ABDA10} = {EBD716B5-2DDF-464B-B997-F896757B1C04}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A107C1E3-63E4-4D9E-ACEC-35426C478769}

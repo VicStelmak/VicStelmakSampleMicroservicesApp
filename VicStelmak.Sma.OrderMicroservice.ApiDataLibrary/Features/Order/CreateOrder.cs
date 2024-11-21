@@ -16,6 +16,8 @@ namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.Order
 
         public async Task<CreateOrderResponse> Handle(CreateOrderCommand command, CancellationToken cancellationToken)
         {
+            if (command.OrderCode == default(Guid)) throw new ArgumentException("Default Guid is not a valid OrderCode property value.");
+
             var order = command.Request.MapToOrder();
 
             order.OrderCode = command.OrderCode.ToString();

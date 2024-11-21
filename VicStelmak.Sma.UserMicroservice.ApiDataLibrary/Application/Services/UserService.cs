@@ -31,8 +31,8 @@ namespace VicStelmak.Sma.UserMicroservice.ApiDataLibrary.Application.Services
             var user = await _userManager.FindByIdAsync(userId);
 
             if (user == null) return new AddRoleToUserResponse("User not found.", false, false);
-            
-            if (await _roleManager.RoleExistsAsync(roleName) == true) 
+
+            if (await _roleManager.RoleExistsAsync(roleName) == true)
             {
                 if (await _userManager.IsInRoleAsync(user, roleName) != true)
                 {
@@ -49,8 +49,8 @@ namespace VicStelmak.Sma.UserMicroservice.ApiDataLibrary.Application.Services
             } 
             else
             {
-                return new AddRoleToUserResponse($"Role {roleName} does not exist.", 
-                    false, false); 
+                return new AddRoleToUserResponse($"Role {roleName} does not exist.",
+                    false, false);
             }
         }
 
@@ -60,30 +60,6 @@ namespace VicStelmak.Sma.UserMicroservice.ApiDataLibrary.Application.Services
 
             if (user is not null) return true;
             else return false;
-        }
-
-        public async Task<DeleteRolesFromUserResponse> DeleteRolesFromUserAsync(string userId, IEnumerable<string> roles)
-        {
-            var user = await _userManager.FindByIdAsync(userId);
-
-            if (user == null) 
-            {
-                return new DeleteRolesFromUserResponse("User not found.", false); 
-            }
-
-            await _userManager.RemoveFromRolesAsync(user, roles);
-
-            return new DeleteRolesFromUserResponse($"Roles were removed successfully from user {user.Email}.", true);
-        }
-
-        public async Task DeleteUserAsync(string userId)
-        {
-            var userToDelete = await _userManager.FindByIdAsync(userId);
-
-            if (userToDelete != null)
-            {
-                await _userManager.DeleteAsync(userToDelete);
-            }
         }
 
         public async Task<CreateUserResponse> CreateUserAsync(CreateUserRequest request)
@@ -102,6 +78,30 @@ namespace VicStelmak.Sma.UserMicroservice.ApiDataLibrary.Application.Services
             await _userManager.AddToRoleAsync(user, "Customer");
 
             return new CreateUserResponse(true, null);
+        }
+
+        public async Task<DeleteRolesFromUserResponse> DeleteRolesFromUserAsync(string userId, IEnumerable<string> roles)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                return new DeleteRolesFromUserResponse("User not found.", false);
+            }
+
+            await _userManager.RemoveFromRolesAsync(user, roles);
+
+            return new DeleteRolesFromUserResponse($"Roles were removed successfully from user {user.Email}.", true);
+        }
+
+        public async Task DeleteUserAsync(string userId)
+        {
+            var userToDelete = await _userManager.FindByIdAsync(userId);
+
+            if (userToDelete != null)
+            {
+                await _userManager.DeleteAsync(userToDelete);
+            }
         }
 
         public async Task<List<GetUserResponse>> GetAllUsersAsync()
@@ -126,7 +126,7 @@ namespace VicStelmak.Sma.UserMicroservice.ApiDataLibrary.Application.Services
         {
             var user = await _userManager.FindByIdAsync(userId);
             var userRoles = (List<string>)await _userManager.GetRolesAsync(user);
-
+            
             if (user == null) return null;
 
             return new GetUserResponse(user.Id, user.Email, user.FirstName, user.LastName, userRoles);
@@ -155,6 +155,9 @@ namespace VicStelmak.Sma.UserMicroservice.ApiDataLibrary.Application.Services
 
         public async Task UpdateUserAsync(string userId, UpdateUserRequest request)
         {
+            ArgumentNullException.ThrowIfNull(userId);
+            ArgumentNullException.ThrowIfNull(request);
+
             var user = await _userManager.FindByIdAsync(userId);
 
             if (user != null)

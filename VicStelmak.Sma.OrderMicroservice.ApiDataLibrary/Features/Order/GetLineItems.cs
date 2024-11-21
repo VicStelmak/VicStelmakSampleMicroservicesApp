@@ -15,6 +15,8 @@ namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.Order
 
         public async Task<List<GetLineItemsResponse>> Handle(GetLineItemsByOrderIdQuery query, CancellationToken cancellationToken)
         {
+            if (query.OrderId == 0) throw new ArgumentException("OrderId can't be equal to zero.");
+
             var lineItems = await _orderRepository.GetLineItemsByOrderIdAsync(query.OrderId);
 
             return lineItems.Select(lineItem => lineItem.MapToGetLineItemsResponse()).ToList();

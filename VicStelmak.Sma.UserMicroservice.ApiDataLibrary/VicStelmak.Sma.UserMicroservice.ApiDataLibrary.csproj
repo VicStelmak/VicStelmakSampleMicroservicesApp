@@ -17,4 +17,13 @@
     <PackageReference Include="VicStelmak.Sma.Events" Version="1.1.0" />
   </ItemGroup>
 
+  <ItemGroup>
+	 <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+	    <_Parameter1>VicStelmak.Sma.UserMicroservice.Tests</_Parameter1>
+	 </AssemblyAttribute>
+	 <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+	    <_Parameter1>DynamicProxyGenAssembly2</_Parameter1>
+	 </AssemblyAttribute>
+  </ItemGroup>
+	
 </Project>

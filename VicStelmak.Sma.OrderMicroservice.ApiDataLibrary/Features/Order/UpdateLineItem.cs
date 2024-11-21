@@ -16,6 +16,8 @@ namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.Order
 
         public async Task<UpdateLineItemResponse> Handle(UpdateLineItemCommand command, CancellationToken cancellationToken)
         {
+            if (command.OrderId == 0) throw new ArgumentException("OrderId can't be null.");
+
             var lineItems = await _orderRepository.GetLineItemsByOrderIdAsync(command.OrderId);
 
             int lineItemIndex = lineItems.FindIndex(lineItem => lineItem.ProductId == command.Request.ProductId);

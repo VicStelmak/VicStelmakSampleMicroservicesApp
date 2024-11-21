@@ -17,10 +17,10 @@ namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.Order
         {
             var order = await _orderRepository.GetOrderByIdAsync(command.orderId);
             var lineItems = await _orderRepository.GetLineItemsByOrderIdAsync(command.orderId);
-
-            await _orderRepository.DeleteOrderAsync(command.orderId);
             
-            return new DeleteOrderResponse(command.DeletedBy, order.OrderCode, order.Status, 
+            await _orderRepository.DeleteOrderAsync(command.orderId);
+
+            return new DeleteOrderResponse(command.DeletedBy, order.OrderCode, order.Status,
                 lineItems.Select(c => (c.ProductId, c.Quantity)).ToList());
         }
     }

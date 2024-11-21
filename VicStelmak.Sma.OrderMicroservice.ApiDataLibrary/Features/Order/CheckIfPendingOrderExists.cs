@@ -15,6 +15,8 @@ namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.Order
 
         public async Task<bool> Handle(CheckIfPendingOrderExistsQuery query, CancellationToken cancellationToken)
         {
+            ArgumentNullException.ThrowIfNull(query.userEmail);    
+
             var order = await _orderRepository.FindPendingOrderByUserEmailAsync(query.userEmail);
 
             if (order is null) return false;

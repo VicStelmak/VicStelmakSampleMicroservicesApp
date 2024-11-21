@@ -15,6 +15,8 @@ namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.Order
 
         public async Task Handle(UpdateOrderCommand command, CancellationToken cancellationToken)
         {
+            if (command.OrderId == 0) throw new ArgumentException("OrderId can't be equal to zero.");
+
             var order = command.Request.MapToOrder();
             order.Id = command.OrderId;
 
