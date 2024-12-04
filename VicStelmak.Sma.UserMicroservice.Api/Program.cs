@@ -10,6 +10,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+var logger = app.Services.GetRequiredService<ILogger<Program>>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -25,5 +26,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+logger.LogInformation("The user microservice has started {date} at {time} Utc", DateTime.UtcNow.ToShortDateString(), 
+    DateTime.UtcNow.ToLongTimeString());
 
 app.Run();

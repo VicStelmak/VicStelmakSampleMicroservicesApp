@@ -1,4 +1,6 @@
-﻿using Moq;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Moq;
 using VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Domain.Models;
 using VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.Order;
 
@@ -6,12 +8,17 @@ namespace VicStelmak.Sma.OrderMicroservice.Tests.Systems
 {
     public class CreateLineItemHandlerTests
     {
+        private readonly ILogger<CreateLineItemHandler> _logger;
         private readonly Mock<IOrderRepository> _repositoryMock = new();
         private readonly CreateLineItemHandler _testedService;
 
         public CreateLineItemHandlerTests()
         {
-            _testedService = new CreateLineItemHandler(_repositoryMock.Object);
+            var serviceProvider = new ServiceCollection().AddLogging().BuildServiceProvider();
+            var loggerFactory = serviceProvider.GetService<ILoggerFactory>();
+
+            _logger = loggerFactory.CreateLogger<CreateLineItemHandler>();
+            _testedService = new CreateLineItemHandler(_logger, _repositoryMock.Object);
         }
 
         [Fact]

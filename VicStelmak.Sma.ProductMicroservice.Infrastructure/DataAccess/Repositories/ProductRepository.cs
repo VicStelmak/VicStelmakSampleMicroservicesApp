@@ -12,9 +12,7 @@ namespace VicStelmak.Sma.ProductMicroservice.Infrastructure.DataAccess.Repositor
             _dbAccess = dbAccess;
         }
 
-        public Task DeleteProduct(int productId) => _dbAccess.SaveDataAsync("spproducts_deleteproduct", new { arg_id = productId });
-
-        public Task CreateProduct(ProductModel product) => _dbAccess.SaveDataAsync("spproducts_addproduct", new
+        public async Task CreateProductAsync(ProductModel product) => await _dbAccess.SaveDataAsync("spproducts_addproduct", new
         {
             arg_amount_in_stock = product.AmountInStock,
             arg_amount_sold = product.AmountSold,
@@ -24,6 +22,8 @@ namespace VicStelmak.Sma.ProductMicroservice.Infrastructure.DataAccess.Repositor
             arg_name = product.Name,
             arg_price = product.Price
         });
+
+        public async Task DeleteProductAsync(int productId) => await _dbAccess.SaveDataAsync("spproducts_deleteproduct", new { arg_id = productId });
 
         public async Task<ProductModel> GetProductByIdAsync(int productId)
         {

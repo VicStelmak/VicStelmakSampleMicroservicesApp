@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.Extensions.Logging;
 using VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Domain.Models;
 
 namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.Order
@@ -7,10 +8,12 @@ namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.Order
 
     internal class UpdateLineItemHandler : IRequestHandler<UpdateLineItemCommand, UpdateLineItemResponse>
     {
+        private readonly ILogger<UpdateLineItemHandler> _logger;
         private readonly IOrderRepository _orderRepository;
 
-        public UpdateLineItemHandler(IOrderRepository orderRepository)
+        public UpdateLineItemHandler(ILogger<UpdateLineItemHandler> logger, IOrderRepository orderRepository)
         {
+            _logger = logger;
             _orderRepository = orderRepository;
         }
 
@@ -31,6 +34,9 @@ namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.Order
             };
 
             await _orderRepository.UpdateLineItemAsync(lineItem);
+
+            _logger.LogInformation("Line item with {lineItemId} was updated by {userName} {date} at {time} Utc.",
+                command.Request.ProductId, command.Request.UpdatedBy, DateTime.UtcNow.ToShortDateString(), DateTime.UtcNow.ToLongTimeString());
 
             return new UpdateLineItemResponse(command.Request.OrderCode, command.Request.ProductId, command.Request.Quantity,
                 command.Request.UpdatedBy);

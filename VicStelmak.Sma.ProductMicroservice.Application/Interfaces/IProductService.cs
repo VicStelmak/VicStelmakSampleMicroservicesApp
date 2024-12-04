@@ -1,12 +1,11 @@
 ﻿using VicStelmak.Sma.ProductMicroservice.Application.Dtos;
-using VicStelmak.Sma.ProductMicroservice.Domain.Models;
 
 namespace VicStelmak.Sma.ProductMicroservice.Application.Interfaces
 {
     public interface IProductService
     {
-        Task CreateProduct(CreateProductDto productDTO);
-        Task DeleteProduct(int productId);
+        Task CreateProductAsync(CreateProductDto productDTO);
+        Task DeleteProductAsync(int productId);
         Task<ProductDto> GetProductByIdAsync(int productId);
         Task<List<ProductDto>> GetProductsListAsync();
         Task UpdateProductAsync(int productId, UpdateProductDto productDto);

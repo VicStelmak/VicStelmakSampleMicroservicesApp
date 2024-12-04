@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using VicStelmak.Sma.ProductMicroservice.Application.Dtos;
 using VicStelmak.Sma.ProductMicroservice.Application.Interfaces;
 using VicStelmak.Sma.ProductMicroservice.Domain.Enums;
@@ -7,87 +8,130 @@ namespace VicStelmak.Sma.ProductMicroservice.Api
 {
     public static class EndpointsConfigurator
 {
-        public static void ConfigureApi(this WebApplication app)
+        public static void ConfigureApi(this WebApplication application)
         {
             // API endpoint mapping
-            app.MapDelete("api/products/{productId}", DeleteProduct).RequireAuthorization(new AuthorizeAttribute() 
-            { 
-                Roles = nameof(Role.Administrator) + "," + nameof(Role.User) 
-            });
-            app.MapPost("api/products", CreateProduct).RequireAuthorization(new AuthorizeAttribute()
+            application.MapPost("api/products", CreateProductAsync).RequireAuthorization(new AuthorizeAttribute()
             {
                 Roles = nameof(Role.Administrator) + "," + nameof(Role.User)
             });
-            app.MapGet("api/products", GetProductsListAsync);
-            app.MapGet("api/products/{productId}", GetProductByIdAsync);
-            app.MapPut("api/products/{productId}", UpdateProduct).RequireAuthorization(new AuthorizeAttribute()
+            application.MapDelete("api/products/{productId}", DeleteProductAsync).RequireAuthorization(new AuthorizeAttribute()
+            {
+                Roles = nameof(Role.Administrator) + "," + nameof(Role.User)
+            });
+            application.MapGet("api/products", GetProductsListAsync);
+            application.MapGet("api/products/{productId}", GetProductByIdAsync);
+            application.MapPut("api/products/{productId}", UpdateProduct).RequireAuthorization(new AuthorizeAttribute()
             {
                 Roles = nameof(Role.Administrator) + "," + nameof(Role.User)
             });
         }
 
-        private static IResult DeleteProduct(int productId, IProductService productService)
+        private async static Task<IResult> CreateProductAsync(CreateProductDto productDto, [FromServices] ILoggerFactory loggerFactory, 
+            IProductService productService)
         {
             try
             {
-                productService.DeleteProduct(productId);
+                await productService.CreateProductAsync(productDto);
+
                 return Results.Ok();
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                return Results.Problem(ex.Message);
+                var logger = loggerFactory.CreateLogger(nameof(EndpointsConfigurator));    
+
+                logger.LogCritical(exception.ToString());
+
+                return Results.Problem(exception.Message);
             }
         }
 
-        private static IResult CreateProduct(CreateProductDto productDto, IProductService productService)
+        private async static Task<IResult> DeleteProductAsync([FromServices] ILoggerFactory loggerFactory, int productId, 
+            IProductService productService)
         {
             try
             {
-                productService.CreateProduct(productDto);
+                await productService.DeleteProductAsync(productId);
+
                 return Results.Ok();
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                return Results.Problem(ex.Message);
+                var logger = loggerFactory.CreateLogger(nameof(EndpointsConfigurator));
+
+                if (exception is ArgumentException)
+                {
+                    logger.LogError(exception.ToString());
+                }
+                else
+                {
+                    logger.LogCritical(exception.ToString());
+                }
+
+                return Results.Problem(exception.Message);
             }
         }
 
-        private static async Task<IResult> GetProductsListAsync(IProductService productService)
+        private static async Task<IResult> GetProductsListAsync([FromServices] ILoggerFactory loggerFactory, IProductService productService)
         {
             try
             {
                 return Results.Ok(await productService.GetProductsListAsync());
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                return Results.Problem(ex.Message);
+                var logger = loggerFactory.CreateLogger(nameof(EndpointsConfigurator));
+
+                logger.LogCritical(exception.ToString());
+
+                return Results.Problem(exception.Message);
             }
         }
 
-        private static async Task<IResult> GetProductByIdAsync(int productId, IProductService productService)
+        private static async Task<IResult> GetProductByIdAsync([FromServices] ILoggerFactory loggerFactory, int productId, 
+            IProductService productService)
         {
             try
             {
                 var results = await productService.GetProductByIdAsync(productId);
+
                 if (results == null) return Results.NotFound();
+
                 return Results.Ok(results);
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                return Results.Problem(ex.Message);
+                var logger = loggerFactory.CreateLogger(nameof(EndpointsConfigurator));
+
+                logger.LogCritical(exception.ToString());
+
+                return Results.Problem(exception.Message);
             }
         }
 
-        private static async Task<IResult> UpdateProduct(int productId, UpdateProductDto product, IProductService productService)
+        private static async Task<IResult> UpdateProduct([FromServices] ILoggerFactory loggerFactory, int productId, UpdateProductDto product, 
+            IProductService productService)
         {
             try
             {
                 await productService.UpdateProductAsync(productId, product);
+
                 return Results.Ok();
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                return Results.Problem(ex.Message);
+                var logger = loggerFactory.CreateLogger(nameof(EndpointsConfigurator));
+
+                if (exception is ArgumentException)
+                {
+                    logger.LogError(exception.ToString());
+                }
+                else
+                {
+                    logger.LogCritical(exception.ToString());
+                }
+                
+                return Results.Problem(exception.Message);
             }
         }
     }

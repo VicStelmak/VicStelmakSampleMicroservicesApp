@@ -11,10 +11,12 @@ namespace VicStelmak.Sma.UserMicroservice.Api.Controllers
     [Route("api/users")]
     public class UserController : ControllerBase
     {
+        private readonly ILogger<UserController> _logger;
         private readonly IUserService _userService;
 
-        public UserController(IUserService userService)
+        public UserController(ILogger<UserController> logger, IUserService userService)
         {
+            _logger = logger;
             _userService = userService;
         }
 
@@ -30,8 +32,10 @@ namespace VicStelmak.Sma.UserMicroservice.Api.Controllers
                     
                 return Ok(roleAddingResult);
             }
-            catch (Exception)
+            catch (Exception exception)
             {
+                _logger.LogCritical(exception.ToString());
+
                 return StatusCode(StatusCodes.Status500InternalServerError, "Connection to database failed.");
             }
         }
@@ -48,9 +52,41 @@ namespace VicStelmak.Sma.UserMicroservice.Api.Controllers
 
                 return true;
             }
-            catch (Exception)
+            catch (Exception exception)
             {
+                _logger.LogCritical(exception.ToString());
+
                 return StatusCode(StatusCodes.Status500InternalServerError, "Retrieving of data from the database failed.");
+            }
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<IActionResult> CreateUserAsync([FromBody] CreateUserRequest request)
+        {
+            try
+            {
+                var userCreatingResult = await _userService.CreateUserAsync(request);
+
+                if (userCreatingResult.ActionIsSuccessful == false)
+                {
+                    _logger.LogError("User creating failed because of the following error (or errors): ");
+
+                    foreach (var error in userCreatingResult.Errors)
+                    {
+                        _logger.LogError("{error}", error);
+                    }
+
+                    return BadRequest(userCreatingResult);
+                }
+
+                return StatusCode(201);
+            }
+            catch (Exception exception)
+            {
+                _logger.LogCritical(exception.ToString());
+
+                return StatusCode(StatusCodes.Status500InternalServerError, "Connection to database failed.");
             }
         }
 
@@ -68,13 +104,15 @@ namespace VicStelmak.Sma.UserMicroservice.Api.Controllers
 
                 return Ok(rolesDeletingResult);
             }
-            catch (Exception)
+            catch (Exception exception)
             {
+                _logger.LogCritical(exception.ToString());
+
                 return StatusCode(StatusCodes.Status500InternalServerError, "Connection to database failed.");
             }
         }
 
-        [HttpDelete("{UserId}")]
+        [HttpDelete("{userId}")]
         public async Task<IActionResult> DeleteUserAsync(string userId)
         {
             try
@@ -87,24 +125,19 @@ namespace VicStelmak.Sma.UserMicroservice.Api.Controllers
 
                 return Ok();
             }
-            catch (Exception)
+            catch (Exception exception)
             {
+                if (exception is ArgumentException)
+                {
+                    _logger.LogError(exception.ToString());
+                }
+                else
+                {
+                    _logger.LogCritical(exception.ToString());
+                }
+
                 return StatusCode(StatusCodes.Status500InternalServerError, "Deleting of data in database failed.");
             }
-        }
-
-        [AllowAnonymous]
-        [HttpPost]
-        public async Task<IActionResult> CreateUserAsync([FromBody] CreateUserRequest request)
-        {
-            var userCreatingResult = await _userService.CreateUserAsync(request);
-
-            if (userCreatingResult.ActionIsSuccessful == false) 
-            {
-                return BadRequest(userCreatingResult);
-            }
-
-            return StatusCode(201);
         }
 
         [HttpGet]
@@ -114,8 +147,10 @@ namespace VicStelmak.Sma.UserMicroservice.Api.Controllers
             {
                 return Ok(await _userService.GetAllUsersAsync());
             }
-            catch (Exception)
+            catch (Exception exception)
             {
+                _logger.LogCritical(exception.ToString());
+
                 return StatusCode(StatusCodes.Status500InternalServerError, "Retrieving of data from the database failed.");
             }
         }
@@ -131,8 +166,10 @@ namespace VicStelmak.Sma.UserMicroservice.Api.Controllers
 
                 return Ok(user);
             }
-            catch (Exception)
+            catch (Exception exception)
             {
+                _logger.LogCritical(exception.ToString());
+
                 return StatusCode(StatusCodes.Status500InternalServerError, "Retrieving of data from the database failed.");
             }
         }
@@ -141,17 +178,29 @@ namespace VicStelmak.Sma.UserMicroservice.Api.Controllers
         [HttpPost("logins")]
         public async Task<IActionResult> LogInAsync([FromBody] LogInRequest request)
         {
-            var logInResult = await _userService.LogInAsync(request);
-
-            if (logInResult.IsAuthenticationSuccessful == false)
+            try
             {
-                return Unauthorized(logInResult);
-            }
+                var logInResult = await _userService.LogInAsync(request);
 
-            return Ok(logInResult);
+                if (logInResult.IsAuthenticationSuccessful == false)
+                {
+                    _logger.LogWarning("{ userName } login attempt failed { date } at { time } because of the following reason: {error}", 
+                        request.Email, DateTime.UtcNow.ToShortDateString(), DateTime.UtcNow.ToLongTimeString(), logInResult.ErrorMessage);
+
+                    return Unauthorized(logInResult);
+                }
+
+                return Ok(logInResult);
+            }
+            catch (Exception exception)
+            {
+                _logger.LogCritical(exception.ToString());
+
+                return StatusCode(StatusCodes.Status500InternalServerError, "Connection to database failed.");
+            }
         }
 
-        [HttpPut("{UserId}")]
+        [HttpPut("{userId}")]
         public async Task<IActionResult> UpdateUserAsync(string userId, [FromBody] UpdateUserRequest request)
         {
             try
@@ -164,9 +213,11 @@ namespace VicStelmak.Sma.UserMicroservice.Api.Controllers
 
                 return StatusCode(204);
             }
-            catch (Exception)
+            catch (Exception exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Updating of data in database failed.");
+                _logger.LogCritical(exception.ToString());
+
+                return StatusCode(StatusCodes.Status500InternalServerError, "Connection to database failed.");
             }
         }
     }

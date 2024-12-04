@@ -1,5 +1,7 @@
 ﻿using Mapster;
 using MapsterMapper;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Moq;
 using VicStelmak.Sma.ProductMicroservice.Application;
 using VicStelmak.Sma.ProductMicroservice.Application.Dtos;
@@ -11,41 +13,46 @@ namespace VicStelmak.Sma.ProductMicroservice.Tests
 {
     public class ProductServiceTests
     {
+        private readonly ILogger<ProductService> _logger;
         private readonly IMapper _mapper = MapsterInvoker.GetMapper();
         private readonly Mock<IProductRepository> _repositoryMock = new();
         private readonly ProductService _testedService;
 
         public ProductServiceTests()
         {
-            _testedService = new ProductService(_mapper, _repositoryMock.Object);
+            var serviceProvider = new ServiceCollection().AddLogging().BuildServiceProvider();
+            var loggerFactory = serviceProvider.GetService<ILoggerFactory>();
+
+            _logger = loggerFactory.CreateLogger<ProductService>();
+            _testedService = new ProductService(_logger, _mapper, _repositoryMock.Object);
         }
 
         [Fact]
-        public async Task CreateProduct_WhenInputProductDtoIsNotNull_ShouldCallCreateProduct()
+        public async Task CreateProductAsync_WhenInputProductDtoIsNotNull_ShouldCallCreateProductAsync()
         {
             var createDtoRequest = ProductFixture.MakeCreateProductDto();
 
-            await _testedService.CreateProduct(createDtoRequest);
+            await _testedService.CreateProductAsync(createDtoRequest);
 
-            _repositoryMock.Verify(repository => repository.CreateProduct(It.IsAny<ProductModel>()), Times.Once);
+            _repositoryMock.Verify(repository => repository.CreateProductAsync(It.IsAny<ProductModel>()), Times.Once);
         }
 
         [Fact]
-        public async Task DeleteProduct_WhenInputProductIdIsEqualToZero_ShouldThrowArgumentException()
+        public async Task DeleteProductAsync_WhenInputProductIdIsEqualToZero_ShouldThrowArgumentException()
         {
             int invalidProductId = 0;
 
-            await Assert.ThrowsAsync<ArgumentException>(async () => await _testedService.DeleteProduct(invalidProductId));
+            await Assert.ThrowsAsync<ArgumentException>(async () => await _testedService.DeleteProductAsync(invalidProductId));
         }
 
         [Fact]
-        public void DeleteProduct_WhenInputProductIdIsNotEqualToZero_ShouldCallDeleteProduct()
+        public async Task DeleteProductAsync_WhenInputProductIdIsNotEqualToZero_ShouldCallDeleteProductAsync()
         {
             int productId = 1;
 
-            _testedService.DeleteProduct(productId);
+            await _testedService.DeleteProductAsync(productId);
 
-            _repositoryMock.Verify(repository => repository.DeleteProduct(It.IsAny<int>()), Times.Once);
+            _repositoryMock.Verify(repository => repository.DeleteProductAsync(It.IsAny<int>()), Times.Once);
         }
 
         [Fact]

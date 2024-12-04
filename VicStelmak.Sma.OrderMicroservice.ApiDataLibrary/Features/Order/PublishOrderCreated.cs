@@ -1,5 +1,6 @@
 ﻿using MassTransit;
 using MediatR;
+using Microsoft.Extensions.Logging;
 using VicStelmak.Sma.Events;
 
 namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.Order
@@ -8,10 +9,12 @@ namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.Order
 
     internal class PublishOrderCreatedHandler : IRequestHandler<PublishOrderCreatedCommand>
     {
+        private readonly ILogger<PublishOrderCreatedHandler> _logger;
         private readonly IPublishEndpoint _publishEndpoint;
 
-        public PublishOrderCreatedHandler(IPublishEndpoint publishEndpoint)
+        public PublishOrderCreatedHandler(ILogger<PublishOrderCreatedHandler> logger, IPublishEndpoint publishEndpoint)
         {
+            _logger = logger;
             _publishEndpoint = publishEndpoint;
         }
 
@@ -27,6 +30,9 @@ namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.Order
 
                 QuantityOfProducts = command.Request.QuantityOfProducts
             });
+
+            _logger.LogInformation("OrderCreated event was sent to RabbitMQ message bus by {userName} {date} at {time} Utc.", 
+                command.Request.Email, DateTime.UtcNow.ToShortDateString(), DateTime.UtcNow.ToLongTimeString());
         }
     }
 

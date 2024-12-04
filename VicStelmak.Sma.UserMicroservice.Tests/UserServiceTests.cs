@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
@@ -13,12 +14,16 @@ namespace VicStelmak.Sma.UserMicroservice.Tests
     public class UserServiceTests
     {
         private readonly IConfiguration _configuration;
+        private readonly ILogger<UserService> _logger;
         private readonly Mock<RoleManager<IdentityRole>> _roleManagerMock;
         private readonly UserService _testedService;
         private readonly Mock<UserManager<UserModel>> _userManagerMock; 
 
         public UserServiceTests()
         {
+            var serviceProvider = new ServiceCollection().AddLogging().BuildServiceProvider();
+            var loggerFactory = serviceProvider.GetService<ILoggerFactory>();
+
             var testJwtSettings = new Dictionary<string, string> 
             {
                 { "JwtSettings:secretKey", "AstonishinglyComplicatedToGuessMegaSecretTestPrivateKey" },
@@ -28,6 +33,8 @@ namespace VicStelmak.Sma.UserMicroservice.Tests
             }; 
 
             _configuration = new ConfigurationBuilder().AddInMemoryCollection(testJwtSettings).Build();
+
+            _logger = loggerFactory.CreateLogger<UserService>();
 
             _roleManagerMock = new Mock<RoleManager<IdentityRole>>(
                 new Mock<IRoleStore<IdentityRole>>().Object,
@@ -47,7 +54,7 @@ namespace VicStelmak.Sma.UserMicroservice.Tests
                 new Mock<IServiceProvider>().Object,
                 new Mock<ILogger<UserManager<UserModel>>>().Object);
 
-            _testedService = new UserService(_configuration, _roleManagerMock.Object, _userManagerMock.Object);
+            _testedService = new UserService(_configuration, _logger, _roleManagerMock.Object, _userManagerMock.Object);
         }
 
         [Fact]
@@ -356,7 +363,7 @@ namespace VicStelmak.Sma.UserMicroservice.Tests
         [Fact]
         public async Task LogInAsync_WhenUserExistsButPasswordIsInvalid_ShouldReturnLogInResponseWithSpecificContents()
         {
-            var expectedTestResult = new LogInResponse("Incorrect login or password.", false, null);
+            var expectedTestResult = new LogInResponse("Incorrect password.", false, null);
             var user = UserFixture.CreateUserModel(Guid.NewGuid().ToString());
             var userEmail = "test@email.com";
             var userPassword = "A@12345b";

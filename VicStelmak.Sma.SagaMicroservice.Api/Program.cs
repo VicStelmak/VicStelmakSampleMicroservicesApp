@@ -24,7 +24,11 @@ builder.Services.AddMassTransit(busConfiguration =>
 });
 
 var app = builder.Build();
+var logger = app.Services.GetRequiredService<ILogger<Program>>();
 
 app.MapGet("/", () => "Hello World!");
+
+logger.LogInformation("The saga microservice has started {date} at {time} Utc", DateTime.UtcNow.ToShortDateString(), 
+    DateTime.UtcNow.ToLongTimeString());
 
 app.Run();

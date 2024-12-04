@@ -1,6 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Domain.Enums;
 
 namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.Order
@@ -24,7 +26,8 @@ namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.Order
             application.MapPut("api/orders/{orderId}", UpdateOrderAsync);
         }
 
-        private static async Task<IResult> CheckIfPendingOrderExistsAsync(string userEmail, IMediator mediator)
+        private static async Task<IResult> CheckIfPendingOrderExistsAsync(string userEmail, [FromServices] ILoggerFactory loggerFactory, 
+            IMediator mediator)
         {
             try
             {
@@ -32,13 +35,18 @@ namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.Order
 
                 return Results.Ok(orderExists);
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                return Results.Problem(ex.Message);
+                var logger = loggerFactory.CreateLogger(nameof(OrderEndpointsConfigurator));
+                
+                logger.LogCritical(exception.ToString());
+
+                return Results.Problem(exception.Message);
             }
         }
 
-        private static async Task<IResult> CreateLineItemAsync(CreateLineItemRequest request, IMediator mediator)
+        private static async Task<IResult> CreateLineItemAsync(CreateLineItemRequest request, [FromServices] ILoggerFactory loggerFactory, 
+            IMediator mediator)
         {
             try
             {
@@ -48,13 +56,25 @@ namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.Order
 
                 return Results.Ok();
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                return Results.Problem(ex.Message);
+                var logger = loggerFactory.CreateLogger(nameof(OrderEndpointsConfigurator));
+
+                if (exception is ArgumentException)
+                {
+                    logger.LogError(exception.ToString());
+                }
+                else
+                {
+                    logger.LogCritical(exception.ToString());
+                }
+
+                return Results.Problem(exception.Message);
             }
         }
 
-        private static async Task<IResult> CreateOrderAsync(CreateOrderRequest request, IMediator mediator)
+        private static async Task<IResult> CreateOrderAsync(CreateOrderRequest request, [FromServices] ILoggerFactory loggerFactory, 
+            IMediator mediator)
         {
             try
             {
@@ -64,13 +84,25 @@ namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.Order
 
                 return Results.Ok();
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                return Results.Problem(ex.Message);
+                var logger = loggerFactory.CreateLogger(nameof(OrderEndpointsConfigurator));
+
+                if (exception is ArgumentException)
+                {
+                    logger.LogError(exception.ToString());
+                }
+                else 
+                {
+                    logger.LogCritical(exception.ToString());
+                }
+
+                return Results.Problem(exception.Message);
             }
         }
 
-        private static async Task<IResult> DeleteOrderAsync(string deletedBy, int orderId, IMediator mediator)
+        private static async Task<IResult> DeleteOrderAsync(string deletedBy, [FromServices] ILoggerFactory loggerFactory, IMediator mediator,
+            int orderId)
         {
             try
             {
@@ -89,13 +121,18 @@ namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.Order
                 
                 return Results.Ok();
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                return Results.Problem(ex.Message);
+                var logger = loggerFactory.CreateLogger(nameof(OrderEndpointsConfigurator));
+
+                logger.LogCritical(exception.ToString());
+
+                return Results.Problem(exception.Message);
             }
         }
 
-        private static async Task<IResult> FindOrdersByUserEmailAsync(string userEmail, IMediator mediator)
+        private static async Task<IResult> FindOrdersByUserEmailAsync(string userEmail, [FromServices] ILoggerFactory loggerFactory, 
+            IMediator mediator)
         {
             try
             {
@@ -104,40 +141,63 @@ namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.Order
 
                 return Results.Ok(results);
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                return Results.Problem(ex.Message);
+                var logger = loggerFactory.CreateLogger(nameof(OrderEndpointsConfigurator));
+
+                logger.LogCritical(exception.ToString());
+
+                return Results.Problem(exception.Message);
             }
         }
 
-        private static async Task<IResult> FindPendingOrderByUserEmailAsync(string userEmail, IMediator mediator)
+        private static async Task<IResult> FindPendingOrderByUserEmailAsync(string userEmail, [FromServices] ILoggerFactory loggerFactory, 
+            IMediator mediator)
         {
             try
             {
                 var result = await mediator.Send(new FindPendingOrderByUserEmailQuery(userEmail));
+
                 if (result is null) return Results.NotFound();
 
                 return Results.Ok(result);
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                return Results.Problem(ex.Message);
+                var logger = loggerFactory.CreateLogger(nameof(OrderEndpointsConfigurator));
+
+                logger.LogCritical(exception.ToString());
+
+                return Results.Problem(exception.Message);
             }
         }
 
-        private static async Task<IResult> GetLineItemsByOrderIdAsync(int orderId, IMediator mediator)
+        private static async Task<IResult> GetLineItemsByOrderIdAsync(int orderId, [FromServices] ILoggerFactory loggerFactory,
+            IMediator mediator)
         {
             try
             {
                 return Results.Ok(await mediator.Send(new GetLineItemsByOrderIdQuery(orderId)));
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                return Results.Problem(ex.Message);
+                var logger = loggerFactory.CreateLogger(nameof(OrderEndpointsConfigurator));
+
+                if (exception is ArgumentException)
+                {
+                    logger.LogError(exception.ToString());
+                }
+                else
+                {
+                    logger.LogCritical(exception.ToString());
+                }
+
+                return Results.Problem(exception.Message);
             }
         }
 
-        private static async Task<IResult> GetOrderByIdAsync(int orderId, IMediator mediator)
+        private static async Task<IResult> GetOrderByIdAsync(int orderId, [FromServices] ILoggerFactory loggerFactory, 
+            IMediator mediator)
         {
             try
             {
@@ -146,39 +206,42 @@ namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.Order
 
                 return Results.Ok(results);
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                return Results.Problem(ex.Message);
+                var logger = loggerFactory.CreateLogger(nameof(OrderEndpointsConfigurator));
+
+                logger.LogCritical(exception.ToString());
+
+                return Results.Problem(exception.Message);
             }
         }
 
-        private static async Task<IResult> GetOrdersAsync(IMediator mediator)
+        private static async Task<IResult> GetOrdersAsync([FromServices] ILoggerFactory loggerFactory, IMediator mediator)
         {
             try
             {
                 return Results.Ok(await mediator.Send(new GetOrdersQuery()));
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                return Results.Problem(ex.Message);
+                var logger = loggerFactory.CreateLogger(nameof(OrderEndpointsConfigurator));
+
+                logger.LogCritical(exception.ToString());
+
+                return Results.Problem(exception.Message);
             }
         }
 
         private static async Task<IResult> SendOrderSubmittingEventAsync(SendOrderSubmittingEventRequest request, IMediator mediator)
         {
-            try
-            {
-                await mediator.Send(new SendOrderSubmittingEventCommand(request));
+           
+            await mediator.Send(new SendOrderSubmittingEventCommand(request));
 
-                return Results.Ok();
-            }
-            catch (Exception ex)
-            {
-                return Results.Problem(ex.Message);
-            }
+            return Results.Ok();
         }
 
-        private static async Task<IResult> UpdateLineItemAsync(int orderId, UpdateLineItemRequest request, IMediator mediator)
+        private static async Task<IResult> UpdateLineItemAsync(int orderId, UpdateLineItemRequest request, [FromServices] ILoggerFactory loggerFactory, 
+            IMediator mediator)
         {
             try
             {
@@ -188,13 +251,25 @@ namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.Order
 
                 return Results.Ok();
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                return Results.Problem(ex.Message);
+                var logger = loggerFactory.CreateLogger(nameof(OrderEndpointsConfigurator));
+
+                if (exception is ArgumentException)
+                {
+                    logger.LogError(exception.ToString());
+                }
+                else
+                {
+                    logger.LogCritical(exception.ToString());
+                }
+
+                return Results.Problem(exception.Message);
             }
         }
 
-        private static async Task<IResult> UpdateOrderAsync(int orderId, UpdateOrderRequest request, IMediator mediator)
+        private static async Task<IResult> UpdateOrderAsync(int orderId, UpdateOrderRequest request, [FromServices] ILoggerFactory loggerFactory,
+             IMediator mediator)
         {
             try
             {
@@ -202,9 +277,20 @@ namespace VicStelmak.Sma.OrderMicroservice.ApiDataLibrary.Features.Order
 
                 return Results.Ok();
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                return Results.Problem(ex.Message);
+                var logger = loggerFactory.CreateLogger(nameof(OrderEndpointsConfigurator));
+
+                if (exception is ArgumentException)
+                {
+                    logger.LogError(exception.ToString());
+                }
+                else
+                {
+                    logger.LogCritical(exception.ToString());
+                }
+
+                return Results.Problem(exception.Message);
             }
         }
     }

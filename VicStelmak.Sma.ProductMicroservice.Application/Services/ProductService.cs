@@ -1,5 +1,6 @@
 ﻿using Mapster;
 using MapsterMapper;
+using Microsoft.Extensions.Logging;
 using VicStelmak.Sma.ProductMicroservice.Application.Dtos;
 using VicStelmak.Sma.ProductMicroservice.Application.Interfaces;
 using VicStelmak.Sma.ProductMicroservice.Domain.Models;
@@ -8,27 +9,36 @@ namespace VicStelmak.Sma.ProductMicroservice.Application.Services
 {
     public class ProductService : IProductService
     {
+        private readonly ILogger<ProductService> _logger;
         private readonly IMapper _mapper;
         private readonly IProductRepository _productRepository;
 
-        public ProductService(IMapper mapper,IProductRepository productRepository)
+        public ProductService(ILogger<ProductService> logger, IMapper mapper, IProductRepository productRepository)
         {
+            _logger = logger;
             _mapper = mapper;
             _productRepository = productRepository;
         }
 
-        public Task CreateProduct(CreateProductDto productDto)
+        public async Task CreateProductAsync(CreateProductDto productDto)
         {
             var product = _mapper.Map<ProductModel>(productDto);
 
-            return _productRepository.CreateProduct(product);
+            await _productRepository.CreateProductAsync(product);
+
+            _logger.LogInformation("Product with name {productName} and costing {productPrice} credits was created {date} by {userName} at " +
+                "{time} Utc.", 
+                product.Name, product.Price, DateTime.UtcNow.ToShortDateString(), product.CreatedBy, DateTime.UtcNow.ToLongTimeString());
         }
 
-        public Task DeleteProduct(int productId)
+        public async Task DeleteProductAsync(int productId)
         {
             if (productId == 0) throw new ArgumentException();
             
-            return _productRepository.DeleteProduct(productId);
+            await _productRepository.DeleteProductAsync(productId);
+
+            _logger.LogInformation("Product with Id {productId} was deleted {date} at {time} Utc.",
+                productId, DateTime.UtcNow.ToShortDateString(), DateTime.UtcNow.ToLongTimeString());
         }
 
         public async Task<ProductDto> GetProductByIdAsync(int productId)
@@ -53,6 +63,9 @@ namespace VicStelmak.Sma.ProductMicroservice.Application.Services
             product.Id = productId;
 
             await _productRepository.UpdateProductAsync(product);
+
+            _logger.LogInformation("Product with Id {productId} was updated {date} by {userName} at {time} Utc.",
+                product.Id, DateTime.UtcNow.ToShortDateString(), product.UpdatedBy, DateTime.UtcNow.ToLongTimeString());
         }
     }
 }
