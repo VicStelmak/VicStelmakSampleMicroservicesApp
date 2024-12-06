@@ -1,3 +1,4 @@
+using VicStelmak.Sma.UserMicroservice.ApiDataLibrary.Application.Interfaces;
 using VicStelmak.Sma.UserMicroservice.ApiDataLibrary.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,5 +30,12 @@ app.MapControllers();
 
 logger.LogInformation("The user microservice has started {date} at {time} Utc", DateTime.UtcNow.ToShortDateString(), 
     DateTime.UtcNow.ToLongTimeString());
+
+using (var serviceScope = app.Services.CreateScope())
+{
+    var userService = serviceScope.ServiceProvider.GetRequiredService<IUserService>();
+
+    await userService.AddRoleToUserAsync("Administrator", "7f335875-a73d-3773-a7c7-937a53fd7330");
+}
 
 app.Run();

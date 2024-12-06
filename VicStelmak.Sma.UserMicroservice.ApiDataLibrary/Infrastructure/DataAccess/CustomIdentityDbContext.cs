@@ -22,7 +22,6 @@ namespace VicStelmak.Sma.UserMicroservice.ApiDataLibrary.Infrastructure.DataAcce
             });
 
             builder.SeedInitialData();
-            builder.SeedRoles();
         }
     }
 }

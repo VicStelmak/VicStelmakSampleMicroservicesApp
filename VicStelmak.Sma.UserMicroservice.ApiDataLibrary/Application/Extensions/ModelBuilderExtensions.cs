@@ -9,7 +9,7 @@ namespace VicStelmak.Sma.UserMicroservice.ApiDataLibrary.Application.Extensions
         internal static void SeedInitialData(this ModelBuilder builder)
         {
             var passwordHasher = new PasswordHasher<UserModel>();
-
+            
             builder.Entity<UserModel>().HasData(new UserModel
             {
                 Id = "7f335875-a73d-3773-a7c7-937a53fd7330",
@@ -25,10 +25,7 @@ namespace VicStelmak.Sma.UserMicroservice.ApiDataLibrary.Application.Extensions
                 SecurityStamp = Guid.NewGuid().ToString(),
                 UserName = "funky@email.com"
             });
-        }
 
-        internal static void SeedRoles(this ModelBuilder builder)
-        {
             builder.Entity<IdentityRole>().HasData(new IdentityRole
             {
                 Name = "Administrator",
